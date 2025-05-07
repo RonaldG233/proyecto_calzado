@@ -1,0 +1,49 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+body{
+  background-color: #fff;
+  margin: 0 ;
+}
+
+.titulo{
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  /* position: relative; */
+}
+.titulo_proyecto{
+  /* position: absolute; */
+
+}
+
+.botones_pag_principal{
+  display: flex;
+  justify-content: center;
+  gap: 15%;
+  margin-top: 150px;
+}
+
+.boton_principio{
+  background-color: #000;
+  color: #fff;
+  padding: 40px 125px;
+  border-radius: 15px;
+  font-size: 17px;
+}
+
+.boton_principio:hover{
+  background-color: #8a8a8a;
+}
+
+.decoraciones_pag_principal{
+  position: relative;
+}
+.decoracion_parte_izquierda{
+  position: absolute;
+  left: 70px;
+  top: 35px;
+}
