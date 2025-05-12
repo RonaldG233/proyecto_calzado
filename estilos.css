@@ -13,10 +13,12 @@ body{
   display: flex;
   justify-content: center;
   margin-top: 40px;
+    
   /* position: relative; */
 }
 .titulo_proyecto{
   /* position: absolute; */
+  
 
 }
 
@@ -65,8 +67,8 @@ body{
   background-color: #000;
   font-size: 28px;
   margin-top: 95px;
-  padding: 25px;
-  font-weight: bold;
+  padding: 20px;
+  
 }
 .segundo_texto{
   display: flex;
@@ -76,8 +78,8 @@ body{
   background-color: #000;
   font-size: 28px;
   margin-top: 50px;
-  padding: 25px;
-  font-weight: bold;
+  padding: 20px;
+  
 }
 .tercer_texto{
   display: flex;
@@ -94,8 +96,8 @@ body{
   margin-top: 70px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 60px;
 }
 .imagen_zapato{
-  width: 8%;
+  width: 5%;
 }
