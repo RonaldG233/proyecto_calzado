@@ -24,13 +24,13 @@ body{
   display: flex;
   justify-content: center;
   gap: 15%;
-  margin-top: 150px;
+  margin-top: 100px;
 }
 
 .boton_principio{
   background-color: #000;
   color: #fff;
-  padding: 40px 125px;
+  padding: 35px 105px;
   border-radius: 15px;
   font-size: 17px;
 }
@@ -44,6 +44,58 @@ body{
 }
 .decoracion_parte_izquierda{
   position: absolute;
-  left: 70px;
+  left: 135px;
   top: 35px;
+}
+.decoracion_parte_derecha{
+  position: absolute;
+  top: 35px;
+  right: 155px;
+}
+
+.textos_pag_principal{
+  display: flex;
+  flex-direction: column;
+}
+.primer_texto{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #000;
+  font-size: 28px;
+  margin-top: 95px;
+  padding: 25px;
+  font-weight: bold;
+}
+.segundo_texto{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #000;
+  font-size: 28px;
+  margin-top: 50px;
+  padding: 25px;
+  font-weight: bold;
+}
+.tercer_texto{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #a1a1a1;
+  font-size: 35px;
+  margin-top: 50px;
+  font-weight: 900;
+  text-shadow: 2px 4px 0 #727272;
+}
+.logos_calzados{
+  display: flex;
+  margin-top: 70px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.imagen_zapato{
+  width: 8%;
 }
