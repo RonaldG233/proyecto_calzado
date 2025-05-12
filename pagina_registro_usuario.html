@@ -11,6 +11,48 @@
     <section class="ventana_registro">
       <div class="titulo_registro">
         <p class="texto_titulo">PRESTIGE</p>
+        <div class="campos_registro">
+          <section class="seccion_campos_registro">
+            <form action="#" novalidate>
+              <div>
+                <input type="text" name="nombre" placeholder="Nombre completo">
+              </div>
+              <div>
+                <input type="tel" name="telefono" placeholder="Teléfono">
+              </div>
+              <div>
+                <input type="text" name="correo" placeholder="Correo electrónico">
+              </div>
+              <div>
+                <input type="password" name="contrasena" placeholder="Contraseña">
+              </div>
+              <div>
+                <input type="password" name="confirmaContrasena" placeholder="Confirmar contraseña">
+              </div>
+              <div class="form_ciudad">
+                <select name="ciudad" id="ciudad">
+                  <option>Seleccionar la ciudad...</option>
+                  <option value="1">Bucaramanga</option>
+                  <option value="2">Bogota</option>
+                  <option value="3">Medellín</option>
+                  <option value="4">Barranquilla</option>
+                </select>
+              </div>
+              <div class="form_rol">
+                <h3>Elegir rol:</h3>
+                <div class="form_rol_unico">
+
+                  <input type="radio" name="roles" id="usuario" value="usuario"><label for="usuario">Usuario</label>
+                  
+                  <input type="radio" name="roles" id="admin" value="admin"><label for="admin">Administrador</label>
+
+                </div>
+              </div>
+            </form>
+
+          </section>
+        </div>
+        
       </div>
     </section>
     
