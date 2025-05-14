@@ -5,8 +5,21 @@
   font-family: "Roboto", sans-serif;
 }
 body{
-  background-color: #BEBEBE;
+  background-color: #003366;
   margin: 0 ;
+
+
+}
+
+.decoraciones_pag_principal{
+  position: relative;
+}
+.decoracion_superior{
+  position: absolute;
+  margin: 0;
+  top: 0px;
+  left: 0;
+  width: 100%;
 }
 
 .titulo{
@@ -42,10 +55,14 @@ body{
   border: none;
 }
 
-.decoraciones_pag_principal{
-  position: relative;
-}
-/* .decoracion_parte_izquierda{
+
+
+/* .decoracion_inferior{
+  position: absolute;
+  top: 100%;
+  width: 100%;
+} */
+.decoracion_parte_izquierda{
   position: absolute;
   left: 190px;
   top: 35px;
@@ -54,7 +71,7 @@ body{
   position: absolute;
   top: 35px;
   right: 210px;
-} */
+}
 
 .textos_pag_principal{
   display: flex;
