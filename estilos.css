@@ -17,9 +17,18 @@ body{
 .decoracion_superior{
   position: absolute;
   margin: 0;
-  top: 0px;
+  top: -40px;
   left: 0;
   width: 100%;
+  z-index: -1;
+}
+.decoracion_inferior{
+  position: absolute;
+  top: 590px;
+  width: 100%;
+  z-index: -1;
+  left: 0;
+  /* he ight: 90%; */
 }
 
 .titulo{
@@ -39,12 +48,12 @@ body{
   display: flex;
   justify-content: center;
   gap: 15%;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
 .boton_principio{
-  background-color: #000;
-  color: #fff;
+  background-color: #F5F5DC;
+  color: #003366;
   padding: 25px 90px;
   border-radius: 15px;
   font-size: 17px;
@@ -57,11 +66,7 @@ body{
 
 
 
-/* .decoracion_inferior{
-  position: absolute;
-  top: 100%;
-  width: 100%;
-} */
+
 .decoracion_parte_izquierda{
   position: absolute;
   left: 190px;
@@ -82,9 +87,9 @@ body{
   align-items: center;
   justify-content: center;
   color: #fff;
-  background-color: #000;
+  background-color: #3b58ff;
   font-size: 28px;
-  margin-top: 95px;
+  margin-top: 75px;
   padding: 20px;
   
 }
@@ -93,7 +98,7 @@ body{
   align-items: center;
   justify-content: center;
   color: #fff;
-  background-color: #000;
+  background-color: #3b58ff;
   font-size: 28px;
   margin-top: 50px;
   padding: 20px;
@@ -111,7 +116,7 @@ body{
 } */
 .logos_calzados{
   display: flex;
-  margin-top: 140px;
+  margin-top: 200px;
   justify-content: center;
   align-items: center;
   gap: 60px;
