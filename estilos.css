@@ -5,19 +5,19 @@
   font-family: "Roboto", sans-serif;
 }
 body{
-  background-color: #fff;
+  background-color: #BEBEBE;
   margin: 0 ;
 }
 
 .titulo{
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 40px;
-    
-  /* position: relative; */
+    /* width: 1 0%; */
 }
 .titulo_proyecto{
-  /* position: absolute; */
+  width: 30%;
   
 
 }
@@ -32,28 +32,29 @@ body{
 .boton_principio{
   background-color: #000;
   color: #fff;
-  padding: 35px 105px;
+  padding: 25px 90px;
   border-radius: 15px;
   font-size: 17px;
 }
 
 .boton_principio:hover{
   background-color: #8a8a8a;
+  border: none;
 }
 
 .decoraciones_pag_principal{
   position: relative;
 }
-.decoracion_parte_izquierda{
+/* .decoracion_parte_izquierda{
   position: absolute;
-  left: 135px;
+  left: 190px;
   top: 35px;
 }
 .decoracion_parte_derecha{
   position: absolute;
   top: 35px;
-  right: 155px;
-}
+  right: 210px;
+} */
 
 .textos_pag_principal{
   display: flex;
@@ -81,7 +82,7 @@ body{
   padding: 20px;
   
 }
-.tercer_texto{
+/* .tercer_texto{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,10 +91,10 @@ body{
   margin-top: 50px;
   font-weight: 900;
   text-shadow: 2px 4px 0 #727272;
-}
+} */
 .logos_calzados{
   display: flex;
-  margin-top: 70px;
+  margin-top: 140px;
   justify-content: center;
   align-items: center;
   gap: 60px;

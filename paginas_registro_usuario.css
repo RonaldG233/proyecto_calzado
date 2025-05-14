@@ -1,0 +1,111 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+body{
+  background-color: #F5F5DC;
+  margin: 0 ;
+  
+}
+.ventana{
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  justify-items: center;
+}
+.ventana_registro{
+  
+  margin-top: 70px;
+  background-color: #fff;
+  /* width: 600px; */
+  width: 31vw;
+  height: 800px;
+  border-radius: 15px;
+  box-shadow:15px 10px 15px #525252;
+}
+.titulo_registro{
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+  
+}
+.texto_titulo{
+  
+  width: 40%;
+}
+.campos_registro{
+
+}
+.seccion_campos_registro{
+  display: flex;
+  background-color: #003366;
+  /* width: 600px; */
+  width: 31vw;
+  height: 570px;
+  margin-top: 50px;
+  /* border-radius: 50px 0px 0px 0px; */
+  box-shadow:0px 0px 5px #d9d9d9;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.input, .select_content{
+  width: 20vw;
+  background-color: #fdfdfd;
+  margin-top:15px;
+  /* border-color: #c7c3c3; */
+  padding: 15px;
+  border-radius: 15px;
+  border-style: none;
+  outline: none;
+  
+}
+.select_content{
+  color: #717171;
+}
+/* .select_ciudad{
+  background-color: #C7C3C3;
+  margin-top: 20px;
+  border-style: none;
+  padding: 15px 65px;
+  border-radius: 15px;
+  color: #717171;
+
+} */
+/* .select_rol{
+  background-color: #C7C3C3;
+  margin-top: 20px;
+  border-style: none;
+  padding: 15px;
+  border-radius: 15px;
+  color: #717171;
+  
+  
+} */
+.boton{
+  display: flex;
+  width: 100%;
+  height: 85px;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 0px 0px 15px 15px;
+}
+.boton_registrarse{
+  background-color: #003366;
+  color: #fff;
+  padding: 15px 70px;
+  border-radius: 5px;
+}
+.boton_registrarse:hover{
+  background-color: #5a68b3;
+  /* transition: 1s; */
+  /* border: #686868; */
+}

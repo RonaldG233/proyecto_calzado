@@ -4,33 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registrar usuario</title>
-  <link rel="stylesheet" href="pagina_registro_usuario.css">
+  <link rel="stylesheet" href="paginas_registro_usuario.css">
 </head>
 <body>
   <div class="ventana">
     <section class="ventana_registro">
       <div class="titulo_registro">
-        <p class="texto_titulo">PRESTIGE</p>
+        <img src="./imagenes/logo_clazado_azulOscuro.png" class="texto_titulo">
         <div class="campos_registro">
           <section class="seccion_campos_registro">
             <form action="#" novalidate>
               <div>
-                <input type="text" name="nombre" placeholder="Nombre completo">
+                <input class="input" type="text" name="nombre" placeholder="Nombre completo">
               </div>
               <div>
-                <input type="tel" name="telefono" placeholder="Teléfono">
+                <input class="input" type="tel" name="telefono" placeholder="Teléfono">
               </div>
               <div>
-                <input type="text" name="correo" placeholder="Correo electrónico">
+                <input class="input" type="text" name="correo" placeholder="Correo electrónico">
               </div>
               <div>
-                <input type="password" name="contrasena" placeholder="Contraseña">
+                <input class="input" type="password" name="contrasena" placeholder="Contraseña">
               </div>
               <div>
-                <input type="password" name="confirmaContrasena" placeholder="Confirmar contraseña">
+                <input class="input" type="password" name="confirmaContrasena" placeholder="Confirmar contraseña">
               </div>
               <div class="form_ciudad">
-                <select name="ciudad" id="ciudad">
+                <select name="ciudad" id="ciudad" class="select_content">
                   <option>Seleccionar la ciudad...</option>
                   <option value="1">Bucaramanga</option>
                   <option value="2">Bogota</option>
@@ -39,18 +39,19 @@
                 </select>
               </div>
               <div class="form_rol">
-                <h3>Elegir rol:</h3>
-                <div class="form_rol_unico">
-
-                  <input type="radio" name="roles" id="usuario" value="usuario"><label for="usuario">Usuario</label>
-                  
-                  <input type="radio" name="roles" id="admin" value="admin"><label for="admin">Administrador</label>
-
-                </div>
+                <select name="rol" id="rol" class="select_content">
+                  <option>Elegir el rol...</option>
+                  <option value="1">Usuario</option>
+                  <option value="2">Administrador</option>
+                </select>
+                
               </div>
             </form>
 
           </section>
+        </div>
+        <div class="boton">
+          <button class="boton_registrarse">REGISTRATE</button>
         </div>
         
       </div>
