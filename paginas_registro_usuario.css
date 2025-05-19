@@ -44,7 +44,7 @@ body{
 }
 .seccion_campos_registro{
   display: flex;
-  background-color: #003366;
+  background-color: #8B5E3C;
   /* width: 600px; */
   width: 31vw;
   height: 570px;
@@ -99,7 +99,7 @@ body{
   border-radius: 0px 0px 15px 15px;
 }
 .boton_registrarse{
-  background-color: #003366;
+  background-color: #8B5E3C;
   color: #fff;
   padding: 15px 70px;
   border-radius: 5px;
