@@ -30,9 +30,10 @@ header {
   font-weight: bold;
 }
 
-.cuenta img {
+.cuenta i {
   height: 30px;
   width: 30px;
+  
 }
 
 .catalogo {
