@@ -60,11 +60,10 @@ body{
   cursor: pointer;
 }
 .buscador .ri-search-line:hover{
-  filter: brightness(1.4);
-  
+  filter: brightness(1.4);  
 }
 .buscador input::placeholder{
-  color: #d8d8d8;
+  color: #7b7b7b;
 }
 .cuenta{
   padding: 8px;
@@ -99,6 +98,7 @@ body{
   background-color: #C7A589;
   display: flex;
   padding-top: 30px;
+  min-height: 89vh;
   max-height: 89vh;
   border-radius: 0 20px 20px 0;
   position: sticky;
@@ -125,6 +125,25 @@ body{
   font-size: 22px;
 }
 
+/*BUSCADOR*/
+.buscador-catalogo{
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.select-talla{
+  text-align: left;
+  background-color: #C7A589;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 14px;
+
+}
+
 
 /*zapatos*/
 .catalogo {
@@ -132,7 +151,7 @@ body{
   grid-area: content;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 80px;
+  gap: 10px;
   padding: 40px;
   justify-items: center;
   
@@ -164,16 +183,7 @@ body{
 }
 
 /*--------------------------------------*/
-.menu-container {
-  position: relative;
-  display: inline-block;
-}
-
-.menu-container:hover .menu-desplegable {
-  display: block;
-}
-
-/* .menu-desplegable {
+.menu-desplegable {
   position: absolute;
   top: 70px; 
   left: 20px;
@@ -181,17 +191,6 @@ body{
   border: 1px solid #ccc;
   width: 200px;
   display: none;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-} */
-.menu-desplegable {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  width: 200px;
-  display: none; /* Oculto por defecto */
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }

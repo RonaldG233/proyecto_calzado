@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catalogo Classic Prestige Men</title>
+  <title>CATALOGO CLASSIC PRESTIGE MEN</title>
   <link rel="stylesheet" href="../css/catalogo.css">
   <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
@@ -19,17 +19,16 @@
     <div class="buscador">
       <a href="#" class="menuDesplegable"><i class="ri-menu-line"></i>
       </a>
-      <input type="text" placeholder="Buscar..."  >
-      <i class="ri-search-line"></i>
-
       <div class="menu-desplegable" id="menuDesplegable">
       <ul>
         <li><a href="#">Buscar por estilos...</a></li>
-        <li><a href="#">Buscar por tallas</a></li>
-        <li><a href="#">Buscar por materiales</a></li>
-        
+        <li><a href="#">Buscar por tallas...</a></li>      
       </ul>
-    </div>
+      </div>
+      <input type="text" placeholder="Buscar..."  >
+      <i class="ri-search-line"></i>
+
+      
     
     </div>  
     
@@ -42,36 +41,85 @@
     </div>
     
   </header>
+  <aside class="sidebar">
+    <div class="sidebar-items">
+      <a href="../html/estilos.html" class="sidebar-item">Estilos</a>
+      <a href="../html/tallas.html" class="sidebar-item">Tallas</a>
+      <a href="#" class="sidebar-item">Consultar pedido</a>
+    </div>
+  </aside>
   <main class="catalogo">
     <div class="producto">
-      <img src="lightbrown.jpg" alt="Light Brown">
+      <img src="../img/Group 11.png" alt="Light Brown">
       <h3>LIGHT BROWN</h3>
       <p>$ 150.000</p>
     </div>
     <div class="producto">
-      <img src="glossyblack.jpg" alt="Glossy Black">
+      <img src="../img/Group 11.png" alt="Glossy Black">
       <h3>GLOSSY BLACK</h3>
       <p>$ 200.000</p>
     </div>
     <div class="producto">
-      <img src="denimbrown.jpg" alt="Denim Brown">
+      <img src="../img/Group 11.png" alt="Denim Brown">
       <h3>DENIM BROWN</h3>
       <p>$ 200.000</p>
     </div>
     <div class="producto">
-      <img src="alligator.jpg" alt="Alligator">
+      <img src="../img/Group 11.png" alt="Alligator">
+      <h3>ALLIGATOR</h3>
+      <p>$ 184.999</p>
+    </div>
+    <div class="producto">
+      <img src="../img/Group 11.png" alt="Denim Brown">
+      <h3>DENIM BROWN</h3>
+      <p>$ 200.000</p>
+    </div>
+    <div class="producto">
+      <img src="../img/Group 11.png" alt="Alligator">
+      <h3>ALLIGATOR</h3>
+      <p>$ 184.999</p>
+    </div>
+    <div class="producto">
+      <img src="../img/Group 11.png" alt="Denim Brown">
+      <h3>DENIM BROWN</h3>
+      <p>$ 200.000</p>
+    </div>
+    <div class="producto">
+      <img src="../img/Group 11.png" alt="Alligator">
+      <h3>ALLIGATOR</h3>
+      <p>$ 184.999</p>
+    </div>
+    <div class="producto">
+      <img src="../img/Group 11.png" alt="Alligator">
+      <h3>ALLIGATOR</h3>
+      <p>$ 184.999</p>
+    </div>
+    <div class="producto">
+      <img src="../img/Group 11.png" alt="Alligator">
       <h3>ALLIGATOR</h3>
       <p>$ 184.999</p>
     </div>
   </main>
-  <aside class="sidebar">
-    <div class="sidebar-items">
-      <a href="#" class="sidebar-item">ESTILOS</a>
-      <a href="#" class="sidebar-item">TALLAS</a>
-      <a href="#" class="sidebar-item">MATERIALES</a>
-      <a href="#" class="sidebar-item">CONSULTAR PEDIDO</a>
-    </div>
-  </aside>
+  <script>
+  // Esperar a que cargue el documento
+  document.addEventListener('DOMContentLoaded', function () {
+    const iconoMenu = document.querySelector('.menuDesplegable');
+    const menu = document.getElementById('menuDesplegable');
+
+    iconoMenu.addEventListener('click', function (e) {
+      e.preventDefault(); // evita que el enlace recargue la página
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    });
+
+    // Cierra el menú si haces clic fuera de él
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target) && !iconoMenu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+  });
+</script>
+
   
 </body>
 </html>
