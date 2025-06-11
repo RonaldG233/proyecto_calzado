@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #dceeff, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../img/Group 7.png") ;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.contenedor {
+  width: 370px;
+  background-color: #C7A589;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: center;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 50px;
+}
+
+.logo {
+  width: 80px;
+}
+
+
+
+h2 {
+  font-size: 18px;
+  margin: 0;
+  flex-grow: 1;
+  text-align:left;
+  font-weight: bold;
+  
+}
+
+.imagen-zapato {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.descripcion {
+  font-size: 14px;
+  text-align: left;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.precio {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn.gris {
+  background-color: #c4c4c4;
+  color: black;
+}
+
+.btn.oscuro {
+  background-color: #555;
+  color: white;
+}
+
+.volver {
+  position: absolute;
+  left: 20px;
+  bottom: 15px;
+  font-size: 24px;
+}

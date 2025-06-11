@@ -24,12 +24,16 @@
 
       <div class="menu-desplegable" id="menuDesplegable">
       <ul>
-        <li><a href="#">Buscar por estilos...</a></li>
-        <li><a href="#">Buscar por tallas</a></li>
+        <li><a href="./catalogo.html">Catalogo principal...</a></li>
+        <li><a href="./estilos.html">Buscar por estilos...</a></li>
+        <li><a href="./tallas.html">Buscar por tallas...</a></li>
         
       </ul>
+
     </div>
-    
+    <a href="./catalogo.html">
+      <i class="ri-close-line"></i>
+      </a>
     </div>  
     
     
@@ -43,9 +47,10 @@
   </header>
   <aside class="sidebar">
     <div class="sidebar-items">
+      <a href="../html/catalogo.html" class="sidebar-item">Catalogo</a>
       <a href="../html/estilos.html" class="sidebar-item">Estilos</a>
       <a href="../html/tallas.html" class="sidebar-item">Tallas</a>
-      <a href="#" class="sidebar-item">Consultar pedido</a>
+      <a href="../html/consultarPedidos.html" class="sidebar-item">Consultar pedido</a>
     </div>
   </aside>
   <main class="content">
@@ -67,6 +72,25 @@
       
     </div>  
   </main>
+  <script>
+  // Esperar a que cargue el documento
+  document.addEventListener('DOMContentLoaded', function () {
+    const iconoMenu = document.querySelector('.menuDesplegable');
+    const menu = document.getElementById('menuDesplegable');
+
+    iconoMenu.addEventListener('click', function (e) {
+      e.preventDefault(); // evita que el enlace recargue la página
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    });
+
+    // Cierra el menú si haces clic fuera de él
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target) && !iconoMenu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+  });
+</script>
   
   
 </body>

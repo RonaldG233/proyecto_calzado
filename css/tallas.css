@@ -59,6 +59,16 @@ body{
   font-size: 20px;
   cursor: pointer;
 }
+
+.buscador .ri-close-line{
+  position: absolute;
+  right: 40px; /* posición del icono dentro del input */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: red;
+  font-weight: bold;
+}
 .buscador .ri-search-line:hover{
   filter: brightness(1.4);  
 }
@@ -183,17 +193,28 @@ body{
 }
 
 /*--------------------------------------*/
+.menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.menu-container:hover .menu-desplegable {
+  display: block;
+}
+
+
 .menu-desplegable {
   position: absolute;
-  top: 70px; 
-  left: 20px;
-  background-color: white;
-  border: 1px solid #ccc;
-  width: 200px;
-  display: none;
+  top: 40px;
+  left: 0;
+  background-color: #C7A589;
+  width: 500px;
+  display: none; /* Oculto por defecto */
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
+
 
 .menu-desplegable ul {
   list-style: none;
@@ -202,7 +223,7 @@ body{
 }
 
 .menu-desplegable ul li {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #F5F5DC;
 }
 
 .menu-desplegable ul li a {
