@@ -13,7 +13,7 @@
         <img src="../img/Group 7.png " class="texto_titulo">
         <div class="campos_registro">
           <section class="seccion_campos_registro">
-            <form action="#" novalidate>
+            <form id="formLogin" novalidate>
               
               <div>
                 <input class="input" type="text" name="correo" placeholder="Correo electrónico">
@@ -28,9 +28,9 @@
           </section>
         </div>
         <div class="boton">
-          <a href="./catalogo.html">
-            <button class="boton_registrarse" >INICIAR SESION</button>
-          </a>
+          
+            <button type="submit" id="btnLogin"  class="boton_registrarse" >INICIAR SESION</button>
+          
           
         </div>
         
@@ -38,6 +38,42 @@
     </section>
     
   </div>
-  
+  <!-- <script>
+document.querySelector("form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const correo = document.querySelector("input[name='correo']").value.trim();
+  const contrasena = document.querySelector("input[name='contrasena']").value.trim();
+
+  if (!correo || !contrasena) {
+    alert("Por favor, completa todos los campos.");
+    return;
+  }
+
+  fetch("http://localhost:8080/proyectoCalzado/api/usuarios") // Ajusta si tu endpoint cambia
+    .then(response => {
+      if (!response.ok) throw new Error("Error al obtener usuarios");
+      return response.json();
+    })
+    .then(usuarios => {
+      const usuarioValido = usuarios.find(u => u.correo === correo && u.contrasena === contrasena);
+
+      if (usuarioValido) {
+        alert("Inicio de sesión exitoso.");
+        // Puedes guardar en localStorage si lo deseas:
+        localStorage.setItem("usuario", JSON.stringify(usuarioValido));
+        window.location.href = "./catalogo.html";
+      } else {
+        alert("Correo o contraseña incorrectos.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Ocurrió un error al iniciar sesión.");
+    });
+});
+</script> -->
+
+  <script src="../js/login.js"></script>
 </body>
 </html>
