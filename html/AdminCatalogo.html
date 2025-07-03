@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CATALOGO CLASSIC PRESTIGE MEN</title>
+  <link rel="stylesheet" href="../css/AdminCatalogo.css">
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body>
+  <header class="encabezado__pagina_catalogo">
+    
+    <div class="logo">
+      <img src="../img/Group 10.png" alt="Classic Prestige MEN">
+    </div>
+    <div class="buscador">
+      <a href="#" class="menuDesplegable"><i class="ri-menu-line"></i>
+      </a>
+      <div class="menu-desplegable" id="menuDesplegable">
+      <ul>
+        <li><a href="./catalogo.html">Catalogo principal...</a></li>
+        <li><a href="./estilos.html">Buscar por estilos...</a></li>
+        <li><a href="./tallas.html">Buscar por tallas...</a></li>
+      </ul>
+      </div>
+      
+
+      <input type="text" placeholder="Buscar calzado..."  >
+      
+      <i class="ri-search-line"></i>
+
+      
+    
+    </div> 
+
+    
+    <div class="cuenta">
+      <a href="./consultarPedidos.html">
+      <i class="ri-shopping-cart-line"></i>
+      <span>Pedido</span>
+      </a>
+      <a href="#">
+        <i class="ri-user-fill"></i> 
+        <span>Cuenta</span>
+      </a> 
+    </div>
+    
+  </header>
+  <aside class="sidebar">
+    <div class="sidebar-items">
+      <a href="../html/catalogo.html" class="sidebar-item">Catalogo</a>
+      <a href="../html/estilos.html" class="sidebar-item">Estilos</a>
+      <a href="../html/tallas.html" class="sidebar-item">Tallas</a>
+      <a href="../html/consultarPedidos.html" class="sidebar-item">Consultar pedido</a>
+    </div>
+  </aside>
+  <main class="usuarios">
+    
+    
+  </main>
+  
+  <script>
+  // Esperar a que cargue el documento
+  document.addEventListener('DOMContentLoaded', function () {
+    const iconoMenu = document.querySelector('.menuDesplegable');
+    const menu = document.getElementById('menuDesplegable');
+
+    iconoMenu.addEventListener('click', function (e) {
+      e.preventDefault(); // evita que el enlace recargue la página
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    });
+
+    // Cierra el menú si haces clic fuera de él
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target) && !iconoMenu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+  });
+</script>
+<script>
+  const iconoAgregar = document.getElementById("iconoAgregar");
+  const inputContenedor = document.getElementById("inputContenedor");
+  const btnCancelar = document.getElementById("btnCancelar");
+
+  iconoAgregar.addEventListener("click", function(event) {
+    event.preventDefault(); // Evita que se redireccione por el <a>
+    inputContenedor.style.display = "flex";
+  });
+
+  btnCancelar.addEventListener("click", function() {
+    inputContenedor.style.display = "none";
+  });
+</script>
+
+
+  <script type="module" src="../js/adminCatalogo.js"></script>
+  
+
+</body>
+</html>
