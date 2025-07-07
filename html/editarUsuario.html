@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar Usuario</title>
+  <link rel="stylesheet" href="../css/editarUsuario.css" />
+</head>
+<body>
+  <div class="contenedor">
+    <h2>Editar Usuario</h2>
+    <form id="formEditarUsuario">
+      <input type="hidden" name="idUsuario" id="idUsuario" />
+
+      <label>Nombre</label>
+      <input type="text" id="nombre" required />
+
+      <label>Correo</label>
+      <input type="email" id="correo" required />
+
+      <label>Teléfono</label>
+      <input type="tel" id="telefono" required />
+
+      <label>Ciudad</label>
+      <select id="codCiudad" required></select>
+
+      <label>Rol</label>
+      <select id="idRol" required></select>
+
+      <button type="submit">Actualizar</button>
+      <a href="./AdminCatalogo.html" class="cancelar">Cancelar</a>
+    </form>
+  </div>
+
+  <script type="module" src="../js/editarUsuario.js"></script>
+</body>
+</html>

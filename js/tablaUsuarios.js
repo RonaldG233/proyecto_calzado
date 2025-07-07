@@ -71,6 +71,11 @@ export async function crearTablaUsuarios() {
 
     tabla.appendChild(tbody);
     main.appendChild(tabla);
+    btnEditar.addEventListener("click", () => {
+  localStorage.setItem("usuarioEditar", JSON.stringify(u));
+  window.location.href = "../html/editarUsuario.html";
+});
+
   } catch (error) {
     console.error("Error al crear la tabla de usuarios:", error);
   }

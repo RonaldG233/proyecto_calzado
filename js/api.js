@@ -73,5 +73,24 @@ export async function obtenerRoles() {
     throw error;
   }
 }
+export async function actualizarUsuario(usuario) {
+  try {
+    const response = await fetch(`http://localhost:8080/proyectoCalzado/api/usuarios/${usuario.idUsuario}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuario)
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al actualizar el usuario");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error al actualizar:", error);
+    throw error;
+  }
+}
+
 
 
