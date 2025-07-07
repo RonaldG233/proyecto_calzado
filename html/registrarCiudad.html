@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CATALOGO CLASSIC PRESTIGE MEN</title>
-  <link rel="stylesheet" href="../css/AdminCatalogo.css">
+  <link rel="stylesheet" href="../css/registrarCiudad.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 <body>
@@ -45,29 +45,44 @@
     </div>
   </aside>
 
-  <main class="usuarios">
-    <!-- Aquí se cargará la tabla de usuarios -->
-  </main>
+  <main class="ciudad">
+  <section class="formulario-ciudad">
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const iconoMenu = document.querySelector('.menuDesplegable');
-      const menu = document.getElementById('menuDesplegable');
+    <!-- Formulario REGISTRAR -->
+    <form id="formRegistrarCiudad">
+      <h2>Registrar Ciudad</h2>
+      <label for="nombreCiudad">Nombre de la Ciudad</label>
+      <input type="text" id="nombreCiudad" name="nombreCiudad" required placeholder="Ej: Bogotá" />
+      <button type="submit">Registrar Ciudad</button>
+    </form>
 
-      iconoMenu.addEventListener('click', function (e) {
-        e.preventDefault();
-        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-      });
+    <!-- Formulario EDITAR -->
+    <form id="formEditarCiudad">
+      <h2>Editar Ciudad</h2>
+      <label for="ciudadesEditar">Seleccionar Ciudad</label>
+      <select id="ciudadesEditar">
+        <option value="">-- Selecciona una ciudad --</option>
+      </select>
+      <button type="button" id="btnEditar">Editar Ciudad</button>
+    </form>
 
-      document.addEventListener('click', function (e) {
-        if (!menu.contains(e.target) && !iconoMenu.contains(e.target)) {
-          menu.style.display = 'none';
-        }
-      });
-    });
-  </script>
+    <!-- Formulario ELIMINAR -->
+    <form id="formEliminarCiudad">
+      <h2>Eliminar Ciudad</h2>
+      <label for="ciudadesEliminar">Seleccionar Ciudad</label>
+      <select id="ciudadesEliminar">
+        <option value="">-- Selecciona una ciudad --</option>
+      </select>
+      <button type="button" id="btnEliminar">Eliminar Ciudad</button>
+    </form>
 
-  <!-- Este es el script principal de JS -->
-  <script type="module" src="../js/adminCatalogo.js"></script>
+  </section>
+
+  <div id="mensajeCiudad"></div>
+</main>
+
+
+  
+  <script type="module" src="../js/registrarCiudad.js"></script>
 </body>
 </html>

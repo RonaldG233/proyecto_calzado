@@ -73,9 +73,10 @@ export async function obtenerRoles() {
     throw error;
   }
 }
+//ACTUALIZAR USUARIO
 export async function actualizarUsuario(usuario) {
   try {
-    const response = await fetch(`http://localhost:8080/proyectoCalzado/api/usuarios/${usuario.idUsuario}`, {
+    const response = await fetch(`${API_BASE}/usuarios/${usuario.idUsuario}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuario)
@@ -91,6 +92,22 @@ export async function actualizarUsuario(usuario) {
     throw error;
   }
 }
+//ELIMINAR USUARIO
+export async function eliminarUsuario(id) {
+  try {
+    const response = await fetch(`${API_BASE}/usuarios/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al eliminar el usuario");
+    }
+  } catch (error) {
+    console.error("Error al eliminar:", error.message);
+    throw error;
+  }
+}
+
 
 
 

@@ -44,4 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+// archivo: registro.js
+async function cargarCiudades() {
+  const ciudadSelect = document.getElementById("ciudad");
+
+  try {
+    const response = await fetch("http://localhost:8080/proyectoCalzado/api/ciudades");
+    if (!response.ok) throw new Error("Error al obtener ciudades");
+
+    const ciudades = await response.json();
+
+    ciudades.forEach(ciudad => {
+      const option = document.createElement("option");
+      option.value = ciudad.codCiudad;
+      option.textContent = ciudad.nombre_ciudad;
+      ciudadSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error al cargar ciudades:", error);
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  cargarCiudades();
+
+  // Aquí puedes conectar también la lógica para registrar el usuario
+});
+
 
