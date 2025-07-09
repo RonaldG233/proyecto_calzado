@@ -90,9 +90,7 @@ h1, h2, h3, button {
   background-size: cover; 
   background-position: center;
   animation: cambiarFondo 4s infinite alternate;
-  
   transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
-
 }
 .img__calzado_informacion{
   position: absolute;

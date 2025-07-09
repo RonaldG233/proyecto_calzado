@@ -1,38 +1,51 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const formCiudad = document.getElementById("formCiudad");
-  const mensaje = document.getElementById("mensajeCiudad");
+  const formRegistrar = document.getElementById("formRegistrarCiudad");
+  const formEditar = document.getElementById("formEditarCiudad");
+  const formEliminar = document.getElementById("formEliminarCiudad");
+
+  const inputNombre = document.getElementById("nombreCiudad");
+  const selectEditar = document.getElementById("ciudadesEditar");
+  const selectEliminar = document.getElementById("ciudadesEliminar");
+
   const btnEditar = document.getElementById("btnEditar");
   const btnEliminar = document.getElementById("btnEliminar");
-  const selectCiudades = document.getElementById("ciudadesExistentes");
-  const inputNombre = document.getElementById("nombreCiudad");
 
-  // Cargar ciudades existentes al iniciar
+  const mensaje = document.getElementById("mensajeCiudad");
+
+  // Cargar ciudades en selects
   async function cargarCiudades() {
     try {
       const response = await fetch("http://localhost:8080/proyectoCalzado/api/ciudades");
       const ciudades = await response.json();
 
-      // Vaciar el select
-      selectCiudades.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-
-      // Rellenar con ciudades
-      ciudades.forEach((ciudad) => {
-        const option = document.createElement("option");
-        option.value = ciudad.codCiudad;
-        option.textContent = ciudad.nombre_ciudad;
-        selectCiudades.appendChild(option);
+      [selectEditar, selectEliminar].forEach((select) => {
+        select.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+        ciudades.forEach((ciudad) => {
+          const option = document.createElement("option");
+          option.value = ciudad.codCiudad;
+          option.textContent = ciudad.nombre_ciudad;
+          select.appendChild(option);
+        });
       });
     } catch (error) {
       console.error("Error al cargar ciudades:", error);
     }
   }
 
-  // Registrar ciudad
-  formCiudad.addEventListener("submit", async (e) => {
+  // Mostrar mensaje
+  function mostrarMensaje(texto, color = "white") {
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+  }
+
+  // REGISTRAR CIUDAD
+  formRegistrar.addEventListener("submit", async (e) => {
     e.preventDefault();
     const nombre = inputNombre.value.trim();
 
-    if (!nombre) return mostrarMensaje("Debe ingresar un nombre de ciudad.", "red");
+    if (!nombre) {
+      return mostrarMensaje("Debe ingresar un nombre de ciudad.", "red");
+    }
 
     try {
       const response = await fetch("http://localhost:8080/proyectoCalzado/api/ciudades", {
@@ -44,27 +57,29 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) throw new Error();
 
       mostrarMensaje("Ciudad registrada correctamente.", "green");
-      formCiudad.reset();
+      formRegistrar.reset();
       cargarCiudades();
     } catch (error) {
-      mostrarMensaje("Error al registrar la ciudad.", "red");
+      mostrarMensaje("Error al registrar ciudad.", "red");
     }
   });
 
-  // Editar ciudad
+  // EDITAR CIUDAD
   btnEditar.addEventListener("click", async () => {
-    const idCiudad = selectCiudades.value;
-    const nuevoNombre = prompt("Nuevo nombre de ciudad:");
+    const idCiudad = selectEditar.value;
+    if (!idCiudad) return mostrarMensaje("Seleccione una ciudad a editar.", "red");
 
-    if (!idCiudad || !nuevoNombre) {
-      return mostrarMensaje("Debe seleccionar una ciudad y escribir un nuevo nombre.", "red");
-    }
+    const nuevoNombre = document.getElementById("nuevoNombreCiudad").value.trim();
+if (!nuevoNombre) {
+  return mostrarMensaje("Debe ingresar un nuevo nombre para la ciudad.", "red");
+}
+
 
     try {
       const response = await fetch(`http://localhost:8080/proyectoCalzado/api/ciudades/${idCiudad}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre_ciudad: nuevoNombre }),
+        body: JSON.stringify({ nombre_ciudad: nuevoNombre.trim() }),
       });
 
       if (!response.ok) throw new Error();
@@ -76,12 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Eliminar ciudad
+  // ELIMINAR CIUDAD
   btnEliminar.addEventListener("click", async () => {
-    const idCiudad = selectCiudades.value;
-    if (!idCiudad) return mostrarMensaje("Seleccione una ciudad para eliminar.", "red");
+    const idCiudad = selectEliminar.value;
+    if (!idCiudad) return mostrarMensaje("Seleccione una ciudad a eliminar.", "red");
 
-    const confirmar = confirm("¿Estás seguro de eliminar esta ciudad?");
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar esta ciudad?");
     if (!confirmar) return;
 
     try {
@@ -97,11 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarMensaje("Error al eliminar la ciudad.", "red");
     }
   });
-
-  function mostrarMensaje(texto, color) {
-    mensaje.textContent = texto;
-    mensaje.style.color = color;
-  }
 
   // Cargar ciudades al iniciar
   cargarCiudades();

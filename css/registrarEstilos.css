@@ -200,7 +200,7 @@ body{
 
 /*FORMULARIO CIUDAD */
 /* Contenedor general */
-.formulario-ciudad {
+.formulario-estilo {
   display: flex;
   justify-content: center;
   gap: 30px;
@@ -211,7 +211,7 @@ body{
 }
 
 /* Cada formulario individual */
-.formulario-ciudad form {
+.formulario-estilo form {
   background-color: #8B5E3C;
   padding: 20px;
   border-radius: 12px;
@@ -223,7 +223,7 @@ body{
 }
 
 /* Título de cada formulario */
-.formulario-ciudad h2 {
+.formulario-estilo h2 {
   font-size: 18px;
   margin-bottom: 10px;
   border-bottom: 1px solid #F5F5DC;
@@ -232,15 +232,15 @@ body{
 }
 
 /* Etiquetas */
-.formulario-ciudad label {
+.formulario-estilo label {
   font-weight: bold;
   font-size: 14px;
   color: #ddd;
 }
 
 /* Inputs y selects */
-.formulario-ciudad input,
-.formulario-ciudad select {
+.formulario-estilo input,
+.formulario-estilo select {
   padding: 10px;
   background-color: #F5F5DC;
   color: #8B5E3C;
@@ -250,14 +250,14 @@ body{
   transition: border 0.3s;
 }
 
-.formulario-ciudad input:focus,
-.formulario-ciudad select:focus {
+.formulario-estilo input:focus,
+.formulario-estilo select:focus {
   border-color: #999;
   outline: none;
 }
 
 /* Botones */
-.formulario-ciudad button {
+.formulario-estilo button {
   padding: 10px;
   font-size: 15px;
   border: none;
@@ -268,12 +268,12 @@ body{
   transition: background-color 0.3s;
 }
 
-.formulario-ciudad button:hover {
+.formulario-estilo button:hover {
   background-color: #b37c52;
 }
 
 /* Mensaje de estado */
-#mensajeCiudad {
+#mensajeEstilo {
   width: 100%;
   text-align: center;
   margin-top: 20px;

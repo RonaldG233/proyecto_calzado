@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CATALOGO CLASSIC PRESTIGE MEN</title>
-  <link rel="stylesheet" href="../css/registrarCiudad.css">
+  <link rel="stylesheet" href="../css/registrarEstilos.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 <body>
@@ -45,49 +45,49 @@
     </div>
   </aside>
 
-  <main class="ciudad">
-  <section class="formulario-ciudad">
+  <main class="estilo">
+  <section class="formulario-estilo">
 
     <!-- Formulario REGISTRAR -->
-    <form id="formRegistrarCiudad">
-      <h2>Registrar Ciudad</h2>
-      <label for="nombreCiudad">Nombre de la Ciudad</label>
-      <input type="text" id="nombreCiudad" name="nombreCiudad" required placeholder="Ej: Bogotá" />
-      <button type="submit">Registrar Ciudad</button>
+    <form id="formRegistrarEstilo">
+      <h2>Registrar Estilo</h2>
+      <label for="nombreEstilo">Nombre del estilo</label>
+      <input type="text" id="nombreEstilo" name="nombreEstilo" required placeholder="Ej: Bota" />
+      <button type="submit">Registrar Estilo</button>
     </form>
 
     <!-- Formulario EDITAR -->
-    <form id="formEditarCiudad">
-  <h2>Editar Ciudad</h2>
-  <label for="ciudadesEditar">Seleccionar Ciudad</label>
-  <select id="ciudadesEditar">
-    <option value="">-- Selecciona una ciudad --</option>
+    <form id="formEditarEstilo">
+  <h2>Editar Estilo</h2>
+  <label for="estilosEditar">Seleccionar Estilo</label>
+  <select id="estilosEditar">
+    <option value="">-- Selecciona un estilo --</option>
   </select>
 
-  <label for="nuevoNombreCiudad">Nuevo nombre</label>
-  <input type="text" id="nuevoNombreCiudad" placeholder="Nuevo nombre..." />
+  <label for="nuevoNombreEstilo">Nuevo nombre de estilo</label>
+  <input type="text" id="nuevoNombreEstilo" placeholder="Nuevo nombre..." />
 
-  <button type="button" id="btnEditar">Editar Ciudad</button>
+  <button type="button" id="btnEditar">Editar Estilo</button>
 </form>
 
 
     <!-- Formulario ELIMINAR -->
-    <form id="formEliminarCiudad">
-      <h2>Eliminar Ciudad</h2>
-      <label for="ciudadesEliminar">Seleccionar Ciudad</label>
-      <select id="ciudadesEliminar">
-        <option value="">-- Selecciona una ciudad --</option>
+    <form id="formEliminarEstilo">
+      <h2>Eliminar Estilo</h2>
+      <label for="estilosEliminar">Seleccionar Estilo</label>
+      <select id="estilosEliminar">
+        <option value="">-- Selecciona un Estilo --</option>
       </select>
-      <button type="button" id="btnEliminar">Eliminar Ciudad</button>
+      <button type="button" id="btnEliminar">Eliminar Estilo</button>
     </form>
 
   </section>
 
-  <div id="mensajeCiudad"></div>
+  <div id="mensajeEstilo"></div>
 </main>
 
 
   
-  <script type="module" src="../js/registrarCiudad.js"></script>
+  <script type="module" src="../js/registrarEstilo.js"></script>
 </body>
 </html>
