@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CATALOGO CLASSIC PRESTIGE MEN</title>
+  <link rel="stylesheet" href="../css/registrarEmpresa.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+  <header class="encabezado__pagina_catalogo">
+    <div class="logo">
+      <img src="../img/Group 10.png" alt="Classic Prestige MEN">
+    </div>
+    <div class="buscador">
+      <a href="#" class="menuDesplegable"><i class="ri-menu-line"></i></a>
+      <div class="menu-desplegable" id="menuDesplegable">
+        <ul>
+          <li><a href="./catalogo.html">Catalogo principal...</a></li>
+          <li><a href="./estilos.html">Buscar por estilos...</a></li>
+          <li><a href="./tallas.html">Buscar por tallas...</a></li>
+        </ul>
+      </div>
+      <input type="text" placeholder="Buscar calzado...">
+      <i class="ri-search-line"></i>
+    </div> 
+    <div class="cuenta">
+      <a href="./consultarPedidos.html">
+        <i class="ri-shopping-cart-line"></i>
+        <span>Pedido</span>
+      </a>
+      <a href="#">
+        <i class="ri-user-fill"></i> 
+        <span>Cuenta</span>
+      </a> 
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="sidebar-items">
+      <a href="../html/catalogo.html" class="sidebar-item">Catalogo</a>
+      <a href="../html/estilos.html" class="sidebar-item">Estilos</a>
+      <a href="../html/tallas.html" class="sidebar-item">Tallas</a>
+      <a href="../html/consultarPedidos.html" class="sidebar-item">Consultar pedido</a>
+    </div>
+  </aside>
+
+  <main class="empresa">
+  <h1 style="text-align:center;">Gestión de Empresas</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="mostrarFormulario('registrar')">Registrar</button>
+    <button class="tab-btn" onclick="mostrarFormulario('editar')">Editar</button>
+    <button class="tab-btn" onclick="mostrarFormulario('eliminar')">Eliminar</button>
+  </div>
+
+  <!-- Formulario REGISTRAR -->
+  <section id="form-registrar" class="formulario-empresa active">
+    <form id="formRegistrarEmpresa">
+      <h2>Registrar Empresa</h2>
+      <label for="nombreEmpresa">Nombre</label>
+      <input type="text" id="nombreEmpresa" required>
+
+      <label for="direccionEmpresa">Dirección</label>
+      <input type="text" id="direccionEmpresa" required>
+
+      <label for="telefonoEmpresa">Teléfono</label>
+      <input type="text" id="telefonoEmpresa" required>
+
+      <label for="correoEmpresa">Correo</label>
+      <input type="email" id="correoEmpresa" required>
+
+      <button type="submit">Registrar</button>
+    </form>
+  </section>
+
+  <!-- Formulario EDITAR -->
+  <section id="form-editar" class="formulario-empresa">
+    <form id="formEditarEmpresa">
+      <h2>Editar Empresa</h2>
+
+      <label for="empresaEditar">Seleccionar empresa</label>
+      <select id="empresaEditar"></select>
+
+      <label for="nuevoNombreEmpresa">Nuevo nombre</label>
+      <input type="text" id="nuevoNombreEmpresa">
+
+      <label for="nuevaDireccionEmpresa">Nueva dirección</label>
+      <input type="text" id="nuevaDireccionEmpresa">
+
+      <label for="nuevoTelefonoEmpresa">Nuevo teléfono</label>
+      <input type="text" id="nuevoTelefonoEmpresa">
+
+      <label for="nuevoCorreoEmpresa">Nuevo correo</label>
+      <input type="email" id="nuevoCorreoEmpresa">
+
+      <button type="button" id="btnEditarEmpresa">Editar</button>
+    </form>
+  </section>
+
+  <!-- Formulario ELIMINAR -->
+  <section id="form-eliminar" class="formulario-empresa">
+    <form id="formEliminarEmpresa">
+      <h2>Eliminar Empresa</h2>
+      <label for="empresaEliminar">Seleccionar empresa</label>
+      <select id="empresaEliminar"></select>
+
+      <button type="button" id="btnEliminarEmpresa">Eliminar</button>
+    </form>
+  </section>
+
+  <div id="mensajeEmpresa"></div>
+</main>
+
+
+  
+  <script  src="../js/registrarEmpresa.js"></script>
+</body>
+</html>

@@ -59,33 +59,27 @@ body{
   font-size: 20px;
   cursor: pointer;
 }
-
-.buscador .ri-close-line{
-  position: absolute;
-  right: 40px; /* posición del icono dentro del input */
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: red;
-  font-weight: bold;
-}
 .buscador .ri-search-line:hover{
-  filter: brightness(1.4);  
+  filter: brightness(1.4);
+  
 }
 .buscador input::placeholder{
-  color: #7b7b7b;
+  color: #d8d8d8;
 }
 .cuenta{
   padding: 8px;
+  display: flex;
+  gap: 30px;
 
 }
-.cuenta:hover{
+.cuenta a:hover{
   background-color: #C7A589;
   padding: 8px;
   border-radius: 10px;
 }
 
 .cuenta a{
+  padding: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -108,7 +102,6 @@ body{
   background-color: #C7A589;
   display: flex;
   padding-top: 30px;
-  min-height: 89vh;
   max-height: 89vh;
   border-radius: 0 20px 20px 0;
   position: sticky;
@@ -133,63 +126,6 @@ body{
   color: #8B5E3C;
   font-weight: bold;
   font-size: 22px;
-}
-
-/*BUSCADOR*/
-.buscador-catalogo{
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
-
-.select-tallas{
-  text-align: left;
-  background-color: #C7A589;
-  border: none;
-  padding: 10px 40px;
-  border-radius: 15px;
-  font-size: 14px;
-
-}
-
-
-/*zapatos*/
-.catalogo {
-  margin-top: 20px;
-  grid-area: content;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 40px;
-  justify-items: center;
-  
-}
-.producto {
-  background: #8B5E3C;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  width: 250px;
-
-}
-
-.producto img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-.producto h3 {
-  margin: 10px 0 5px;
-  font-size: 16px;
-}
-
-.producto p {
-  color: #333;
-  font-weight: bold;
 }
 
 /*--------------------------------------*/
@@ -236,4 +172,98 @@ body{
 
 .menu-desplegable ul li a:hover {
   background-color: #f0f0f0;
+}
+
+/*----------------------------------------*/
+.input-contenedor {
+  display: none; /* Oculto por defecto */
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-contenedor input {
+  padding: 5px 10px;
+  font-size: 16px;
+  width: 80px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.input-contenedor i {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/*EMPRESAAAAAAA*/
+
+main.empresa {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 0.7rem;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.tabs button.active {
+  background-color: #333;
+  color: white;
+}
+
+.formulario-empresa {
+  display: none;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.formulario-empresa.active {
+  display: block;
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+form button {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#mensajeEmpresa {
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
 }
