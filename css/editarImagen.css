@@ -198,43 +198,64 @@ body{
   color: #333;
 }
 
-/*IMAGEEEEEEN*/
-main.imagen {
-  max-width: 400px;
-  margin: 40px auto;
-  font-family: Arial, sans-serif;
+/*EDITAR IMAGEEEEEEN*/
+.editarImagen {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+.editarImagen h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
 }
 
-input[type="text"],
-input[type="file"] {
-  padding: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.editarImagen label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #444;
 }
 
-button {
-  margin-top: 10px;
+.editarImagen input[type="text"] {
+  width: 100%;
   padding: 10px;
-  background-color: #222;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.editarImagen img {
+  display: block;
+  margin: 10px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.editarImagen button {
+  background-color: #3498db;
   color: white;
   border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-size: 15px;
 }
 
-button:hover {
-  background-color: #555;
+.editarImagen button[type="submit"] {
+  background-color: #2ecc71;
 }
 
-#respuesta {
-  margin-top: 20px;
-  font-weight: 600;
+.editarImagen button:hover {
+  opacity: 0.9;
+}
+
+.editarImagen a button {
+  background-color: #e74c3c;
+  text-decoration: none;
 }

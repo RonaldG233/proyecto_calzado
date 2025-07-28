@@ -46,20 +46,21 @@
   </aside>
 
 <main class="producto">
-  <section class="formulario-producto">
-    <h2>Registrar Producto</h2>
-    <form id="formRegistrarProducto" enctype="multipart/form-data">
+  <div class="contenedor">
+    <h1>Registrar Producto</h1>
+    <form id="formularioProducto">
       <label for="nombreProducto">Nombre del producto</label>
-      <input type="text" id="nombreProducto" required placeholder="Ej: Zapato Oxford">
+      <input type="text" id="nombreProducto" required>
 
       <label for="descripcionProducto">Descripción</label>
-      <textarea id="descripcionProducto" rows="3" required placeholder="Ej: Zapato elegante de cuero"></textarea>
+      <textarea id="descripcionProducto" required></textarea>
 
       <label for="precioProducto">Precio</label>
-      <input type="number" id="precioProducto" required step="0.01" placeholder="Ej: 250.00">
+      <input type="number" id="precioProducto" required>
 
-      <label for="imagenProducto">Imagen del producto</label>
-      <input type="file" id="imagenProducto" accept="image/*" required>
+      <label for="cantidadProducto">Cantidad</label>
+<input type="number" id="cantidadProducto" required min="1">
+
 
       <label for="estiloProducto">Estilo</label>
       <select id="estiloProducto" required></select>
@@ -70,16 +71,22 @@
       <label for="empresaProducto">Empresa</label>
       <select id="empresaProducto" required></select>
 
-      <button type="submit">Registrar producto</button>
-    </form>
+      <label for="imagenProducto">Imagen</label>
+<select id="imagenProducto">
+  <option value="">-- Selecciona una imagen --</option>
+</select>
+<br>
+<img id="vistaPrevia" style="display:none; max-width: 200px; margin-top: 10px;" />
 
-    <div id="mensajeProducto"></div>
-  </section>
+
+
+
+      <button type="submit">Registrar Producto</button>
+    </form>
+    <p id="mensajeProducto"></p>
+  </div>
 </main>
 
-
-
-  
-  <script  src="../js/registrarProducto.js"></script>
+  <script type="module" src="../js/registrarProducto.js"></script>
 </body>
 </html>

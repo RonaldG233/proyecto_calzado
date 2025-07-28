@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar Método de Pago</title>
+  <link rel="stylesheet" href="../css/registrarPago.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="encabezado__pagina_catalogo">
+    <div class="logo">
+      <img src="../img/Group 10.png" alt="Classic Prestige MEN" />
+    </div>
+    <div class="buscador">
+      <a href="#" class="menuDesplegable"><i class="ri-menu-line"></i></a>
+      <div class="menu-desplegable" id="menuDesplegable">
+        <ul>
+          <li><a href="./catalogo.html">Catálogo principal</a></li>
+          <li><a href="./estilos.html">Buscar por estilos</a></li>
+          <li><a href="./tallas.html">Buscar por tallas</a></li>
+        </ul>
+      </div>
+      <input type="text" placeholder="Buscar calzado..." />
+      <i class="ri-search-line"></i>
+    </div>
+    <div class="cuenta">
+      <a href="./consultarPedidos.html">
+        <i class="ri-shopping-cart-line"></i>
+        <span>Pedido</span>
+      </a>
+      <a href="#">
+        <i class="ri-user-fill"></i>
+        <span>Cuenta</span>
+      </a>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="sidebar-items">
+      <a href="./catalogo.html" class="sidebar-item">Catálogo</a>
+      <a href="./estilos.html" class="sidebar-item">Estilos</a>
+      <a href="./tallas.html" class="sidebar-item">Tallas</a>
+      <a href="./consultarPedidos.html" class="sidebar-item">Consultar pedido</a>
+    </div>
+  </aside>
+
+  <main class="pago">
+    <section class="formulario-pago">
+
+      <!-- Formulario REGISTRAR -->
+      <form id="formRegistrarPago">
+        <h2>Registrar Método de Pago</h2>
+        <label for="nombrePago">Nombre del método</label>
+        <input type="text" id="nombrePago" name="nombrePago" required placeholder="Ej: Tarjeta de crédito" />
+        <button type="submit">Registrar</button>
+      </form>
+
+      <!-- Formulario EDITAR -->
+      <form id="formEditarPago">
+        <h2>Editar Método de Pago</h2>
+        <label for="pagoEditar">Seleccionar método</label>
+        <select id="pagoEditar">
+          <option value="">-- Selecciona un método --</option>
+        </select>
+
+        <label for="nuevoNombrePago">Nuevo nombre</label>
+        <input type="text" id="nuevoNombrePago" placeholder="Nuevo nombre..." />
+
+        <button type="button" id="btnEditar">Editar</button>
+      </form>
+
+      <!-- Formulario ELIMINAR -->
+      <form id="formEliminarPago">
+        <h2>Eliminar Método de Pago</h2>
+        <label for="pagoEliminar">Seleccionar método</label>
+        <select id="pagoEliminar">
+          <option value="">-- Selecciona un método --</option>
+        </select>
+        <button type="button" id="btnEliminar">Eliminar</button>
+      </form>
+
+    </section>
+
+    <div id="mensajePago"></div>
+  </main>
+
+  <script type="module" src="../js/registrarPago.js"></script>
+</body>
+</html>

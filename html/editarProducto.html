@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CATALOGO CLASSIC PRESTIGE MEN</title>
-  <link rel="stylesheet" href="../css/registrarImagen.css">
+  <link rel="stylesheet" href="../css/editarProducto.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 <body>
@@ -45,42 +45,41 @@
     </div>
   </aside>
 
-<main class="imagen">
-  <h2>Subir Imagen</h2>
-  <form id="formularioImagen" enctype="multipart/form-data">
-    <label for="nombreImagen">Nombre de la imagen (máx 50 caracteres):</label><br />
-    <input 
-      type="text" 
-      id="nombreImagen" 
-      name="nombreImagen" 
-      maxlength="50" 
-      placeholder="Ingrese un nombre para la imagen" 
-      required
-    /><br /><br />
+<main class="editarProducto">
+  <h2>Editar Producto</h2>
+  <form id="formEditar">
+    <input type="text" id="nombre" placeholder="Nombre" required />
+    <textarea id="descripcion" placeholder="Descripción" required></textarea>
+    <input type="number" step="0.01" id="precio" placeholder="Precio" required />
+    <input type="number" id="cantidad" placeholder="Cantidad" required />
 
-    <label for="archivo">Seleccione la imagen:</label><br />
-    <input 
-      type="file" 
-      id="archivo" 
-      name="archivo" 
-      accept="image/*" 
-      required
-    /><br /><br />
+    <select id="estiloProducto" required>
+      <option value="">Selecciona un estilo</option>
+    </select>
 
-    <button type="submit">Subir Imagen</button>
-    <a href="./tablaImagenes.html">
-  <button type="button">Ver imágenes</button>
-</a>
+    <select id="tallaProducto" required>
+      <option value="">Selecciona una talla</option>
+    </select>
 
+    <select id="empresaProducto" required>
+      <option value="">Selecciona una empresa</option>
+    </select>
+
+    <select id="imagenProducto" required>
+      <option value="">Selecciona una imagen</option>
+    </select>
+
+    <img id="vistaPrevia" src="" alt="Vista previa imagen" style="display:none; max-width: 150px; margin-top: 10px; border-radius: 6px;" />
+
+    <button type="submit">Guardar Cambios</button>
   </form>
-
-  <div id="respuesta"></div>
+  <p id="mensajeProducto"></p>
 </main>
 
 
 
 
   
-  <script type="module" src="../js/registrarImagen.js"></script>
+  <script type="module" src="../js/editarProducto.js"></script> 
 </body>
 </html>

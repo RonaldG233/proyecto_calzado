@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CATALOGO CLASSIC PRESTIGE MEN</title>
-  <link rel="stylesheet" href="../css/registrarImagen.css">
+  <link rel="stylesheet" href="../css/registrarPedido.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 <body>
@@ -45,42 +45,27 @@
     </div>
   </aside>
 
-<main class="imagen">
-  <h2>Subir Imagen</h2>
-  <form id="formularioImagen" enctype="multipart/form-data">
-    <label for="nombreImagen">Nombre de la imagen (máx 50 caracteres):</label><br />
-    <input 
-      type="text" 
-      id="nombreImagen" 
-      name="nombreImagen" 
-      maxlength="50" 
-      placeholder="Ingrese un nombre para la imagen" 
-      required
-    /><br /><br />
+<main class="pedido">
+    <form id="formularioPedido" class="formulario-pedido">
+  <h2>Registrar Pedido</h2>
 
-    <label for="archivo">Seleccione la imagen:</label><br />
-    <input 
-      type="file" 
-      id="archivo" 
-      name="archivo" 
-      accept="image/*" 
-      required
-    /><br /><br />
+  <label for="id_usuario">ID Usuario:</label>
+  <input type="number" id="id_usuario" name="id_usuario" required>
 
-    <button type="submit">Subir Imagen</button>
-    <a href="./tablaImagenes.html">
-  <button type="button">Ver imágenes</button>
-</a>
+  <label for="fecha_hora">Fecha y hora:</label>
+  <input type="datetime-local" id="fecha_hora" name="fecha_hora" required>
 
-  </form>
+  <label for="id_pago">ID Pago:</label>
+  <input type="number" id="id_pago" name="id_pago" required>
 
-  <div id="respuesta"></div>
+  <label for="valor_pago_total">Valor Total:</label>
+  <input type="number" step="0.01" id="valor_pago_total" name="valor_pago_total" required>
+
+  <button type="submit">Registrar Pedido</button>
+</form>
+
 </main>
 
-
-
-
-  
-  <script type="module" src="../js/registrarImagen.js"></script>
+  <script type="module" src="../js/registrarPedido.js"></script>
 </body>
 </html>

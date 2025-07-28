@@ -198,43 +198,26 @@ body{
   color: #333;
 }
 
-/*IMAGEEEEEEN*/
-main.imagen {
-  max-width: 400px;
-  margin: 40px auto;
+/*TABLAAAAAAAAA*/
+table {
+  width: 90%;
+  margin: 30px auto;
+  border-collapse: collapse;
   font-family: Arial, sans-serif;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input[type="text"],
-input[type="file"] {
-  padding: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #222;
+thead {
+  background-color: #333;
   color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #555;
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
 }
 
-#respuesta {
-  margin-top: 20px;
-  font-weight: 600;
+img {
+  object-fit: cover;
+  border-radius: 10px;
 }

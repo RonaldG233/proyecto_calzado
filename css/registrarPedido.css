@@ -198,43 +198,47 @@ body{
   color: #333;
 }
 
-/*IMAGEEEEEEN*/
-main.imagen {
-  max-width: 400px;
+/*FORMUILARIOOO PEDIDDOOOOO*/
+.formulario-pedido {
+  max-width: 500px;
   margin: 40px auto;
-  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+.formulario-pedido h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
 }
 
-input[type="text"],
-input[type="file"] {
-  padding: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
+.formulario-pedido label {
+  display: block;
   margin-top: 10px;
+  font-weight: bold;
+}
+
+.formulario-pedido input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.formulario-pedido button {
+  margin-top: 20px;
+  width: 100%;
   padding: 10px;
-  background-color: #222;
+  background-color: #000;
   color: white;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #555;
-}
-
-#respuesta {
-  margin-top: 20px;
-  font-weight: 600;
+.formulario-pedido button:hover {
+  background-color: #333;
 }

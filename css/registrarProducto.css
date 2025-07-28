@@ -199,77 +199,50 @@ body{
 }
 
 /*PRODCTOOOOOO*/
-main.producto {
-  padding: 3rem;
-  margin-left: 220px; /* para no superponerse con el sidebar */
-  background-color: #f9f9f9;
-  min-height: calc(100vh - 100px); /* ajustar a pantalla sin header */
-}
-
-.formulario-producto {
-  background-color: #ffffff;
-  padding: 2rem 2.5rem;
+.contenedor {
   max-width: 600px;
-  margin: 0 auto;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
 
-.formulario-producto h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+h1 {
   text-align: center;
   color: #333;
 }
 
-.formulario-producto label {
-  display: block;
-  font-weight: bold;
-  margin-top: 1rem;
-  margin-bottom: 0.3rem;
-  color: #444;
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-.formulario-producto input,
-.formulario-producto textarea,
-.formulario-producto select {
-  width: 100%;
-  padding: 0.6rem 0.8rem;
+label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input, textarea, select, button {
+  margin-top: 5px;
+  padding: 8px;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #fdfdfd;
-  transition: border-color 0.3s;
 }
 
-.formulario-producto input:focus,
-.formulario-producto textarea:focus,
-.formulario-producto select:focus {
-  border-color: #666;
-  outline: none;
-}
-
-.formulario-producto button {
-  margin-top: 1.8rem;
-  width: 100%;
-  padding: 0.8rem;
-  font-size: 1rem;
-  font-weight: bold;
-  background-color: #222;
+button {
+  background-color: #007BFF;
   color: white;
-  border: none;
-  border-radius: 10px;
+  margin-top: 15px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.formulario-producto button:hover {
-  background-color: #444;
+button:hover {
+  background-color: #0056b3;
 }
 
-#mensajeProducto {
-  margin-top: 1rem;
-  font-weight: bold;
+#mensaje {
+  margin-top: 10px;
   text-align: center;
-  font-size: 1rem;
 }
