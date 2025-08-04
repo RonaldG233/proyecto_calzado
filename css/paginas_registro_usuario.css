@@ -90,17 +90,18 @@ body{
   
 } */
 .boton{
+ 
   display: flex;
   width: 100%;
   height: 95px;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
   border-radius: 0px 0px 15px 15px;
   flex-direction: column;
   gap: 10px;
 }
 .boton_registrarse{
+ margin-top: 240px;
   background-color: #8B5E3C;
   color: #fff;
   padding: 15px 70px;

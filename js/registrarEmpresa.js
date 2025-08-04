@@ -1,109 +1,212 @@
-// ✅ FUNCIÓN GLOBAL PARA MANEJAR LAS PESTAÑAS
-function mostrarFormulario(id) {
-  document.querySelectorAll(".formulario-empresa").forEach(f => f.classList.remove("active"));
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+import { componentes } from "./header_sidebar.js";
 
-  document.getElementById("form-" + id).classList.add("active");
-  const index = ["registrar", "editar", "eliminar"].indexOf(id);
-  document.querySelectorAll(".tab-btn")[index].classList.add("active");
-}
-
-// ✅ LÓGICA PRINCIPAL
 document.addEventListener("DOMContentLoaded", () => {
+  componentes();
+
+  const formRegistrar = document.getElementById("formRegistrarEmpresa");
+  const formEditar = document.getElementById("formEditarEmpresa");
+  const formEliminar = document.getElementById("formEliminarEmpresa");
+
+  const inputNombre = document.getElementById("nombreEmpresa");
+  const inputDireccion = document.getElementById("direccionEmpresa");
+  const inputTelefono = document.getElementById("telefonoEmpresa");
+  const inputCorreo = document.getElementById("correoEmpresa");
+
+  const selectEditar = document.getElementById("empresaEditar");
+  const selectEliminar = document.getElementById("empresaEliminar");
+
+  const btnEditar = document.getElementById("btnEditarEmpresa");
+  const btnEliminar = document.getElementById("btnEliminarEmpresa");
+
   const mensaje = document.getElementById("mensajeEmpresa");
 
-  const mostrarMensaje = (texto, color = "green") => {
-    mensaje.textContent = texto;
-    mensaje.style.color = color;
-  };
+  const inputNuevoNombre = document.getElementById("nuevoNombreEmpresa");
+  const inputNuevaDireccion = document.getElementById("nuevaDireccionEmpresa");
+  const inputNuevoTelefono = document.getElementById("nuevoTelefonoEmpresa");
+  const inputNuevoCorreo = document.getElementById("nuevoCorreoEmpresa");
+
+  const infoEliminar = document.createElement("div");
+  infoEliminar.style.marginTop = "1rem";
+  infoEliminar.style.fontSize = "0.9rem";
+  formEliminar.appendChild(infoEliminar);
+
+  let listaEmpresas = [];
+
+  function mostrarMensaje(titulo, texto, icono = "success") {
+    Swal.fire({
+      title: titulo,
+      text: texto,
+      icon: icono,
+      confirmButtonText: "Aceptar",
+    });
+  }
 
   async function cargarEmpresas() {
     try {
       const res = await fetch("http://localhost:8080/proyectoCalzado/api/empresas");
-      const data = await res.json();
+      const empresas = await res.json();
+      listaEmpresas = empresas;
 
-      const editarSelect = document.getElementById("empresaEditar");
-      const eliminarSelect = document.getElementById("empresaEliminar");
-
-      [editarSelect, eliminarSelect].forEach(select => {
+      [selectEditar, selectEliminar].forEach((select) => {
         select.innerHTML = '<option value="">-- Seleccione una empresa --</option>';
-        data.forEach(e => {
+        empresas.forEach((empresa) => {
           const option = document.createElement("option");
-          option.value = e.idEmpresa;
-          option.textContent = e.nombre_empresa;
+          option.value = empresa.idEmpresa;
+          option.textContent = empresa.nombre_empresa;
           select.appendChild(option);
         });
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error al cargar empresas:", error);
+      mostrarMensaje("Error", "No se pudieron cargar las empresas.", "error");
     }
   }
 
-  cargarEmpresas();
-
-  // REGISTRAR EMPRESA
-  document.getElementById("formRegistrarEmpresa").addEventListener("submit", async (e) => {
+  formRegistrar.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const empresa = {
-      nombre_empresa: document.getElementById("nombreEmpresa").value.trim(),
-      direccion_empresa: document.getElementById("direccionEmpresa").value.trim(),
-      telefono_empresa: document.getElementById("telefonoEmpresa").value.trim(),
-      correo_empresa: document.getElementById("correoEmpresa").value.trim(),
-    };
+    const nombre = inputNombre.value.trim();
+    const direccion = inputDireccion.value.trim();
+    const telefono = inputTelefono.value.trim();
+    const correo = inputCorreo.value.trim();
+
+    if (!nombre || !direccion || !telefono || !correo) {
+      mostrarMensaje("Campos incompletos", "Todos los campos son obligatorios.", "warning");
+      return;
+    }
+
+    // Validar nombre duplicado al registrar
+    const nombreExiste = listaEmpresas.some(e => e.nombre_empresa.toLowerCase() === nombre.toLowerCase());
+    if (nombreExiste) {
+      mostrarMensaje("Nombre duplicado", "Ya existe una empresa con ese nombre.", "warning");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:8080/proyectoCalzado/api/empresas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(empresa),
+        body: JSON.stringify({
+          nombre_empresa: nombre,
+          direccion_empresa: direccion,
+          telefono_empresa: telefono,
+          correo_empresa: correo,
+        }),
       });
 
       if (!res.ok) throw new Error();
 
-      mostrarMensaje("Empresa registrada correctamente");
-      e.target.reset();
+      mostrarMensaje("¡Éxito!", "Empresa registrada correctamente.", "success");
+      formRegistrar.reset();
       cargarEmpresas();
-    } catch {
-      mostrarMensaje("Error al registrar empresa", "red");
+    } catch (error) {
+      mostrarMensaje("Error", "Error al registrar la empresa.", "error");
     }
   });
 
-  // EDITAR EMPRESA
-  document.getElementById("btnEditarEmpresa").addEventListener("click", async () => {
-    const id = document.getElementById("empresaEditar").value;
-    if (!id) return mostrarMensaje("Seleccione una empresa a editar", "red");
+  selectEditar.addEventListener("change", () => {
+    const id = selectEditar.value;
+    const empresa = listaEmpresas.find(e => e.idEmpresa == id);
 
-    const nueva = {
-      nombre_empresa: document.getElementById("nuevoNombreEmpresa").value.trim(),
-      direccion_empresa: document.getElementById("nuevaDireccionEmpresa").value.trim(),
-      telefono_empresa: document.getElementById("nuevoTelefonoEmpresa").value.trim(),
-      correo_empresa: document.getElementById("nuevoCorreoEmpresa").value.trim(),
+    if (empresa) {
+      inputNuevoNombre.value = empresa.nombre_empresa;
+      inputNuevaDireccion.value = empresa.direccion_empresa;
+      inputNuevoTelefono.value = empresa.telefono_empresa;
+      inputNuevoCorreo.value = empresa.correo_empresa;
+    } else {
+      inputNuevoNombre.value = "";
+      inputNuevaDireccion.value = "";
+      inputNuevoTelefono.value = "";
+      inputNuevoCorreo.value = "";
+    }
+  });
+
+  btnEditar.addEventListener("click", async () => {
+    const id = selectEditar.value;
+    if (!id) {
+      mostrarMensaje("Seleccione empresa", "Seleccione una empresa a editar.", "warning");
+      return;
+    }
+
+    const nuevo = {
+      nombre_empresa: inputNuevoNombre.value.trim(),
+      direccion_empresa: inputNuevaDireccion.value.trim(),
+      telefono_empresa: inputNuevoTelefono.value.trim(),
+      correo_empresa: inputNuevoCorreo.value.trim(),
     };
+
+    if (!nuevo.nombre_empresa || !nuevo.direccion_empresa || !nuevo.telefono_empresa || !nuevo.correo_empresa) {
+      mostrarMensaje("Campos incompletos", "Todos los campos de edición son obligatorios.", "warning");
+      return;
+    }
+
+    // Validar nombre duplicado al editar (excepto la misma empresa)
+    const nombreExisteEdit = listaEmpresas.some(e =>
+      e.nombre_empresa.toLowerCase() === nuevo.nombre_empresa.toLowerCase() &&
+      e.idEmpresa != id
+    );
+    if (nombreExisteEdit) {
+      mostrarMensaje("Nombre duplicado", "Ya existe otra empresa con ese nombre.", "warning");
+      return;
+    }
 
     try {
       const res = await fetch(`http://localhost:8080/proyectoCalzado/api/empresas/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nueva),
+        body: JSON.stringify(nuevo),
       });
 
       if (!res.ok) throw new Error();
 
-      mostrarMensaje("Empresa actualizada correctamente");
+      mostrarMensaje("¡Éxito!", "Empresa actualizada correctamente.", "success");
       cargarEmpresas();
-    } catch {
-      mostrarMensaje("Error al actualizar empresa", "red");
+
+      // Limpiar campos y selects
+      selectEditar.value = "";
+      inputNuevoNombre.value = "";
+      inputNuevaDireccion.value = "";
+      inputNuevoTelefono.value = "";
+      inputNuevoCorreo.value = "";
+
+    } catch (error) {
+      mostrarMensaje("Error", "Error al actualizar la empresa.", "error");
     }
   });
 
-  // ELIMINAR EMPRESA
-  document.getElementById("btnEliminarEmpresa").addEventListener("click", async () => {
-    const id = document.getElementById("empresaEliminar").value;
-    if (!id) return mostrarMensaje("Seleccione una empresa a eliminar", "red");
+  selectEliminar.addEventListener("change", () => {
+    const id = selectEliminar.value;
+    const empresa = listaEmpresas.find(e => e.idEmpresa == id);
 
-    const confirmar = confirm("¿Estás seguro de eliminar esta empresa?");
-    if (!confirmar) return;
+    if (empresa) {
+      infoEliminar.innerHTML = `
+        <strong>Nombre:</strong> ${empresa.nombre_empresa}<br>
+        <strong>Dirección:</strong> ${empresa.direccion_empresa}<br>
+        <strong>Teléfono:</strong> ${empresa.telefono_empresa}<br>
+        <strong>Correo:</strong> ${empresa.correo_empresa}
+      `;
+    } else {
+      infoEliminar.innerHTML = "";
+    }
+  });
+
+  btnEliminar.addEventListener("click", async () => {
+    const id = selectEliminar.value;
+    if (!id) {
+      mostrarMensaje("Seleccione empresa", "Seleccione una empresa a eliminar.", "warning");
+      return;
+    }
+
+    const confirmacion = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará la empresa seleccionada.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!confirmacion.isConfirmed) return;
 
     try {
       const res = await fetch(`http://localhost:8080/proyectoCalzado/api/empresas/${id}`, {
@@ -112,10 +215,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) throw new Error();
 
-      mostrarMensaje("Empresa eliminada correctamente");
+      mostrarMensaje("¡Éxito!", "Empresa eliminada correctamente.", "success");
+      infoEliminar.innerHTML = "";
       cargarEmpresas();
-    } catch {
-      mostrarMensaje("Error al eliminar empresa", "red");
+
+      // Limpiar selects
+      selectEliminar.value = "";
+
+    } catch (error) {
+      mostrarMensaje("Error", "Error al eliminar la empresa.", "error");
     }
   });
+
+  cargarEmpresas();
 });

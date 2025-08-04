@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0 2rem;
+}
+
+.pedidos {
+  padding: 2rem;
+}
+
+.pedido {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.pedido h3 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.detalles-pedido {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.producto-pedido {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f1f1f1;
+  padding: 1rem;
+  border-radius: 10px;
+  flex: 1 1 300px;
+}
+
+.producto-pedido img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}

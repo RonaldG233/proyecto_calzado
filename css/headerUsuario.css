@@ -1,0 +1,90 @@
+.encabezado__pagina_catalogo{
+  grid-area: header;
+  background-color: #8B5E3C;
+  position: sticky;
+  height: 8vh;
+  z-index: 1000;
+  top: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 40px;
+  gap: 25%  ;
+}
+.logo img {
+  height: 60px;
+  
+}
+.buscador {
+  position: relative;
+  width: 550px;
+}
+.buscador input {
+  width: 100%;
+  padding: 15px 40px;
+  border-radius: 15px;
+  border: none;
+  background-color: #F5F5DC;
+  color: #000;
+}
+.buscador .ri-menu-line{
+  position: absolute;
+  left: 10px; /* posición del icono dentro del input */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #8B5E3C;
+}
+.buscador .ri-search-line{
+  position: absolute;
+  right: 10px; /* posición del icono dentro del input */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8B5E3C;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.buscador .ri-close-line{
+  position: absolute;
+  right: 40px; /* posición del icono dentro del input */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: red;
+  font-weight: bold;
+}
+.buscador .ri-search-line:hover{
+  filter: brightness(1.4);  
+}
+.buscador input::placeholder{
+  color: #7b7b7b;
+}
+.cuenta{
+  padding: 8px;
+
+}
+.cuenta:hover{
+  background-color: #C7A589;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.cuenta a{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #F5F5DC;
+  text-decoration: none;
+  flex-direction: column;
+}
+.cuenta i {
+  font-size: 28px;
+  
+}
+.cuenta span{
+  font-size: 14px;
+}
+
+

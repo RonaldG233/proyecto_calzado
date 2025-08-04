@@ -1,16 +1,23 @@
+import { componentes } from "./header_sidebar.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  componentes();
   const estiloSelect = document.getElementById("estiloProducto");
   const tallaSelect = document.getElementById("tallaProducto");
   const empresaSelect = document.getElementById("empresaProducto");
   const imagenSelect = document.getElementById("imagenProducto");
   const vistaPrevia = document.getElementById("vistaPrevia");
-  const mensaje = document.getElementById("mensajeProducto");
 
-  let imagenes = []; // 💥 AQUI se declara globalmente
+  let imagenes = [];
 
-  const mostrarMensaje = (texto, color = "green") => {
-    mensaje.textContent = texto;
-    mensaje.style.color = color;
+  // ✅ Función de alertas con SweetAlert2
+  const mostrarAlerta = (titulo, texto, icono = "success") => {
+    Swal.fire({
+      title: titulo,
+      text: texto,
+      icon: icono,
+      confirmButtonText: "Aceptar"
+    });
   };
 
   async function cargarOpciones() {
@@ -22,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch("http://localhost:8080/proyectoCalzado/api/imagenes").then(r => r.json())
       ]);
 
-      imagenes = imgs; // 💥 ahora sí asignamos globalmente
+      imagenes = imgs;
 
       estilos.forEach(e => {
         const option = document.createElement("option");
@@ -47,13 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       imagenes.forEach(img => {
         const option = document.createElement("option");
-        option.value = img.id_imagen; // ID como valor
+        option.value = img.id_imagen;
         option.textContent = img.nombre;
         imagenSelect.appendChild(option);
       });
 
     } catch (err) {
       console.error("Error cargando selects:", err);
+      mostrarAlerta("Error", "No se pudieron cargar los datos", "error");
     }
   }
 
@@ -73,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   document.getElementById("formularioProducto").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -81,13 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const descripcion = document.getElementById("descripcionProducto").value.trim();
     const precio = parseFloat(document.getElementById("precioProducto").value);
     const cantidad = parseInt(document.getElementById("cantidadProducto").value);
-    const id_imagen =parseInt(imagenSelect.value);
+    const id_imagen = parseInt(imagenSelect.value);
     const cod_estilo = parseInt(estiloSelect.value);
     const cod_talla = parseInt(tallaSelect.value);
     const id_empresa = parseInt(empresaSelect.value);
 
-    if (!id_imagen) {
-      return mostrarMensaje("Debe seleccionar una imagen", "red");
+    if (!nombre || !descripcion || isNaN(precio) || isNaN(cantidad) || isNaN(id_imagen) || isNaN(cod_estilo) || isNaN(cod_talla) || isNaN(id_empresa)) {
+      return mostrarAlerta("Campos incompletos", "Todos los campos son obligatorios", "warning");
     }
 
     const producto = {
@@ -95,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       descripcion_producto: descripcion,
       precio_producto: precio,
       cantidad_producto: cantidad,
-      id_imagen, // o 'nombre_imagen' si ese es el nombre del campo en tu backend
+      id_imagen,
       cod_estilo,
       cod_talla,
       id_empresa
@@ -112,15 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) throw new Error();
 
-      mostrarMensaje("Producto registrado correctamente.");
+      mostrarAlerta("¡Registro exitoso!", "Producto registrado correctamente");
       e.target.reset();
       vistaPrevia.src = "";
       vistaPrevia.style.display = "none";
     } catch (error) {
       console.error(error);
-      mostrarMensaje("Error al registrar producto", "red");
+      mostrarAlerta("Error", "No se pudo registrar el producto", "error");
     }
   });
 });
-
-

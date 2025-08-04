@@ -11,20 +11,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const contrasena = form.contrasena.value.trim();
 
     if (!correo || !contrasena) {
-      alert("Por favor, complete todos los campos.");
+      Swal.fire({
+  icon: 'warning',
+  title: 'Campos requeridos',
+  text: 'Todos los campos son obligatorios.',
+  confirmButtonText: 'Entendido'
+});
+
       return;
     }
 
     try {
       const usuario = await loginUsuario(correo, contrasena);
       alert("Inicio de sesión exitoso");
+
+      // Guardar sesión
       localStorage.setItem("usuario", JSON.stringify(usuario));
-      window.location.href = "../html/catalogo.html"; // O cambia la ruta si está en otra carpeta
+
+      // Redirección según el rol
+      const nombreRol = usuario.rol?.nombre_rol || usuario.rol; // asegura compatibilidad
+
+      if (nombreRol === "Administrador") {
+        window.location.href = "../html/AdminCatalogo.html";
+      } else if (nombreRol === "Usuario") {
+        window.location.href = "../html/catalogo.html";
+      } else {
+        alert("Rol no reconocido");
+        console.warn("Rol recibido:", nombreRol);
+      }
+
     } catch (error) {
-      alert("Correo o contraseña incorrectos.");
+      Swal.fire({
+  icon: 'error',
+  title: 'Error de autenticación',
+  text: 'Correo o contraseña incorrectos.',
+  confirmButtonText: 'Intentar de nuevo'
+});
+
       console.error("Error en el login:", error);
     }
   });
 });
-
-

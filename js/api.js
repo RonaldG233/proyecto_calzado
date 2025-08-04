@@ -106,7 +106,19 @@ export async function eliminarUsuario(id) {
     console.error("Error al eliminar:", error.message);
     throw error;
   }
+  
 }
+export async function obtenerUsuarioPorId(id) {
+  try {
+    const response = await fetch(`${API_BASE}/usuarios/${id}`);
+    if (!response.ok) throw new Error("No se pudo obtener el usuario");
+    return await response.json();
+  } catch (error) {
+    console.error("Error al obtener usuario por ID:", error);
+    throw error;
+  }
+}
+
 
 
 

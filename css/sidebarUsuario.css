@@ -1,0 +1,31 @@
+.sidebar{
+  grid-area: sidebar;
+  background-color: #C7A589;
+  display: flex;
+  padding-top: 30px;
+  min-height: 89vh;
+  max-height: 89vh;
+  border-radius: 0 20px 20px 0;
+  position: sticky;
+  z-index: 1000;
+  top: 10.6vh;
+  
+}
+.sidebar-items{
+  display: flex;
+  flex-direction: column;
+  padding: 0 19px;
+  margin-right: 25px;
+  gap: 20px;
+}
+.sidebar-item{
+  height: 50px;
+  align-items: center;
+  display: flex;
+  padding: 0 25px;
+  padding-left: 25px;
+  text-decoration: none;
+  color: #8B5E3C;
+  font-weight: bold;
+  font-size: 22px;
+}

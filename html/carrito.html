@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carrito de Compras</title>
+  <link rel="stylesheet" href="../css/carrito.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header class="encabezado__pagina_catalogo">
+    <div class="logo">
+      <img src="../img/Group 10.png" alt="Classic Prestige MEN" />
+    </div>
+    <div class="cuenta">
+      <a href="catalogo.html"><i class="ri-arrow-left-line"></i> <span>Volver</span></a>
+    </div>
+  </header>
+
+  <main class="carrito">
+    <h2>Tu Carrito</h2>
+    <div id="listaCarrito" class="lista-carrito"></div>
+    <div class="total">
+      <strong>Total a pagar: </strong> $<span id="totalPago">0</span>
+    </div>
+    <div class="metodo-pago">
+  <label for="selectPago">Método de Pago:</label>
+  <select id="selectPago">
+    <option value="">-- Selecciona --</option>
+  </select>
+</div>
+
+    <button id="btnConfirmarPedido">Confirmar Pedido</button>
+  </main>
+
+  <script type="module" src="../js/carrito.js"></script>
+</body>
+</html>

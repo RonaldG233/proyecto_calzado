@@ -11,91 +11,20 @@
 />
 </head>
 <body>
-  <header class="encabezado__pagina_catalogo">
-    
-    <div class="logo">
-      <img src="../img/Group 10.png" alt="Classic Prestige MEN">
-    </div>
-    <div class="buscador">
-      <a href="#" class="menuDesplegable"><i class="ri-menu-line"></i>
-      </a>
-      <input type="text" placeholder="TALLAS" readonly  >
-      <i class="ri-search-line"></i>
-
-      <div class="menu-desplegable" id="menuDesplegable">
-      <ul>
-        <li><a href="./catalogo.html">Catalogo principal...</a></li>
-        <li><a href="./estilos.html">Buscar por estilos...</a></li>
-        <li><a href="./tallas.html">Buscar por tallas...</a></li>
-        
-      </ul>
-
-    </div>
-    <a href="./catalogo.html">
-      <i class="ri-close-line"></i>
-      </a>
-    </div>  
-    
-    
-    <div class="cuenta">
-      <a href="#">
-        <i class="ri-user-fill"></i> 
-        <span>Mi cuenta</span>
-      </a> 
-    </div>
-    
-  </header>
+<div id="header-container"></div>
   <aside class="sidebar">
     <div class="sidebar-items">
       <a href="../html/catalogo.html" class="sidebar-item">Catalogo</a>
       <a href="../html/estilos.html" class="sidebar-item">Estilos</a>
       <a href="../html/tallas.html" class="sidebar-item">Tallas</a>
-      <a href="../html/consultarPedidos.html" class="sidebar-item">Consultar pedido</a>
+      
+      <a href="../html/carrito.html" class="sidebar-item">Consultar pedido</a>
     </div>
   </aside>
-  <main class="content">
-    <div class="buscador-catalogo">
-      <h3>Ingresar talla:</h3>
-      <select name="tallas" id="tallas" class="select-tallas">
-        <option>Seleccionar una talla...</option>
-        <option value="1">Bota</option>
-        <option value="2">Clasico</option>
-      </select>
-    </div>
-    <div class="catalogo">
-      <div class="producto">
-        <img src="../img/Group 11.png" alt="Light Brown">
-        <h3>LIGHT BROWN</h3>
-        <p>$ 150.000</p>
-      </div>
-      <div class="producto">
-        <img src="../img/Group 11.png" alt="Glossy Black">
-        <h3>GLOSSY BLACK</h3>
-        <p>$ 200.000</p>
-      </div>
-      
-    </div>  
+  <main class="content-tallas">
+     
   </main>
-  <script>
-  // Esperar a que cargue el documento
-  document.addEventListener('DOMContentLoaded', function () {
-    const iconoMenu = document.querySelector('.menuDesplegable');
-    const menu = document.getElementById('menuDesplegable');
-
-    iconoMenu.addEventListener('click', function (e) {
-      e.preventDefault(); // evita que el enlace recargue la página
-      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-    });
-
-    // Cierra el menú si haces clic fuera de él
-    document.addEventListener('click', function (e) {
-      if (!menu.contains(e.target) && !iconoMenu.contains(e.target)) {
-        menu.style.display = 'none';
-      }
-    });
-  });
-</script>
   
-  
+  <script type="module" src="../js/tallas.js"></script>
 </body>
 </html>

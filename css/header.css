@@ -1,0 +1,57 @@
+#header-container {
+  grid-area: header;
+}
+
+/* HEADER STICKY */
+.encabezado__pagina_catalogo {
+  grid-area: header;
+  background-color: #8B5E3C;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 8vh;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  gap: 25%;
+}
+
+
+/* LOGO */
+.logo img {
+  height: 60px;
+}
+
+/* CUENTA */
+.cuenta {
+  padding: 8px;
+  display: flex;
+  gap: 30px;
+}
+
+.cuenta a {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #F5F5DC;
+  text-decoration: none;
+  flex-direction: column;
+  transition: background-color 0.3s ease;
+}
+
+.cuenta a:hover {
+  background-color: #C7A589;
+  border-radius: 10px;
+}
+
+.cuenta i {
+  font-size: 28px;
+}
+
+.cuenta span {
+  font-size: 14px;
+}

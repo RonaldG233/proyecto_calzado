@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil de Usuario</title>
+  <link rel="stylesheet" href="../css/perfil_usuario.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="perfil-contenedor">
+    <h1>Mi Perfil</h1>
+    <div class="datos-perfil">
+      <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+      <p><strong>Correo:</strong> <span id="correo"></span></p>
+      <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
+      <p><strong>Ciudad:</strong> <span id="ciudad">Cargando...</span></p>
+      <p><strong>Rol:</strong> <span id="rol"></span></p>
+    </div>
+    <button id="btnEditarPerfil">Editar Perfil</button>
+    <button id="btnCerrarSesion" class="btn-cerrar-sesion">Cerrar sesión</button>
+
+  </div>
+
+  <!-- Modal oculto -->
+  <div class="modal" id="modalEditar">
+    <div class="modal-contenido">
+      <h2>Editar Perfil</h2>
+      <form id="formEditarPerfil">
+        <label>Nombre:</label>
+        <input type="text" id="editNombre" required>
+
+        <label>Teléfono:</label>
+        <input type="text" id="editTelefono" required>
+
+        <label>Ciudad:</label>
+        <select id="editCiudad"></select>
+
+        <label>Contraseña:</label>
+        <input type="password" id="editContrasena" required>
+
+        <div class="botones-modal">
+          <button type="submit">Guardar</button>
+          <button type="button" id="cancelarEdicion">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="../js/perfil_usuario.js"></script>
+</body>
+</html>

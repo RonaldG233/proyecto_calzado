@@ -1,13 +1,15 @@
+import { componentes } from "./header_sidebar.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  componentes();
   const contenedor = document.querySelector(".tablaImagen");
 
   // Función para cargar imágenes desde la API
   const cargarImagenes = async () => {
     try {
       const response = await fetch("http://localhost:8080/proyectoCalzado/api/imagenes");
-      if (!response.ok) {
-        throw new Error("Error al obtener las imágenes");
-      }
+      if (!response.ok) throw new Error("Error al obtener las imágenes");
+
       const imagenes = await response.json();
 
       if (imagenes.length === 0) {
@@ -37,54 +39,57 @@ document.addEventListener("DOMContentLoaded", () => {
             <td><img src="http://localhost:8080/proyectoCalzado/imagenes?nombre=${img.nombre}" alt="${img.nombre}" width="100" /></td>
             <td>
               <a href="./editarImagen.html?id=${img.id_imagen}">
-  <button>Editar</button>
-</a>
-
+                <button>Editar</button>
+              </a>
               <button class="eliminar" data-id="${img.id_imagen}" data-nombre="${img.nombre}">Eliminar</button>
             </td>
           </tr>
         `;
       });
 
-      html += `
-          </tbody>
-        </table>
-      `;
-
+      html += `</tbody></table>`;
       contenedor.innerHTML = html;
-// Eliminar imagen
+
+      // Botón de eliminar con SweetAlert
       contenedor.querySelectorAll(".eliminar").forEach((btn) => {
         btn.addEventListener("click", async (e) => {
           const id = e.target.getAttribute("data-id");
           const nombre = e.target.getAttribute("data-nombre");
 
-          if (confirm(`¿Estás seguro de eliminar la imagen "${nombre}"?`)) {
+          const confirmacion = await Swal.fire({
+            title: `¿Eliminar "${nombre}"?`,
+            text: "Esta acción no se puede deshacer.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+          });
+
+          if (confirmacion.isConfirmed) {
             try {
               const res = await fetch(`http://localhost:8080/proyectoCalzado/api/imagenes/${id}`, {
                 method: "DELETE",
               });
 
-              if (!res.ok) throw new Error("Error al eliminar");
+              if (!res.ok) throw new Error();
 
-              alert("Imagen eliminada correctamente");
+              Swal.fire("Eliminada", "La imagen fue eliminada correctamente.", "success");
               cargarImagenes();
             } catch (err) {
               console.error("Error al eliminar:", err);
-              alert("No se pudo eliminar la imagen.");
+              Swal.fire("Error", "No se pudo eliminar la imagen.", "error");
             }
           }
         });
       });
 
-
-      // Aquí puedes implementar lógica para los botones de editar (si lo deseas más adelante)
     } catch (error) {
       console.error("Error:", error);
       contenedor.innerHTML = "<p>Error al cargar imágenes.</p>";
     }
   };
 
-  // Función para renderizar el formulario
+  // Formulario para subir imagen
   const renderizarFormulario = () => {
     const formularioHTML = `
       <h2>Registrar Nueva Imagen</h2>
@@ -107,23 +112,21 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const formData = new FormData(form);
-
       try {
         const response = await fetch("http://localhost:8080/proyectoCalzado/api/imagenes/subir", {
           method: "POST",
           body: formData,
         });
 
-        if (!response.ok) {
-          throw new Error("Error al subir la imagen");
-        }
+        if (!response.ok) throw new Error();
 
-        alert("Imagen registrada correctamente");
+        await Swal.fire("¡Éxito!", "Imagen registrada correctamente.", "success");
         form.reset();
-        cargarImagenes(); // Recargar la tabla
+        cargarImagenes();
+
       } catch (error) {
         console.error("Error al subir la imagen:", error);
-        alert("Error al registrar la imagen");
+        Swal.fire("Error", "No se pudo registrar la imagen.", "error");
       }
     });
   };

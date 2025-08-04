@@ -1,263 +1,102 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
-body{
+
+body {
   display: grid;
   background-color: #F5F5DC;
   grid-template-columns: 290px 1fr;
   grid-template-areas: 
-  'header header'
-  'sidebar content';
-}
-.encabezado__pagina_catalogo{
-  grid-area: header;
-  background-color: #8B5E3C;
-  position: sticky;
-  height: 8vh;
-  z-index: 1000;
-  top: 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 50px 40px;
-  gap: 25%  ;
-}
-.logo img {
-  height: 60px;
-  
-}
-.buscador {
-  position: relative;
-  width: 550px;
-}
-.buscador input {
-  width: 100%;
-  padding: 15px 40px;
-  border-radius: 15px;
-  border: none;
-  background-color: #F5F5DC;
-  color: #000;
-}
-.buscador .ri-menu-line{
-  position: absolute;
-  left: 10px; /* posición del icono dentro del input */
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: #8B5E3C;
-}
-.buscador .ri-search-line{
-  position: absolute;
-  right: 10px; /* posición del icono dentro del input */
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8B5E3C;
-  font-size: 20px;
-  cursor: pointer;
-}
-.buscador .ri-search-line:hover{
-  filter: brightness(1.4);
-  
-}
-.buscador input::placeholder{
-  color: #d8d8d8;
-}
-.cuenta{
-  padding: 8px;
-  display: flex;
-  gap: 30px;
-
-}
-.cuenta a:hover{
-  background-color: #C7A589;
-  padding: 8px;
-  border-radius: 10px;
+    'header header'
+    'sidebar content';
 }
 
-.cuenta a{
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #F5F5DC;
-  text-decoration: none;
-  flex-direction: column;
-}
-.cuenta i {
-  font-size: 28px;
-  
-}
-.cuenta span{
-  font-size: 14px;
-}
-
-
-
-.sidebar{
-  grid-area: sidebar;
-  background-color: #C7A589;
-  display: flex;
-  padding-top: 30px;
-  max-height: 89vh;
-  border-radius: 0 20px 20px 0;
-  position: sticky;
-  z-index: 1000;
-  top: 10.6vh;
-  
-}
-.sidebar-items{
-  display: flex;
-  flex-direction: column;
-  padding: 0 19px;
-  margin-right: 25px;
-  gap: 20px;
-}
-.sidebar-item{
-  height: 50px;
-  align-items: center;
-  display: flex;
-  padding: 0 25px;
-  padding-left: 25px;
-  text-decoration: none;
-  color: #8B5E3C;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-/*--------------------------------------*/
-.menu-container {
-  position: relative;
-  display: inline-block;
-}
-
-.menu-container:hover .menu-desplegable {
-  display: block;
-}
-
-
-.menu-desplegable {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background-color: #C7A589;
-  width: 500px;
-  display: none; /* Oculto por defecto */
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-}
-
-
-.menu-desplegable ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-desplegable ul li {
-  border-bottom: 1px solid #F5F5DC;
-}
-
-.menu-desplegable ul li a {
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  ;
-  color: #333;
-}
-
-.menu-desplegable ul li a:hover {
-  background-color: #f0f0f0;
-}
-
-/*----------------------------------------*/
-.input-contenedor {
-  display: none; /* Oculto por defecto */
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.input-contenedor input {
-  padding: 5px 10px;
-  font-size: 16px;
-  width: 80px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.input-contenedor i {
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-}
-
-/*EDITAR PRODUCTOOOOO*/
-/* Estilos para el formulario de editar producto */
-.editarProducto {
+/*----------------------*/
+/* EDITAR PRODUCTO FORM */
+/*----------------------*/
+main.editarProducto {
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(139, 94, 60, 0.25);
+  border: 2px solid #C7A589;
 }
 
 .editarProducto h2 {
   text-align: center;
-  margin-bottom: 1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  margin-bottom: 20px;
+  color: #8B5E3C;
+  font-size: 24px;
 }
 
-#formEditar {
+/* Formulario */
+form#formEditar {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 
-#formEditar input[type="text"],
-#formEditar input[type="number"],
-#formEditar textarea {
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-family: inherit;
-  resize: vertical;
-  transition: border-color 0.3s ease;
+form#formEditar input,
+form#formEditar textarea,
+form#formEditar select {
+  padding: 10px 12px;
+  background-color: #FAF8F3;
+  border: 1px solid #C7A589;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #5B402D;
+  transition: border 0.3s;
 }
 
-#formEditar input[type="text"]:focus,
-#formEditar input[type="number"]:focus,
-#formEditar textarea:focus {
-  border-color: #007bff;
+form#formEditar input:focus,
+form#formEditar textarea:focus,
+form#formEditar select:focus {
   outline: none;
-  background-color: #fff;
+  border-color: #8B5E3C;
 }
 
-#formEditar textarea {
-  min-height: 100px;
-}
-
-#formEditar button[type="submit"] {
-  background-color: #007bff;
+/* Botón */
+form#formEditar button[type="submit"] {
+  padding: 12px;
+  font-size: 16px;
+  background-color: #C7A589;
   color: white;
-  padding: 0.75rem;
   border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: inherit;
+  transition: background 0.3s;
 }
 
-#formEditar button[type="submit"]:hover {
-  background-color: #0056b3;
+form#formEditar button[type="submit"]:hover {
+  background-color: #b37c52;
+}
+
+/* Vista previa imagen */
+#vistaPrevia {
+  max-width: 150px;
+  border-radius: 8px;
+  display: block;
+  margin-top: 10px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Mensaje de alerta */
+#mensajeProducto {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: bold;
+  color: #8B5E3C;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  main.editarProducto {
+    margin: 20px;
+    padding: 20px;
+  }
 }

@@ -35,12 +35,21 @@ export async function crearTablaUsuarios() {
     // CUERPO
     const tbody = document.createElement("tbody");
 
-    usuarios.forEach((u, index)=> {
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"));
+
+    usuarios.forEach((u) => {
       const tr = document.createElement("tr");
-      const filaIndex = index + 1;
 
       const ciudadNombre = ciudades.find(c => c.codCiudad === u.codCiudad)?.nombre_ciudad || "Desconocida";
       const rolNombre = roles.find(r => r.idRol === u.idRol)?.nombre_rol || "Sin rol";
+
+      if (
+        usuarioLogueado &&
+        usuarioLogueado.idUsuario === u.idUsuario &&
+        rolNombre.toLowerCase() !== "administrador"
+      ) {
+        tr.classList.add("resaltado-logueado");
+      }
 
       const datos = [
         u.idUsuario,
@@ -68,25 +77,49 @@ export async function crearTablaUsuarios() {
       btnEliminar.textContent = "🗑️";
       btnEliminar.classList.add("eliminar");
 
-      // Botón Editar
+      const datosEditar = { ...u };
+      if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
+        datosEditar.rolBloqueado = true;
+      }
+
       btnEditar.addEventListener("click", () => {
-        localStorage.setItem("usuarioEditar", JSON.stringify(u));
+        localStorage.setItem("usuarioEditar", JSON.stringify(datosEditar));
         window.location.href = "../html/editarUsuario.html";
       });
 
-      // Botón Eliminar
-      btnEliminar.addEventListener("click", async () => {
-        const confirmar = confirm("¿Estás seguro de eliminar este usuario?");
-        if (confirmar) {
-          try {
-            await eliminarUsuario(u.idUsuario);
-            alert("Usuario eliminado correctamente");
-            tr.remove(); // Eliminar la fila
-          } catch (error) {
-            alert("Error al eliminar el usuario");
+      if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
+        btnEliminar.disabled = true;
+        btnEliminar.title = "No puedes eliminar tu propia cuenta";
+      } else {
+        btnEliminar.addEventListener("click", async () => {
+          const confirmar = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: `Eliminar al usuario "${u.nombre}"`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+          });
+
+          if (confirmar.isConfirmed) {
+            try {
+              await eliminarUsuario(u.idUsuario);
+              Swal.fire({
+                icon: 'success',
+                title: 'Eliminado',
+                text: 'El usuario fue eliminado correctamente.'
+              });
+              tr.remove();
+            } catch (error) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al eliminar el usuario.'
+              });
+            }
           }
-        }
-      });
+        });
+      }
 
       tdAcciones.appendChild(btnEditar);
       tdAcciones.appendChild(btnEliminar);
@@ -99,5 +132,10 @@ export async function crearTablaUsuarios() {
     main.appendChild(tabla);
   } catch (error) {
     console.error("Error al crear la tabla de usuarios:", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo cargar la tabla de usuarios.'
+    });
   }
 }

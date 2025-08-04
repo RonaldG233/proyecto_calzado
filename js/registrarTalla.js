@@ -1,22 +1,25 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const formRegistrar = document.getElementById("formRegistrarTalla");
-  const formEditar = document.getElementById("formEditarTalla");
-  const formEliminar = document.getElementById("formEliminarTalla");
+import { componentes } from "./header_sidebar.js";
 
-  const inputNombre = document.getElementById("nombreTalla");
+document.addEventListener("DOMContentLoaded", () => {
+  componentes();
+
+  const formRegistrar = document.getElementById("formRegistrarTalla");
   const selectEditar = document.getElementById("tallaEditar");
   const selectEliminar = document.getElementById("tallaEliminar");
+  const inputNuevoNombre = document.getElementById("nuevoNombreTalla");
 
   const btnEditar = document.getElementById("btnEditar");
   const btnEliminar = document.getElementById("btnEliminar");
 
-  const mensaje = document.getElementById("mensajeTalla");
+  let tallasCache = [];
 
-  // Cargar tallas en selects
+  // Carga las tallas y actualiza selects y cache
   async function cargarTallas() {
     try {
       const response = await fetch("http://localhost:8080/proyectoCalzado/api/tallas");
       const tallas = await response.json();
+
+      tallasCache = tallas;
 
       [selectEditar, selectEliminar].forEach((select) => {
         select.innerHTML = '<option value="">-- Selecciona una talla --</option>';
@@ -29,22 +32,37 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch (error) {
       console.error("Error al cargar tallas:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error al cargar tallas",
+        text: "Intenta recargar la página.",
+      });
     }
   }
 
-  // Mostrar mensaje
-  function mostrarMensaje(texto, color = "white") {
-    mensaje.textContent = texto;
-    mensaje.style.color = color;
-  }
-
-  // REGISTRAR TALLA
+  // Registrar nueva talla con validación de duplicado
   formRegistrar.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const nombre = inputNombre.value.trim();
+    const nombre = document.getElementById("nombreTalla").value.trim();
 
     if (!nombre) {
-      return mostrarMensaje("Debe ingresar un número de talla.", "red");
+      return Swal.fire({
+        icon: "warning",
+        title: "Campo requerido",
+        text: "Debe ingresar un número de talla.",
+      });
+    }
+
+    // Verificar si ya existe la talla (ignorar mayúsculas/minúsculas)
+    const existe = tallasCache.some(
+      (t) => String(t.numero_talla).toLowerCase() === nombre.toLowerCase()
+    );
+    if (existe) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Talla duplicada",
+        text: "Ya existe esa talla registrada.",
+      });
     }
 
     try {
@@ -56,22 +74,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) throw new Error();
 
-      mostrarMensaje("Talla registrada correctamente.", "green");
-      formRegistrar.reset();
-      cargarTallas();
+      await Swal.fire({
+        icon: "success",
+        title: "Talla registrada",
+        text: "Se registró correctamente.",
+      });
+
+      e.target.reset();
+      await cargarTallas();
     } catch (error) {
-      mostrarMensaje("Error al registrar la talla.", "red");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo registrar la talla.",
+      });
     }
   });
 
-  // EDITAR TALLA
+  // Editar talla con validación para evitar duplicados en otro registro
   btnEditar.addEventListener("click", async () => {
     const idTalla = selectEditar.value;
-    if (!idTalla) return mostrarMensaje("Seleccione una talla a editar.", "red");
+    const nuevoNombre = inputNuevoNombre.value.trim();
 
-    const nuevoNombre = document.getElementById("nuevoNombreTalla").value.trim();
+    if (!idTalla) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Sin selección",
+        text: "Seleccione una talla para editar.",
+      });
+    }
+
     if (!nuevoNombre) {
-      return mostrarMensaje("Debe ingresar un nuevo número para la talla.", "red");
+      return Swal.fire({
+        icon: "warning",
+        title: "Campo vacío",
+        text: "Debe ingresar un nuevo número para la talla.",
+      });
+    }
+
+    // Verificar si el nuevo nombre ya existe en otra talla diferente
+    const existe = tallasCache.some(
+      (t) =>
+        String(t.numero_talla).toLowerCase() === nuevoNombre.toLowerCase() &&
+        String(t.codTalla) !== idTalla
+    );
+    if (existe) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Talla duplicada",
+        text: "Ya existe otra talla con ese número.",
+      });
     }
 
     try {
@@ -83,22 +135,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) throw new Error();
 
-      mostrarMensaje("Talla actualizada correctamente.", "green");
-      cargarTallas();
-      document.getElementById("nuevoNombreTalla").value = "";
+      await Swal.fire({
+        icon: "success",
+        title: "Talla actualizada",
+        text: "La talla se actualizó correctamente.",
+      });
+
+      inputNuevoNombre.value = "";
       selectEditar.value = "";
+      await cargarTallas();
     } catch (error) {
-      mostrarMensaje("Error al actualizar la talla.", "red");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar la talla.",
+      });
     }
   });
 
-  // ELIMINAR TALLA
+  // Eliminar talla
   btnEliminar.addEventListener("click", async () => {
     const idTalla = selectEliminar.value;
-    if (!idTalla) return mostrarMensaje("Seleccione una talla a eliminar.", "red");
 
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar esta talla?");
-    if (!confirmar) return;
+    if (!idTalla) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Sin selección",
+        text: "Seleccione una talla para eliminar.",
+      });
+    }
+
+    const confirmar = await Swal.fire({
+      icon: "warning",
+      title: "¿Eliminar talla?",
+      text: "Esta acción no se puede deshacer.",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!confirmar.isConfirmed) return;
 
     try {
       const response = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}`, {
@@ -107,14 +185,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) throw new Error();
 
-      mostrarMensaje("Talla eliminada correctamente.", "green");
-      cargarTallas();
+      await Swal.fire({
+        icon: "success",
+        title: "Talla eliminada",
+        text: "Se eliminó correctamente.",
+      });
+
       selectEliminar.value = "";
+      await cargarTallas();
     } catch (error) {
-      mostrarMensaje("Error al eliminar la talla.", "red");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo eliminar la talla. Puede estar en uso.",
+      });
     }
   });
 
-  // Cargar tallas al iniciar
+  // Inicializar carga de tallas
   cargarTallas();
 });
+

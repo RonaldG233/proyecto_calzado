@@ -1,6 +1,9 @@
 import { registrarUsuario } from "./api.js";
 
+// Cargar ciudades al iniciar
 document.addEventListener("DOMContentLoaded", () => {
+  cargarCiudades();
+
   const btn = document.querySelector(".boton_registrarse");
 
   btn.addEventListener("click", async (e) => {
@@ -17,12 +20,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const idRol = parseInt(form.rol.value);
 
     if (!nombre || !telefono || !correo || !contrasena || !confirmaContrasena || isNaN(codCiudad) || isNaN(idRol)) {
-      alert("Todos los campos son obligatorios.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos requeridos',
+        text: 'Todos los campos son obligatorios.',
+        confirmButtonText: 'Entendido'
+      });
       return;
     }
 
     if (contrasena !== confirmaContrasena) {
-      alert("Las contraseñas no coinciden.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Contraseñas no coinciden',
+        text: 'Verifica que ambas contraseñas sean iguales.',
+        confirmButtonText: 'Reintentar'
+      });
       return;
     }
 
@@ -37,14 +50,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await registrarUsuario(nuevoUsuario);
-      alert("Registro exitoso. Ahora puedes iniciar sesión.");
+
+      await Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: 'Ahora puedes iniciar sesión.',
+        confirmButtonText: 'Iniciar sesión'
+      });
+
       window.location.href = "./pagina_inicioSesion_usuario.html";
+
     } catch (error) {
-      alert("No se pudo completar el registro.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el registro',
+        text: 'No se pudo completar el registro. Intenta nuevamente.',
+        confirmButtonText: 'Entendido'
+      });
     }
   });
 });
-// archivo: registro.js
+
+// Función para cargar ciudades desde la API
 async function cargarCiudades() {
   const ciudadSelect = document.getElementById("ciudad");
 
@@ -60,14 +87,14 @@ async function cargarCiudades() {
       option.textContent = ciudad.nombre_ciudad;
       ciudadSelect.appendChild(option);
     });
+
   } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error al cargar ciudades',
+      text: 'No se pudieron cargar las opciones de ciudad.',
+      confirmButtonText: 'Cerrar'
+    });
     console.error("Error al cargar ciudades:", error);
   }
 }
-document.addEventListener("DOMContentLoaded", () => {
-  cargarCiudades();
-
-  // Aquí puedes conectar también la lógica para registrar el usuario
-});
-
-

@@ -1,118 +1,162 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const formRegistrar = document.getElementById("formRegistrarEstilo");
-  const formEditar = document.getElementById("formEditarEstilo");
-  const formEliminar = document.getElementById("formEliminarEstilo");
+  import { componentes } from "./header_sidebar.js";
 
-  const inputNombre = document.getElementById("nombreEstilo");
-  const selectEditar = document.getElementById("estilosEditar");
-  const selectEliminar = document.getElementById("estilosEliminar");
+  document.addEventListener("DOMContentLoaded", () => {
+    componentes();
 
-  const btnEditar = document.getElementById("btnEditar");
-  const btnEliminar = document.getElementById("btnEliminar");
+    const formRegistrar = document.getElementById("formRegistrarEstilo");
+    const formEditar = document.getElementById("formEditarEstilo");
+    const formEliminar = document.getElementById("formEliminarEstilo");
 
-  const mensaje = document.getElementById("mensajeEstilo");
+    const inputNombre = document.getElementById("nombreEstilo");
+    const selectEditar = document.getElementById("estilosEditar");
+    const selectEliminar = document.getElementById("estilosEliminar");
 
-  // Cargar ciudades en selects
-  async function cargarEstilos() {
-    try {
-      const response = await fetch("http://localhost:8080/proyectoCalzado/api/estilos");
-      const estilos = await response.json();
+    const btnEditar = document.getElementById("btnEditar");
+    const btnEliminar = document.getElementById("btnEliminar");
 
-      [selectEditar, selectEliminar].forEach((select) => {
-        select.innerHTML = '<option value="">-- Selecciona un estilo --</option>';
-        estilos.forEach((estilo) => {
-          const option = document.createElement("option");
-          option.value = estilo.codEstilo;
-          option.textContent = estilo.nombre_estilo;
-          select.appendChild(option);
+    let estilosCache = [];
+
+    // Función para mostrar mensajes con SweetAlert2
+    function mostrarMensaje(titulo, texto, icono = "info") {
+      Swal.fire({
+        title: titulo,
+        text: texto,
+        icon: icono,
+        confirmButtonText: "Aceptar",
+      });
+    }
+
+    // Cargar estilos en selects y guardar en cache
+    async function cargarEstilos() {
+      try {
+        const response = await fetch("http://localhost:8080/proyectoCalzado/api/estilos");
+        if (!response.ok) throw new Error("Error al cargar estilos");
+        const estilos = await response.json();
+
+        estilosCache = estilos; // guardar para validaciones
+
+        [selectEditar, selectEliminar].forEach((select) => {
+          select.innerHTML = '<option value="">-- Selecciona un estilo --</option>';
+          estilos.forEach((estilo) => {
+            const option = document.createElement("option");
+            option.value = estilo.codEstilo;
+            option.textContent = estilo.nombre_estilo;
+            select.appendChild(option);
+          });
         });
+      } catch (error) {
+        console.error("Error al cargar estilos:", error);
+        mostrarMensaje("Error", "No se pudieron cargar los estilos.", "error");
+      }
+    }
+
+    // REGISTRAR ESTILO
+    formRegistrar.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nombre = inputNombre.value.trim();
+
+      if (!nombre) {
+        mostrarMensaje("Campo vacío", "Debe ingresar un nombre de Estilo.", "warning");
+        return;
+      }
+
+      // Validar que no exista ya un estilo con ese nombre
+      const existe = estilosCache.some(e => e.nombre_estilo.toLowerCase() === nombre.toLowerCase());
+      if (existe) {
+        mostrarMensaje("Nombre duplicado", "Ya existe un estilo con ese nombre.", "warning");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8080/proyectoCalzado/api/estilos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre_estilo: nombre }),
+        });
+
+        if (!response.ok) throw new Error();
+
+        mostrarMensaje("¡Éxito!", "Estilo registrado correctamente.", "success");
+        formRegistrar.reset();
+        await cargarEstilos();
+      } catch (error) {
+        mostrarMensaje("Error", "No se pudo registrar el estilo.", "error");
+      }
+    });
+
+    // EDITAR ESTILO
+    btnEditar.addEventListener("click", async () => {
+      const idEstilo = selectEditar.value;
+      if (!idEstilo) {
+        mostrarMensaje("Atención", "Seleccione un estilo a editar.", "warning");
+        return;
+      }
+
+      const nuevoNombre = document.getElementById("nuevoNombreEstilo").value.trim();
+      if (!nuevoNombre) {
+        mostrarMensaje("Campo vacío", "Debe ingresar un nuevo nombre para el estilo.", "warning");
+        return;
+      }
+
+      // Validar que no exista otro estilo con ese nombre (distinto al actual)
+      const existeOtro = estilosCache.some(e => e.nombre_estilo.toLowerCase() === nuevoNombre.toLowerCase() && e.codEstilo != idEstilo);
+      if (existeOtro) {
+        mostrarMensaje("Nombre duplicado", "Ya existe otro estilo con ese nombre.", "warning");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/proyectoCalzado/api/estilos/${idEstilo}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre_estilo: nuevoNombre }),
+        });
+
+        if (!response.ok) throw new Error();
+
+        mostrarMensaje("¡Éxito!", "Estilo actualizado correctamente.", "success");
+        document.getElementById("nuevoNombreEstilo").value = "";
+        selectEditar.value = "";
+        await cargarEstilos();
+      } catch (error) {
+        mostrarMensaje("Error", "No se pudo actualizar el estilo.", "error");
+      }
+    });
+
+    // ELIMINAR ESTILO
+    btnEliminar.addEventListener("click", async () => {
+      const idEstilo = selectEliminar.value;
+      if (!idEstilo) {
+        mostrarMensaje("Atención", "Seleccione un estilo a eliminar.", "warning");
+        return;
+      }
+
+      const confirmacion = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción eliminará el estilo seleccionado.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
       });
-    } catch (error) {
-      console.error("Error al cargar estilos:", error);
-    }
-  }
 
-  // Mostrar mensaje
-  function mostrarMensaje(texto, color = "white") {
-    mensaje.textContent = texto;
-    mensaje.style.color = color;
-  }
+      if (!confirmacion.isConfirmed) return;
 
-  // REGISTRAR CIUDAD
-  formRegistrar.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const nombre = inputNombre.value.trim();
+      try {
+        const response = await fetch(`http://localhost:8080/proyectoCalzado/api/estilos/${idEstilo}`, {
+          method: "DELETE",
+        });
 
-    if (!nombre) {
-      return mostrarMensaje("Debe ingresar un nombre de Estilo.", "red");
-    }
+        if (!response.ok) throw new Error();
 
-    try {
-      const response = await fetch("http://localhost:8080/proyectoCalzado/api/estilos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre_estilo: nombre }),
-      });
+        mostrarMensaje("¡Éxito!", "Estilo eliminado correctamente.", "success");
+        selectEliminar.value = "";
+        await cargarEstilos();
+      } catch (error) {
+        mostrarMensaje("Error", "No se pudo eliminar el estilo.", "error");
+      }
+    });
 
-      if (!response.ok) throw new Error();
-
-      mostrarMensaje("Estilo registrado correctamente.", "green");
-      formRegistrar.reset();
-      cargarEstilos();
-    } catch (error) {
-      mostrarMensaje("Error al registrar el estilo.", "red");
-    }
+    // Cargar estilos al iniciar
+    cargarEstilos();
   });
-
-  // EDITAR CIUDAD
-  btnEditar.addEventListener("click", async () => {
-    const idEstilo = selectEditar.value;
-    if (!idEstilo) return mostrarMensaje("Seleccione un estilo a editar.", "red");
-
-    const nuevoNombre = document.getElementById("nuevoNombreEstilo").value.trim();
-if (!nuevoEstilo) {
-  return mostrarMensaje("Debe ingresar un nuevo nombre para el estilo.", "red");
-}
-
-
-    try {
-      const response = await fetch(`http://localhost:8080/proyectoCalzado/api/estilos/${idEstilo}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre_estilo: nuevoNombre.trim() }),
-      });
-
-      if (!response.ok) throw new Error();
-
-      mostrarMensaje("Estilo actualizado correctamente.", "green");
-      cargarEstilos();
-    } catch (error) {
-      mostrarMensaje("Error al actualizar el estilo.", "red");
-    }
-  });
-
-  // ELIMINAR CIUDAD
-  btnEliminar.addEventListener("click", async () => {
-    const idEstilo = selectEliminar.value;
-    if (!idEstilo) return mostrarMensaje("Seleccione un estilo a eliminar.", "red");
-
-    const confirmar = confirm("¿Estás seguro de que deseas eliminar este estilo?");
-    if (!confirmar) return;
-
-    try {
-      const response = await fetch(`http://localhost:8080/proyectoCalzado/api/estilos/${idEstilo}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) throw new Error();
-
-      mostrarMensaje("Estilo eliminado correctamente.", "green");
-      cargarEstilos();
-    } catch (error) {
-      mostrarMensaje("Error al eliminar el estilo.", "red");
-    }
-  });
-
-  // Cargar ciudades al iniciar
-  cargarEstilos();
-});

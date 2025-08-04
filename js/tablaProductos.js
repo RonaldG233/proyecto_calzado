@@ -1,5 +1,24 @@
+import { componentes } from "./header_sidebar.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  componentes();
   const contenedor = document.querySelector(".tablaProducto");
+
+  let imagenes = [];
+
+  async function cargarImagenes() {
+    try {
+      const res = await fetch("http://localhost:8080/proyectoCalzado/api/imagenes");
+      imagenes = await res.json();
+    } catch (e) {
+      console.error("Error cargando imágenes:", e);
+    }
+  }
+
+  function buscarNombreImagen(id) {
+    const img = imagenes.find(img => img.id_imagen === id);
+    return img?.nombre || "placeholder.jpg";
+  }
 
   async function cargarProductos() {
     try {
@@ -50,58 +69,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  let imagenes = [];
-
-  async function cargarImagenes() {
-    try {
-      const res = await fetch("http://localhost:8080/proyectoCalzado/api/imagenes");
-      imagenes = await res.json();
-    } catch (e) {
-      console.error("Error cargando imágenes:", e);
-    }
-  }
-
-  function buscarNombreImagen(id) {
-    const img = imagenes.find(img => img.id_imagen === id);
-    return img?.nombre || "placeholder.jpg";
-  }
-
-  // Ejecutar carga inicial
-  (async () => {
-    await cargarImagenes();
-    await cargarProductos();
-  })();
-
-  // Escuchar eventos de botones
   contenedor.addEventListener("click", (e) => {
     if (e.target.classList.contains("btnEditar")) {
       const id = e.target.dataset.id;
-      console.log("Editar producto con ID:", id);
-      // Aquí podrías redirigir a un formulario de edición o abrir un modal
       window.location.href = `editarProducto.html?id=${id}`;
     }
 
     if (e.target.classList.contains("btnEliminar")) {
       const id = e.target.dataset.id;
-      if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-        fetch(`http://localhost:8080/proyectoCalzado/api/productos/${id}`, {
-          method: "DELETE"
-        })
-        .then(res => {
-          if (!res.ok) throw new Error("No se pudo eliminar");
-          return res.text();
-        })
-        .then(msg => {
-          console.log(msg);
-          cargarProductos(); // recargar lista
-        })
-        .catch(err => {
-          console.error("Error al eliminar producto:", err);
-          alert("No se pudo eliminar el producto.");
-        });
-      }
+
+      Swal.fire({
+        title: "¿Eliminar producto?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const res = await fetch(`http://localhost:8080/proyectoCalzado/api/productos/${id}`, {
+              method: "DELETE"
+            });
+
+            if (!res.ok) throw new Error();
+
+            Swal.fire("Eliminado", "El producto fue eliminado correctamente.", "success");
+            cargarProductos();
+          } catch (err) {
+            console.error("Error al eliminar producto:", err);
+            Swal.fire("Error", "No se pudo eliminar el producto.", "error");
+          }
+        }
+      });
     }
   });
+
+  (async () => {
+    await cargarImagenes();
+    await cargarProductos();
+  })();
 });
-
-

@@ -1,4 +1,8 @@
+import { componentes } from "./header_sidebar.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  componentes();
+
   const estiloSelect = document.getElementById("estiloProducto");
   const tallaSelect = document.getElementById("tallaProducto");
   const empresaSelect = document.getElementById("empresaProducto");
@@ -12,14 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const cantidadInput = document.getElementById("cantidad");
   const form = document.getElementById("formEditar");
 
-  let imagenes = []; // para vista previa
+  let imagenes = [];
 
   const mostrarMensaje = (texto, color = "green") => {
     mensaje.textContent = texto;
     mensaje.style.color = color;
   };
 
-  // Obtener el id del producto desde la URL
   const urlParams = new URLSearchParams(window.location.search);
   const productoId = urlParams.get("id");
 
@@ -78,12 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`http://localhost:8080/proyectoCalzado/api/productos`);
       const productos = await res.json();
 
-      // Buscar el producto en la lista
       const producto = productos.find(p => p.id_producto == id);
-
       if (!producto) throw new Error("Producto no encontrado");
 
-      // Llenar inputs y selects con datos del producto
       nombreInput.value = producto.nombre_producto;
       descripcionInput.value = producto.descripcion_producto;
       precioInput.value = producto.precio_producto;
@@ -94,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
       empresaSelect.value = producto.id_empresa;
       imagenSelect.value = producto.id_imagen;
 
-      // Mostrar imagen en vista previa
       const imagenSeleccionada = imagenes.find(img => img.id_imagen == producto.id_imagen);
       if (imagenSeleccionada) {
         vistaPrevia.src = `http://localhost:8080/proyectoCalzado/api/imagenes/ver/${imagenSeleccionada.nombre}`;
@@ -110,12 +109,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   imagenSelect.addEventListener("change", () => {
     const id = parseInt(imagenSelect.value);
-    if (id) {
-      const imagenSeleccionada = imagenes.find(img => img.id_imagen === id);
-      if (imagenSeleccionada) {
-        vistaPrevia.src = `http://localhost:8080/proyectoCalzado/api/imagenes/ver/${imagenSeleccionada.nombre}`;
-        vistaPrevia.style.display = "block";
-      }
+    const imagenSeleccionada = imagenes.find(img => img.id_imagen === id);
+
+    if (imagenSeleccionada) {
+      vistaPrevia.src = `http://localhost:8080/proyectoCalzado/api/imagenes/ver/${imagenSeleccionada.nombre}`;
+      vistaPrevia.style.display = "block";
     } else {
       vistaPrevia.src = "";
       vistaPrevia.style.display = "none";
@@ -125,29 +123,21 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = nombreInput.value.trim();
-    const descripcion = descripcionInput.value.trim();
-    const precio = parseFloat(precioInput.value);
-    const cantidad = parseInt(cantidadInput.value);
-    const id_imagen = parseInt(imagenSelect.value);
-    const cod_estilo = parseInt(estiloSelect.value);
-    const cod_talla = parseInt(tallaSelect.value);
-    const id_empresa = parseInt(empresaSelect.value);
-
-    if (!id_imagen) {
-      return mostrarMensaje("Debe seleccionar una imagen", "red");
+    // Validación rápida
+    if (!nombreInput.value.trim() || !descripcionInput.value.trim() || !precioInput.value || !cantidadInput.value) {
+      return mostrarMensaje("Todos los campos son obligatorios", "red");
     }
 
     const productoEditado = {
       id_producto: parseInt(productoId),
-      nombre_producto: nombre,
-      descripcion_producto: descripcion,
-      precio_producto: precio,
-      cantidad_producto: cantidad,
-      id_imagen,
-      cod_estilo,
-      cod_talla,
-      id_empresa
+      nombre_producto: nombreInput.value.trim(),
+      descripcion_producto: descripcionInput.value.trim(),
+      precio_producto: parseFloat(precioInput.value),
+      cantidad_producto: parseInt(cantidadInput.value),
+      id_imagen: parseInt(imagenSelect.value),
+      cod_estilo: parseInt(estiloSelect.value),
+      cod_talla: parseInt(tallaSelect.value),
+      id_empresa: parseInt(empresaSelect.value)
     };
 
     try {
@@ -161,10 +151,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) throw new Error("Error actualizando");
 
-      mostrarMensaje("Producto actualizado correctamente.");
+      await Swal.fire({
+        icon: "success",
+        title: "Producto actualizado correctamente",
+        confirmButtonText: "Volver"
+      });
+
+      window.location.href = "./tablaProductos.html";
+
     } catch (error) {
-      console.error(error);
-      mostrarMensaje("Error al actualizar producto", "red");
+      console.error("Error al actualizar producto:", error);
+      Swal.fire({
+        icon: "error",
+        title: "No se pudo actualizar",
+        text: "Revisa los datos o intenta más tarde"
+      });
     }
   });
 
@@ -172,5 +173,4 @@ document.addEventListener("DOMContentLoaded", () => {
     await cargarOpciones();
     await cargarProducto(productoId);
   })();
-
 });
