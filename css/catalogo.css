@@ -53,14 +53,7 @@ body {
 }
 
 /* Estilo para las tarjetas de productos */
-.catalogo {
-  grid-area: content;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 40px 30px;
-  justify-content: center;
-}
+
 
 .catalogo {
   grid-area: content;
@@ -69,6 +62,7 @@ body {
   gap: 20px;
   padding: 40px 30px;
   justify-content: center;
+  
 }
 
 /* Tarjeta individual */
@@ -78,13 +72,14 @@ body {
   box-shadow: 0 0 12px rgba(155, 91, 85, 0.4);
   padding: 15px;
   width: 250px;
-  height: auto;
+  height: 400px;
   text-align: center;
   transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: start;
   overflow: hidden;
+  /* max-height: 400px ; */
 }
 
 .producto img {

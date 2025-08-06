@@ -1,33 +1,33 @@
 const URL_PRODUCTOS = "http://localhost:8080/proyectoCalzado/api/productos";
 const URL_IMAGENES = "http://localhost:8080/proyectoCalzado/api/imagenes";
-const URL_TALLAS = "http://localhost:8080/proyectoCalzado/api/tallas";
+const URL_EMPRESAS = "http://localhost:8080/proyectoCalzado/api/empresas";
 
 let productos = [];
 let imagenes = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await cargarTallas();
+  await cargarEmpresas();
   await cargarImagenes();
   await cargarProductos();
 
-  document.getElementById("selectTallas").addEventListener("change", filtrarPorTalla);
+  document.getElementById("selectEmpresas").addEventListener("change", filtrarPorEmpresa);
 });
 
-async function cargarTallas() {
-  const select = document.getElementById("selectTallas");
+async function cargarEmpresas() {
+  const select = document.getElementById("selectEmpresas");
   try {
-    const res = await fetch(URL_TALLAS);
-    const tallas = await res.json();
+    const res = await fetch(URL_EMPRESAS);
+    const empresas = await res.json();
 
-    select.innerHTML = '<option value="">-- Todas las tallas --</option>';
-    tallas.forEach((talla) => {
+    select.innerHTML = '<option value="">-- Todas las empresas --</option>';
+    empresas.forEach((empresa) => {
       const option = document.createElement("option");
-      option.value = talla.codTalla;
-      option.textContent = talla.numero_talla;
+      option.value = empresa.idEmpresa;
+      option.textContent = empresa.nombre_empresa;
       select.appendChild(option);
     });
   } catch (e) {
-    console.error("Error cargando tallas:", e);
+    console.error("Error cargando empresas:", e);
   }
 }
 
@@ -50,14 +50,14 @@ async function cargarProductos() {
   }
 }
 
-function filtrarPorTalla() {
-  const codTalla = document.getElementById("selectTallas").value;
-  if (!codTalla) {
+function filtrarPorEmpresa() {
+  const idEmpresa = document.getElementById("selectEmpresas").value;
+  if (!idEmpresa) {
     renderizarProductos(productos);
     return;
   }
 
-  const filtrados = productos.filter((p) => p.cod_talla == codTalla);
+  const filtrados = productos.filter((p) => p.id_empresa == idEmpresa);
   renderizarProductos(filtrados);
 }
 
@@ -71,7 +71,7 @@ function renderizarProductos(lista) {
   contenedor.innerHTML = "";
 
   if (lista.length === 0) {
-    contenedor.innerHTML = "<p style='color:red;'>No hay productos para esta talla.</p>";
+    contenedor.innerHTML = "<p style='color:red;'>No hay productos para este estilo.</p>";
     return;
   }
 
