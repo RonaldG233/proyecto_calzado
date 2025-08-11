@@ -2,6 +2,7 @@ import { componentes } from "./header_sidebar.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   componentes();
+
   const estiloSelect = document.getElementById("estiloProducto");
   const tallaSelect = document.getElementById("tallaProducto");
   const empresaSelect = document.getElementById("empresaProducto");
@@ -10,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let imagenes = [];
 
-  // ✅ Función de alertas con SweetAlert2
   const mostrarAlerta = (titulo, texto, icono = "success") => {
     Swal.fire({
       title: titulo,
@@ -22,8 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function cargarOpciones() {
     try {
-      const [estilos, tallas, empresas, imgs] = await Promise.all([
-        fetch("http://localhost:8080/proyectoCalzado/api/estilos").then(r => r.json()),
+      // Cargar estilos activos
+      const estilos = await fetch("http://localhost:8080/proyectoCalzado/api/estilos/activas").then(r => r.json());
+
+      // Cargar tallas, empresas e imágenes
+      const [tallas, empresas, imgs] = await Promise.all([
         fetch("http://localhost:8080/proyectoCalzado/api/tallas").then(r => r.json()),
         fetch("http://localhost:8080/proyectoCalzado/api/empresas").then(r => r.json()),
         fetch("http://localhost:8080/proyectoCalzado/api/imagenes").then(r => r.json())
@@ -31,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       imagenes = imgs;
 
+      // Rellenar select estilos con solo activos
       estilos.forEach(e => {
         const option = document.createElement("option");
         option.value = e.codEstilo;
@@ -38,20 +42,27 @@ document.addEventListener("DOMContentLoaded", () => {
         estiloSelect.appendChild(option);
       });
 
-      tallas.forEach(t => {
-        const option = document.createElement("option");
-        option.value = t.codTalla;
-        option.textContent = t.numero_talla;
-        tallaSelect.appendChild(option);
-      });
+      // Rellenar select tallas con solo activas (id_estado === 1)
+      tallas
+        .filter(t => t.id_estado === 1)
+        .forEach(t => {
+          const option = document.createElement("option");
+          option.value = t.codTalla;
+          option.textContent = t.numero_talla;
+          tallaSelect.appendChild(option);
+        });
 
-      empresas.forEach(emp => {
-        const option = document.createElement("option");
-        option.value = emp.idEmpresa;
-        option.textContent = emp.nombre_empresa;
-        empresaSelect.appendChild(option);
-      });
+      // Rellenar select empresas con solo activas (id_estado === 1)
+      empresas
+        .filter(emp => emp.id_estado === 1)
+        .forEach(emp => {
+          const option = document.createElement("option");
+          option.value = emp.idEmpresa;
+          option.textContent = emp.nombre_empresa;
+          empresaSelect.appendChild(option);
+        });
 
+      // Rellenar select imágenes
       imagenes.forEach(img => {
         const option = document.createElement("option");
         option.value = img.id_imagen;
@@ -81,6 +92,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  async function productoDuplicado(productoNuevo) {
+    try {
+      const res = await fetch("http://localhost:8080/proyectoCalzado/api/productos");
+      const productos = await res.json();
+
+      return productos.some(p =>
+        p.nombre_producto.trim().toLowerCase() === productoNuevo.nombre_producto.trim().toLowerCase() &&
+        p.descripcion_producto.trim().toLowerCase() === productoNuevo.descripcion_producto.trim().toLowerCase() &&
+        parseFloat(p.precio_producto) === parseFloat(productoNuevo.precio_producto) &&
+        p.cod_estilo === productoNuevo.cod_estilo &&
+        p.cod_talla === productoNuevo.cod_talla &&
+        p.id_empresa === productoNuevo.id_empresa &&
+        p.id_imagen === productoNuevo.id_imagen
+      );
+    } catch (error) {
+      console.error("Error validando producto duplicado:", error);
+      // Por si falla validación, permitir registro para no bloquear usuario
+      return false;
+    }
+  }
+
   document.getElementById("formularioProducto").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -107,6 +139,10 @@ document.addEventListener("DOMContentLoaded", () => {
       cod_talla,
       id_empresa
     };
+
+    if (await productoDuplicado(producto)) {
+      return mostrarAlerta("Producto duplicado", "Ya existe un producto con esos mismos datos", "error");
+    }
 
     try {
       const response = await fetch("http://localhost:8080/proyectoCalzado/api/productos", {

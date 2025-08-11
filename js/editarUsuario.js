@@ -4,16 +4,18 @@ import { componentes } from "./header_sidebar.js";
 document.addEventListener("DOMContentLoaded", async () => {
   componentes();
 
-  const usuario = JSON.parse(localStorage.getItem("usuarioEditar"));
+  const usuarioEditar = JSON.parse(localStorage.getItem("usuarioEditar"));
+  const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"));
 
   const codCiudad = document.getElementById("codCiudad");
   const idRol = document.getElementById("idRol");
+  const inputContrasena = document.getElementById("contrasena");
 
-  document.getElementById("idUsuario").value = usuario.idUsuario;
-  document.getElementById("nombre").value = usuario.nombre;
-  document.getElementById("correo").value = usuario.correo;
-  document.getElementById("contrasena").value = usuario.contrasena;
-  document.getElementById("telefono").value = usuario.telefono;
+  document.getElementById("idUsuario").value = usuarioEditar.idUsuario;
+  document.getElementById("nombre").value = usuarioEditar.nombre;
+  document.getElementById("correo").value = usuarioEditar.correo;
+  document.getElementById("contrasena").value = usuarioEditar.contrasena;
+  document.getElementById("telefono").value = usuarioEditar.telefono;
 
   // Cargar ciudades
   const ciudades = await obtenerCiudades();
@@ -21,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const option = document.createElement("option");
     option.value = c.codCiudad;
     option.textContent = c.nombre_ciudad;
-    if (usuario.codCiudad === c.codCiudad) {
+    if (usuarioEditar.codCiudad === c.codCiudad) {
       option.selected = true;
     }
     codCiudad.appendChild(option);
@@ -33,15 +35,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     const option = document.createElement("option");
     option.value = r.idRol;
     option.textContent = r.nombre_rol;
-    if (usuario.idRol === r.idRol) {
+    if (usuarioEditar.idRol === r.idRol) {
       option.selected = true;
     }
     idRol.appendChild(option);
   });
 
-  // 🚫 Bloquear el cambio de rol si está marcado
-  if (usuario.rolBloqueado) {
+  // Solo permitir cambio de contraseña al usuario logueado sobre sí mismo
+  let permitirCambioContrasena = false;
+  if (usuarioLogueado && usuarioEditar.idUsuario === usuarioLogueado.idUsuario) {
+    permitirCambioContrasena = true;
+    inputContrasena.disabled = false;
+  } else {
+    inputContrasena.disabled = true;
+    inputContrasena.title = "No puedes cambiar la contraseña de otro usuario";
+  }
+
+  // Bloquear edición del rol si el usuario logueado es administrador y está editando su propio usuario
+  if (
+    usuarioLogueado &&
+    usuarioEditar.idUsuario === usuarioLogueado.idUsuario &&
+    usuarioLogueado.idRol === 2
+  ) {
     idRol.disabled = true;
+    idRol.title = "No puedes cambiar tu rol si eres administrador";
+  } else {
+    idRol.disabled = false;
   }
 
   // Envío del formulario
@@ -52,31 +71,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       idUsuario: parseInt(document.getElementById("idUsuario").value),
       nombre: document.getElementById("nombre").value,
       correo: document.getElementById("correo").value,
-      contrasena: document.getElementById("contrasena").value,
       telefono: document.getElementById("telefono").value,
       codCiudad: parseInt(document.getElementById("codCiudad").value),
-      idRol: parseInt(document.getElementById("idRol").value),
+      idRol: idRol.disabled
+        ? usuarioEditar.idRol // si el select está deshabilitado, mantener rol original
+        : parseInt(idRol.value),
+      contrasena: permitirCambioContrasena
+        ? document.getElementById("contrasena").value
+        : usuarioEditar.contrasena
     };
-
-    // Comprobar si hubo cambios
-    const sinCambios =
-      usuario.nombre === usuarioActualizado.nombre &&
-      usuario.correo === usuarioActualizado.correo &&
-      usuario.contrasena === usuarioActualizado.contrasena &&
-      usuario.telefono === usuarioActualizado.telefono &&
-      usuario.codCiudad === usuarioActualizado.codCiudad &&
-      usuario.idRol === usuarioActualizado.idRol;
-
-    if (sinCambios) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Sin cambios",
-        text: "No has realizado ninguna modificación.",
-      });
-    }
 
     try {
       await actualizarUsuario(usuarioActualizado);
+
+      // Si es el usuario logueado, actualizar también en localStorage
+      if (usuarioLogueado && usuarioLogueado.idUsuario === usuarioActualizado.idUsuario) {
+        localStorage.setItem("usuario", JSON.stringify(usuarioActualizado));
+      }
+
       localStorage.removeItem("usuarioEditar");
 
       await Swal.fire({

@@ -1,8 +1,5 @@
-import { componentes } from "./header_sidebar.js";
-
 document.addEventListener("DOMContentLoaded", () => {
-  componentes();
-
+  // --- Variables generales catálogo ---
   const contenedor = document.getElementById("contenedorCatalogo");
   let imagenes = [];
   let productos = [];
@@ -143,11 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Ejecutar carga inicial
+  // Ejecutar carga inicial catálogo
   (async () => {
     await cargarImagenes();
     await cargarProductos();
     actualizarContadorCarrito();
   })();
 });
-

@@ -19,8 +19,11 @@ async function cargarEmpresas() {
     const res = await fetch(URL_EMPRESAS);
     const empresas = await res.json();
 
-    select.innerHTML = '<option value="">-- Todas las empresas --</option>';
-    empresas.forEach((empresa) => {
+    // Solo empresas activas (id_estado === 1)
+    const empresasActivas = empresas.filter(e => e.id_estado === 1);
+
+    select.innerHTML = '<option value="">-- Todas las empresas activas --</option>';
+    empresasActivas.forEach((empresa) => {
       const option = document.createElement("option");
       option.value = empresa.idEmpresa;
       option.textContent = empresa.nombre_empresa;
@@ -30,6 +33,8 @@ async function cargarEmpresas() {
     console.error("Error cargando empresas:", e);
   }
 }
+
+
 
 async function cargarImagenes() {
   try {

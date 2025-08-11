@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const formRegistrar = document.getElementById("formRegistrarEmpresa");
   const formEditar = document.getElementById("formEditarEmpresa");
-  const formEliminar = document.getElementById("formEliminarEmpresa");
 
   const inputNombre = document.getElementById("nombreEmpresa");
   const inputDireccion = document.getElementById("direccionEmpresa");
@@ -13,22 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputCorreo = document.getElementById("correoEmpresa");
 
   const selectEditar = document.getElementById("empresaEditar");
-  const selectEliminar = document.getElementById("empresaEliminar");
-
-  const btnEditar = document.getElementById("btnEditarEmpresa");
-  const btnEliminar = document.getElementById("btnEliminarEmpresa");
-
-  const mensaje = document.getElementById("mensajeEmpresa");
-
   const inputNuevoNombre = document.getElementById("nuevoNombreEmpresa");
   const inputNuevaDireccion = document.getElementById("nuevaDireccionEmpresa");
   const inputNuevoTelefono = document.getElementById("nuevoTelefonoEmpresa");
   const inputNuevoCorreo = document.getElementById("nuevoCorreoEmpresa");
 
-  const infoEliminar = document.createElement("div");
-  infoEliminar.style.marginTop = "1rem";
-  infoEliminar.style.fontSize = "0.9rem";
-  formEliminar.appendChild(infoEliminar);
+  const selectInactivar = document.getElementById("empresaInactivar");
+  const selectActivar = document.getElementById("empresaActivar");
+
+  const btnEditar = document.getElementById("btnEditarEmpresa");
+  const btnInactivar = document.getElementById("btnInactivarEmpresa");
+  const btnActivar = document.getElementById("btnActivarEmpresa");
 
   let listaEmpresas = [];
 
@@ -47,15 +41,38 @@ document.addEventListener("DOMContentLoaded", () => {
       const empresas = await res.json();
       listaEmpresas = empresas;
 
-      [selectEditar, selectEliminar].forEach((select) => {
-        select.innerHTML = '<option value="">-- Seleccione una empresa --</option>';
-        empresas.forEach((empresa) => {
+      // Empresas activas para editar
+      selectEditar.innerHTML = '<option value="">-- Seleccione una empresa --</option>';
+      empresas
+        .filter(e => e.id_estado === 1)
+        .forEach(empresa => {
           const option = document.createElement("option");
           option.value = empresa.idEmpresa;
           option.textContent = empresa.nombre_empresa;
-          select.appendChild(option);
+          selectEditar.appendChild(option);
         });
-      });
+
+      // Empresas activas para inactivar
+      selectInactivar.innerHTML = '<option value="">-- Seleccione una empresa --</option>';
+      empresas
+        .filter(e => e.id_estado === 1)
+        .forEach(empresa => {
+          const option = document.createElement("option");
+          option.value = empresa.idEmpresa;
+          option.textContent = empresa.nombre_empresa;
+          selectInactivar.appendChild(option);
+        });
+
+      // Empresas inactivas para activar
+      selectActivar.innerHTML = '<option value="">-- Seleccione una empresa --</option>';
+      empresas
+        .filter(e => e.id_estado === 2)
+        .forEach(empresa => {
+          const option = document.createElement("option");
+          option.value = empresa.idEmpresa;
+          option.textContent = empresa.nombre_empresa;
+          selectActivar.appendChild(option);
+        });
     } catch (error) {
       console.error("Error al cargar empresas:", error);
       mostrarMensaje("Error", "No se pudieron cargar las empresas.", "error");
@@ -75,9 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Validar nombre duplicado al registrar
-    const nombreExiste = listaEmpresas.some(e => e.nombre_empresa.toLowerCase() === nombre.toLowerCase());
-    if (nombreExiste) {
+    if (listaEmpresas.some(e => e.nombre_empresa.toLowerCase() === nombre.toLowerCase())) {
       mostrarMensaje("Nombre duplicado", "Ya existe una empresa con ese nombre.", "warning");
       return;
     }
@@ -98,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       mostrarMensaje("¡Éxito!", "Empresa registrada correctamente.", "success");
       formRegistrar.reset();
-      cargarEmpresas();
+      await cargarEmpresas();
     } catch (error) {
       mostrarMensaje("Error", "Error al registrar la empresa.", "error");
     }
@@ -140,12 +155,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Validar nombre duplicado al editar (excepto la misma empresa)
-    const nombreExisteEdit = listaEmpresas.some(e =>
-      e.nombre_empresa.toLowerCase() === nuevo.nombre_empresa.toLowerCase() &&
-      e.idEmpresa != id
-    );
-    if (nombreExisteEdit) {
+    // Validar nombre duplicado (excepto la misma empresa)
+    if (
+      listaEmpresas.some(e =>
+        e.nombre_empresa.toLowerCase() === nuevo.nombre_empresa.toLowerCase() &&
+        e.idEmpresa != id
+      )
+    ) {
       mostrarMensaje("Nombre duplicado", "Ya existe otra empresa con ese nombre.", "warning");
       return;
     }
@@ -160,9 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) throw new Error();
 
       mostrarMensaje("¡Éxito!", "Empresa actualizada correctamente.", "success");
-      cargarEmpresas();
+      await cargarEmpresas();
 
-      // Limpiar campos y selects
       selectEditar.value = "";
       inputNuevoNombre.value = "";
       inputNuevaDireccion.value = "";
@@ -174,56 +189,81 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  selectEliminar.addEventListener("change", () => {
-    const id = selectEliminar.value;
-    const empresa = listaEmpresas.find(e => e.idEmpresa == id);
-
-    if (empresa) {
-      infoEliminar.innerHTML = `
-        <strong>Nombre:</strong> ${empresa.nombre_empresa}<br>
-        <strong>Dirección:</strong> ${empresa.direccion_empresa}<br>
-        <strong>Teléfono:</strong> ${empresa.telefono_empresa}<br>
-        <strong>Correo:</strong> ${empresa.correo_empresa}
-      `;
-    } else {
-      infoEliminar.innerHTML = "";
-    }
-  });
-
-  btnEliminar.addEventListener("click", async () => {
-    const id = selectEliminar.value;
+  btnInactivar.addEventListener("click", async () => {
+    const id = selectInactivar.value;
     if (!id) {
-      mostrarMensaje("Seleccione empresa", "Seleccione una empresa a eliminar.", "warning");
+      mostrarMensaje("Seleccione empresa", "Seleccione una empresa a inactivar.", "warning");
+      return;
+    }
+
+    // Validar relaciones antes de inactivar
+    try {
+      const resCheck = await fetch(`http://localhost:8080/proyectoCalzado/api/empresas/${id}/tieneRelaciones`);
+      if (!resCheck.ok) throw new Error("No se pudo validar relaciones");
+      const dataCheck = await resCheck.json();
+
+      if (dataCheck.tieneRelaciones) {
+        mostrarMensaje("No permitido", "La empresa tiene relaciones y no se puede inactivar.", "error");
+        return;
+      }
+    } catch {
+      mostrarMensaje("Error", "No se pudo validar la empresa.", "error");
       return;
     }
 
     const confirmacion = await Swal.fire({
       title: "¿Estás seguro?",
-      text: "Esta acción eliminará la empresa seleccionada.",
+      text: "Esta acción inactivará la empresa seleccionada.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
+      confirmButtonText: "Sí, inactivar",
       cancelButtonText: "Cancelar",
     });
 
     if (!confirmacion.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/empresas/${id}`, {
-        method: "DELETE",
+      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/empresas/${id}/inactivar`, {
+        method: "PUT",
       });
 
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al inactivar la empresa.");
+      }
 
-      mostrarMensaje("¡Éxito!", "Empresa eliminada correctamente.", "success");
-      infoEliminar.innerHTML = "";
-      cargarEmpresas();
+      mostrarMensaje("¡Éxito!", "Empresa inactivada correctamente.", "success");
+      await cargarEmpresas();
 
-      // Limpiar selects
-      selectEliminar.value = "";
-
+      selectInactivar.value = "";
     } catch (error) {
-      mostrarMensaje("Error", "Error al eliminar la empresa.", "error");
+      mostrarMensaje("Error", error.message, "error");
+    }
+  });
+
+  btnActivar.addEventListener("click", async () => {
+    const id = selectActivar.value;
+    if (!id) {
+      mostrarMensaje("Seleccione empresa", "Seleccione una empresa a activar.", "warning");
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/empresas/${id}/reactivar`, {
+        method: "PUT",
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al activar la empresa.");
+      }
+
+      mostrarMensaje("¡Éxito!", "Empresa activada correctamente.", "success");
+      await cargarEmpresas();
+
+      selectActivar.value = "";
+    } catch (error) {
+      mostrarMensaje("Error", error.message, "error");
     }
   });
 

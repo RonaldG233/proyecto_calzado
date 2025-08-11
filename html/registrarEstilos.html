@@ -1,60 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CATALOGO CLASSIC PRESTIGE MEN</title>
-  <link rel="stylesheet" href="../css/registrarEstilos.css">
+  <link rel="stylesheet" href="../css/registrarEstilos.css" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <div id="header-container"></div>
-  
   <div id="sidebar-container"></div>
   <main class="estilo">
-  <section class="formulario-estilo">
+    <section class="formulario-estilo">
 
-    <!-- Formulario REGISTRAR -->
-    <form id="formRegistrarEstilo">
-      <h2>Registrar Estilo</h2>
-      <label for="nombreEstilo">Nombre del estilo</label>
-      <input type="text" id="nombreEstilo" name="nombreEstilo" required placeholder="Ej: Bota" />
-      <button type="submit">Registrar Estilo</button>
-    </form>
+      <!-- Formulario REGISTRAR -->
+      <form id="formRegistrarEstilo">
+        <h2>Registrar Estilo</h2>
+        <label for="nombreEstilo">Nombre del estilo</label>
+        <input
+          type="text"
+          id="nombreEstilo"
+          name="nombreEstilo"
+          required
+          placeholder="Ej: Bota"
+        />
+        <button type="submit">Registrar Estilo</button>
+      </form>
 
-    <!-- Formulario EDITAR -->
-    <form id="formEditarEstilo">
-  <h2>Editar Estilo</h2>
-  <label for="estilosEditar">Seleccionar Estilo</label>
-  <select id="estilosEditar">
-    <option value="">-- Selecciona un estilo --</option>
-  </select>
+      <!-- Formulario EDITAR -->
+      <form id="formEditarEstilo">
+        <h2>Editar Estilo</h2>
+        <label for="estilosEditar">Seleccionar Estilo</label>
+        <select id="estilosEditar">
+          <option value="">-- Selecciona un estilo --</option>
+        </select>
 
-  <label for="nuevoNombreEstilo">Nuevo nombre de estilo</label>
-  <input type="text" id="nuevoNombreEstilo" placeholder="Nuevo nombre..." />
+        <label for="nuevoNombreEstilo">Nuevo nombre de estilo</label>
+        <input type="text" id="nuevoNombreEstilo" placeholder="Nuevo nombre..." />
 
-  <button type="button" id="btnEditar">Editar Estilo</button>
-</form>
+        <button type="button" id="btnEditar">Editar Estilo</button>
+      </form>
 
+      <!-- Formulario INACTIVAR (antes eliminar) -->
+      <form id="formEliminarEstilo">
+        <h2>Inactivar Estilo</h2>
+        <label for="estilosEliminar">Seleccionar Estilo</label>
+        <select id="estilosEliminar">
+          <option value="">-- Selecciona un Estilo --</option>
+        </select>
+        <button type="button" id="btnEliminar">Inactivar Estilo</button>
+      </form>
 
-    <!-- Formulario ELIMINAR -->
-    <form id="formEliminarEstilo">
-      <h2>Eliminar Estilo</h2>
-      <label for="estilosEliminar">Seleccionar Estilo</label>
-      <select id="estilosEliminar">
-        <option value="">-- Selecciona un Estilo --</option>
-      </select>
-      <button type="button" id="btnEliminar">Eliminar Estilo</button>
-    </form>
+      <!-- Formulario REACTIVAR -->
+      <form id="formReactivarEstilo">
+        <h2>Reactivar Estilo</h2>
+        <label for="estilosReactivar">Seleccionar Estilo</label>
+        <select id="estilosReactivar">
+          <option value="">-- Selecciona un Estilo --</option>
+        </select>
+        <button type="button" id="btnReactivar">Reactivar Estilo</button>
+      </form>
 
-  </section>
+    </section>
 
-  <div id="mensajeEstilo"></div>
-</main>
+    <div id="mensajeEstilo"></div>
+  </main>
 
-
-  
   <script type="module" src="../js/registrarEstilo.js"></script>
 </body>
 </html>

@@ -13,25 +13,27 @@
 
 </head>
 <body>
-  <link rel="stylesheet" href="../css/headerUsuario.css">
-<div id="header-container"></div>
+  
+<!-- Aquí se cargará el header -->
+  <div id="header"></div>
 
-  <aside class="sidebar">
-    <div class="sidebar-items">
-      <a href="../html/catalogo.html" class="sidebar-item">Catalogo</a>
-      <a href="../html/estilos.html" class="sidebar-item">estilos</a>
-      <a href="../html/tallas.html" class="sidebar-item">tallas</a>
-      <a href="../html/empresas.html" class="sidebar-item">empresas</a>
-      <a href="../html/carrito.html" class="sidebar-item">Consultar pedido</a>
-      
-    </div>
-  </aside>
-
-
+  <!-- Aquí se cargará el sidebar -->
+  <div id="sidebar"></div>
 
   <main class="catalogo" id="contenedorCatalogo" >
     <!-- Aquí se insertarán los productos -->
   </main>
+  <script>
+    // Cargar el header y sidebar dinámicamente
+    async function cargarComponentes() {
+      const header = await fetch('../componentes/headerUsuario.html');
+      document.getElementById('header').innerHTML = await header.text();
+
+      const sidebar = await fetch('../componentes/sidebarUsuario.html');
+      document.getElementById('sidebar').innerHTML = await sidebar.text();
+    }
+    cargarComponentes();
+  </script>
 
   <script type="module" src="../js/catalogo.js"></script>
 </body>

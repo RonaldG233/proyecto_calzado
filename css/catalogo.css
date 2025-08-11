@@ -14,43 +14,7 @@ body {
     'sidebar content';
 }
 
-/* SIDEBAR */
-.sidebar {
-  grid-area: sidebar;
-  background-color: #C7A589;
-  display: flex;
-  padding-top: 30px;
-  min-height: 89vh;
-  max-height: 89vh;
-  border-radius: 0 20px 20px 0;
-  position: sticky;
-  top: 10.6vh;
-  z-index: 1000;
-}
 
-.sidebar-items {
-  display: flex;
-  flex-direction: column;
-  padding: 0 19px;
-  margin-right: 25px;
-  gap: 20px;
-}
-
-.sidebar-item {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding-left: 25px;
-  text-decoration: none;
-  color: #8B5E3C;
-  font-weight: bold;
-  font-size: 22px;
-  transition: color 0.3s;
-}
-
-.sidebar-item:hover {
-  color: #5c3b26;
-}
 
 /* Estilo para las tarjetas de productos */
 

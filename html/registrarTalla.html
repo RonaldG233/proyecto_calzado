@@ -20,7 +20,7 @@
     <form id="formRegistrarTalla">
       <h2>Registrar Talla</h2>
       <label for="nombreTalla">Numero de talla</label>
-      <input type="text" id="nombreTalla" name="nombreTalla" required placeholder="Ej: 40" />
+      <input type="number" id="nombreTalla" name="nombreTalla" required placeholder="Ej: 40" />
       <button type="submit">Registrar Talla</button>
     </form>
 
@@ -33,7 +33,7 @@
   </select>
 
   <label for="nuevoNombreTalla">Nuevo numero de talla</label>
-  <input type="text" id="nuevoNombreTalla" placeholder="Nuevo numero..." />
+  <input type="text" id="nuevoNombreTalla" placeholder="Nuevo numero..."  />
 
   <button type="button" id="btnEditar">Editar Talla</button>
 </form>
@@ -43,10 +43,19 @@
     <form id="formEliminarTalla">
       <h2>Eliminar Talla</h2>
       <label for="tallaEliminar">Seleccionar Talla</label>
-      <select id="tallaEliminar">
+      <select id="tallaInactivar">
         <option value="">-- Selecciona una Talla --</option>
       </select>
-      <button type="button" id="btnEliminar">Eliminar Talla</button>
+      <button type="button" id="btnInactivar">Inactivar Talla</button>
+    </form>
+
+    <form id="formActivarTalla">
+      <h2>Eliminar Talla</h2>
+      <label for="tallaActivar">Seleccionar Talla</label>
+      <select id="tallaActivar">
+        <option value="">-- Selecciona una Talla --</option>
+      </select>
+      <button type="button" id="btnActivar">Activar Talla</button>
     </form>
 
   </section>

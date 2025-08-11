@@ -46,7 +46,7 @@ export async function crearTablaUsuarios() {
       if (
         usuarioLogueado &&
         usuarioLogueado.idUsuario === u.idUsuario &&
-        rolNombre.toLowerCase() !== "administrador"
+        rolNombre.toLowerCase() !== "usuario"
       ) {
         tr.classList.add("resaltado-logueado");
       }

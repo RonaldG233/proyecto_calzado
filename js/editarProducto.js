@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function cargarOpciones() {
     try {
       const [estilos, tallas, empresas, imgs] = await Promise.all([
-        fetch("http://localhost:8080/proyectoCalzado/api/estilos").then(r => r.json()),
+        fetch("http://localhost:8080/proyectoCalzado/api/estilos/activas").then(r => r.json()),
         fetch("http://localhost:8080/proyectoCalzado/api/tallas").then(r => r.json()),
         fetch("http://localhost:8080/proyectoCalzado/api/empresas").then(r => r.json()),
         fetch("http://localhost:8080/proyectoCalzado/api/imagenes").then(r => r.json())
@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       imagenes = imgs;
 
+      // Sólo estilos activos
       estilos.forEach(e => {
         const option = document.createElement("option");
         option.value = e.codEstilo;
@@ -50,26 +51,30 @@ document.addEventListener("DOMContentLoaded", () => {
         estiloSelect.appendChild(option);
       });
 
-      tallas.forEach(t => {
+      // Sólo tallas activas (id_estado === 1)
+      tallas.filter(t => t.id_estado === 1).forEach(t => {
         const option = document.createElement("option");
         option.value = t.codTalla;
         option.textContent = t.numero_talla;
         tallaSelect.appendChild(option);
       });
 
-      empresas.forEach(emp => {
+      // Sólo empresas activas (id_estado === 1)
+      empresas.filter(emp => emp.id_estado === 1).forEach(emp => {
         const option = document.createElement("option");
         option.value = emp.idEmpresa;
         option.textContent = emp.nombre_empresa;
         empresaSelect.appendChild(option);
       });
 
+      // Imágenes (sin filtro)
       imagenes.forEach(img => {
         const option = document.createElement("option");
         option.value = img.id_imagen;
         option.textContent = img.nombre;
         imagenSelect.appendChild(option);
       });
+
     } catch (err) {
       console.error("Error cargando selects:", err);
       mostrarMensaje("Error cargando datos para selección", "red");
@@ -123,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Validación rápida
     if (!nombreInput.value.trim() || !descripcionInput.value.trim() || !precioInput.value || !cantidadInput.value) {
       return mostrarMensaje("Todos los campos son obligatorios", "red");
     }

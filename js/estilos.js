@@ -16,10 +16,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function cargarEstilos() {
   const select = document.getElementById("selectEstilos");
   try {
-    const res = await fetch(URL_ESTILOS);
+    const res = await fetch("http://localhost:8080/proyectoCalzado/api/estilos/activas");  // Solo activos
     const estilos = await res.json();
 
-    select.innerHTML = '<option value="">-- Todos los estilos --</option>';
+    // Opción para "todos" si quieres mostrar todos los productos que tengan estilos activos
+    select.innerHTML = '<option value="">-- Todos los estilos activos --</option>';
+
     estilos.forEach((estilo) => {
       const option = document.createElement("option");
       option.value = estilo.codEstilo;
@@ -30,6 +32,7 @@ async function cargarEstilos() {
     console.error("Error cargando estilos:", e);
   }
 }
+
 
 async function cargarImagenes() {
   try {

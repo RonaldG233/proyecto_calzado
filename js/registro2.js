@@ -100,7 +100,7 @@ async function cargarCiudades() {
   }
 }
 
-// Función para cargar roles con administrador bloqueado
+// Función para cargar roles (sin bloquear ninguno)
 function cargarRoles() {
   const rolSelect = document.getElementById("rol");
   rolSelect.innerHTML = '<option value="">-- Selecciona un rol --</option>';
@@ -114,13 +114,6 @@ function cargarRoles() {
     const option = document.createElement("option");
     option.value = rol.idRol;
     option.textContent = rol.nombre_rol;
-
-    // Deshabilitar Administrador para que no se pueda seleccionar
-    if (rol.idRol === 2) {
-      option.disabled = true;
-      option.textContent += " (No disponible)";
-    }
-
     rolSelect.appendChild(option);
   });
 }

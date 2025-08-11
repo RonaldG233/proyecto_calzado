@@ -1,3 +1,4 @@
+// --- Detalle Producto ---
 document.addEventListener("DOMContentLoaded", async () => {
   const datos = JSON.parse(localStorage.getItem("productoDetalle"));
   const contenedor = document.getElementById("detalleProducto");

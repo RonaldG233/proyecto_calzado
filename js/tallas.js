@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function cargarTallas() {
   const select = document.getElementById("selectTallas");
   try {
-    const res = await fetch(URL_TALLAS);
+    const res = await fetch("http://localhost:8080/proyectoCalzado/api/tallas/activas"); // Solo activas
     const tallas = await res.json();
 
-    select.innerHTML = '<option value="">-- Todas las tallas --</option>';
+    select.innerHTML = '<option value="">-- Todas las tallas activas --</option>';
     tallas.forEach((talla) => {
       const option = document.createElement("option");
       option.value = talla.codTalla;
@@ -30,6 +30,7 @@ async function cargarTallas() {
     console.error("Error cargando tallas:", e);
   }
 }
+
 
 async function cargarImagenes() {
   try {

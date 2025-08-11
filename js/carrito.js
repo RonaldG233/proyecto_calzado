@@ -1,3 +1,4 @@
+// --- Carrito y Confirmación Pedido ---
 document.addEventListener("DOMContentLoaded", async () => {
   const contenedor = document.getElementById("listaCarrito");
   const totalSpan = document.getElementById("totalPago");
@@ -46,9 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function calcularTotal() {
-    return carrito.reduce((total, item) => {
-      return total + (item.precio_producto * item.cantidad);
-    }, 0);
+    return carrito.reduce((total, item) => total + (item.precio_producto * item.cantidad), 0);
   }
 
   async function renderCarrito() {
@@ -104,6 +103,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     totalSpan.textContent = calcularTotal().toLocaleString();
   }
 
+  // Función para actualizar stock de producto enviando SOLO el número (no objeto)
+  async function actualizarStockProducto(idProducto, nuevaCantidad) {
+    try {
+      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/productos/${idProducto}/stock`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevaCantidad) // Enviar solo el número directamente
+      });
+
+      if (!res.ok) {
+        console.error(`No se pudo actualizar el stock del producto con ID ${idProducto}`);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.error("Error al actualizar stock:", e);
+      return false;
+    }
+  }
+
   btnConfirmar.addEventListener("click", async () => {
     if (carrito.length === 0) {
       Swal.fire({
@@ -132,112 +151,74 @@ document.addEventListener("DOMContentLoaded", async () => {
       valorPagoTotal: parseFloat(calcularTotal().toFixed(2))
     };
 
-    btnConfirmar.addEventListener("click", async () => {
-  if (carrito.length === 0) {
-    Swal.fire({
-      icon: "info",
-      title: "Carrito vacío",
-      text: "Tu carrito está vacío, agrega productos para continuar."
-    });
-    return;
-  }
-
-  const idPago = parseInt(selectPago.value);
-
-  if (!idPago) {
-    Swal.fire({
-      icon: "warning",
-      title: "Método de pago requerido",
-      text: "Selecciona un método de pago para continuar."
-    });
-    return;
-  }
-
-  const pedido = {
-    idUsuario: idUsuario,
-    idPago: idPago,
-    fechaHora: new Date().toISOString(),
-    valorPagoTotal: parseFloat(calcularTotal().toFixed(2))
-  };
-
-  try {
-    // Registrar pedido
-    const res = await fetch("http://localhost:8080/proyectoCalzado/api/pedidos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(pedido)
-    });
-
-    if (!res.ok) throw new Error("Error al registrar pedido");
-
-    const idPedido = await res.json();
-
-    // Registrar detalles del pedido
-    for (const item of carrito) {
-      const detalle = {
-        idPedido: idPedido,
-        idProducto: Number(item.id_producto),
-        cantidad: Number(item.cantidad),
-        precioUnitario: Number(item.precio_producto)
-      };
-
-      const detalleRes = await fetch("http://localhost:8080/proyectoCalzado/api/detalle-pedido", {
+    try {
+      // Registrar pedido
+      const res = await fetch("http://localhost:8080/proyectoCalzado/api/pedidos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(detalle)
+        body: JSON.stringify(pedido)
       });
 
-      if (!detalleRes.ok) {
-        throw new Error(`Error al registrar detalle del producto ${item.nombre_producto}`);
+      if (!res.ok) throw new Error("Error al registrar pedido");
+
+      const idPedido = await res.json();
+
+      // Registrar detalles del pedido
+      for (const item of carrito) {
+        const detalle = {
+          idPedido: idPedido,
+          idProducto: Number(item.id_producto),
+          cantidad: Number(item.cantidad),
+          precioUnitario: Number(item.precio_producto)
+        };
+
+        const detalleRes = await fetch("http://localhost:8080/proyectoCalzado/api/detalle-pedido", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(detalle)
+        });
+
+        if (!detalleRes.ok) {
+          throw new Error(`Error al registrar detalle del producto ${item.nombre_producto}`);
+        }
       }
-    }
 
-    // Actualizar stock de productos (reduciendo según cantidad pedida)
-    for (const item of carrito) {
-      // Buscar stock actual del producto
-      const productoStock = productosDisponibles.find(p => p.id_producto === item.id_producto);
-      if (!productoStock) continue;
+      // Actualizar stock de productos (reduciendo según cantidad pedida)
+      for (const item of carrito) {
+        // Buscar stock actual del producto
+        const productoStock = productosDisponibles.find(p => p.id_producto === item.id_producto);
+        if (!productoStock) continue;
 
-      const nuevaCantidad = productoStock.cantidad_producto - item.cantidad;
+        const nuevaCantidad = productoStock.cantidad_producto - item.cantidad;
 
-      // Llamada PUT para actualizar el stock
-      const stockRes = await fetch(`http://localhost:8080/proyectoCalzado/api/productos/${item.id_producto}/stock`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cantidad_producto: nuevaCantidad })
+        // Actualizar stock con función
+        const actualizado = await actualizarStockProducto(item.id_producto, nuevaCantidad);
+        if (!actualizado) {
+          console.error(`No se pudo actualizar stock del producto ${item.nombre_producto}`);
+        }
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: "Pedido confirmado",
+        text: "¡Tu pedido fue confirmado exitosamente!",
+        timer: 2000,
+        showConfirmButton: false
       });
 
-      if (!stockRes.ok) {
-        console.error(`No se pudo actualizar stock del producto ${item.nombre_producto}`);
-        // Aquí puedes manejar el error si quieres (alert, retry, etc)
-      }
+      localStorage.removeItem("carrito");
+      setTimeout(() => {
+        window.location.href = "catalogo.html";
+      }, 2000);
+
+    } catch (e) {
+      console.error("Error confirmando pedido:", e);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo confirmar el pedido. Intenta nuevamente más tarde."
+      });
     }
-
-    Swal.fire({
-      icon: "success",
-      title: "Pedido confirmado",
-      text: "¡Tu pedido fue confirmado exitosamente!",
-      timer: 2000,
-      showConfirmButton: false
-    });
-
-    localStorage.removeItem("carrito");
-    setTimeout(() => {
-      window.location.href = "catalogo.html";
-    }, 2000);
-
-  } catch (e) {
-    console.error("Error confirmando pedido:", e);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "No se pudo confirmar el pedido. Intenta nuevamente más tarde."
-    });
-  }
-});
-
   });
 
   await cargarProductosStock();

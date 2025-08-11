@@ -5,204 +5,195 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const formRegistrar = document.getElementById("formRegistrarTalla");
   const selectEditar = document.getElementById("tallaEditar");
-  const selectEliminar = document.getElementById("tallaEliminar");
+  const selectInactivar = document.getElementById("tallaInactivar");
+  const selectActivar = document.getElementById("tallaActivar");
   const inputNuevoNombre = document.getElementById("nuevoNombreTalla");
 
   const btnEditar = document.getElementById("btnEditar");
-  const btnEliminar = document.getElementById("btnEliminar");
+  const btnInactivar = document.getElementById("btnInactivar");
+  const btnActivar = document.getElementById("btnActivar");
 
   let tallasCache = [];
 
-  // Carga las tallas y actualiza selects y cache
+  function mostrarMensaje(titulo, texto, icono = "info") {
+    Swal.fire({
+      title: titulo,
+      text: texto,
+      icon: icono,
+      confirmButtonText: "Aceptar",
+    });
+  }
+
   async function cargarTallas() {
     try {
-      const response = await fetch("http://localhost:8080/proyectoCalzado/api/tallas");
-      const tallas = await response.json();
+      const resActivas = await fetch("http://localhost:8080/proyectoCalzado/api/tallas/activas");
+      const tallasActivas = await resActivas.json();
 
-      tallasCache = tallas;
+      const resInactivas = await fetch("http://localhost:8080/proyectoCalzado/api/tallas/inactivas");
+      const tallasInactivas = await resInactivas.json();
 
-      [selectEditar, selectEliminar].forEach((select) => {
+      tallasCache = tallasActivas.concat(tallasInactivas);
+
+      // Rellenar selects de editar e inactivar con tallas activas
+      [selectEditar, selectInactivar].forEach((select) => {
         select.innerHTML = '<option value="">-- Selecciona una talla --</option>';
-        tallas.forEach((talla) => {
+        tallasActivas.forEach((talla) => {
           const option = document.createElement("option");
           option.value = talla.codTalla;
           option.textContent = talla.numero_talla;
           select.appendChild(option);
         });
       });
-    } catch (error) {
-      console.error("Error al cargar tallas:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error al cargar tallas",
-        text: "Intenta recargar la página.",
+
+      // Rellenar select de activar con tallas inactivas
+      selectActivar.innerHTML = '<option value="">-- Selecciona una talla --</option>';
+      tallasInactivas.forEach((talla) => {
+        const option = document.createElement("option");
+        option.value = talla.codTalla;
+        option.textContent = talla.numero_talla;
+        selectActivar.appendChild(option);
       });
+    } catch (error) {
+      console.error(error);
+      mostrarMensaje("Error", "No se pudieron cargar las tallas.", "error");
     }
   }
 
-  // Registrar nueva talla con validación de duplicado
-  formRegistrar.addEventListener("submit", async (e) => {
+  // Registrar nueva talla
+  formRegistrar?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const nombre = document.getElementById("nombreTalla").value.trim();
-
     if (!nombre) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Campo requerido",
-        text: "Debe ingresar un número de talla.",
-      });
+      mostrarMensaje("Campo vacío", "Debe ingresar un número de talla.", "warning");
+      return;
     }
-
-    // Verificar si ya existe la talla (ignorar mayúsculas/minúsculas)
-    const existe = tallasCache.some(
-      (t) => String(t.numero_talla).toLowerCase() === nombre.toLowerCase()
-    );
-    if (existe) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Talla duplicada",
-        text: "Ya existe esa talla registrada.",
-      });
+    if (tallasCache.some((t) => t.numero_talla.toLowerCase() === nombre.toLowerCase())) {
+      mostrarMensaje("Talla duplicada", "Ya existe una talla con ese número.", "warning");
+      return;
     }
 
     try {
-      const response = await fetch("http://localhost:8080/proyectoCalzado/api/tallas", {
+      const res = await fetch("http://localhost:8080/proyectoCalzado/api/tallas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ numero_talla: nombre }),
       });
-
-      if (!response.ok) throw new Error();
-
-      await Swal.fire({
-        icon: "success",
-        title: "Talla registrada",
-        text: "Se registró correctamente.",
-      });
-
+      if (!res.ok) throw new Error();
+      mostrarMensaje("¡Éxito!", "Talla registrada correctamente.", "success");
       e.target.reset();
-      await cargarTallas();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo registrar la talla.",
-      });
+      cargarTallas();
+    } catch {
+      mostrarMensaje("Error", "No se pudo registrar la talla.", "error");
     }
   });
 
-  // Editar talla con validación para evitar duplicados en otro registro
-  btnEditar.addEventListener("click", async () => {
+  // Editar talla
+  btnEditar?.addEventListener("click", async () => {
     const idTalla = selectEditar.value;
     const nuevoNombre = inputNuevoNombre.value.trim();
-
     if (!idTalla) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Sin selección",
-        text: "Seleccione una talla para editar.",
-      });
+      mostrarMensaje("Atención", "Seleccione una talla para editar.", "warning");
+      return;
     }
-
     if (!nuevoNombre) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Campo vacío",
-        text: "Debe ingresar un nuevo número para la talla.",
-      });
+      mostrarMensaje("Campo vacío", "Debe ingresar un nuevo número para la talla.", "warning");
+      return;
     }
-
-    // Verificar si el nuevo nombre ya existe en otra talla diferente
-    const existe = tallasCache.some(
-      (t) =>
-        String(t.numero_talla).toLowerCase() === nuevoNombre.toLowerCase() &&
-        String(t.codTalla) !== idTalla
-    );
-    if (existe) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Talla duplicada",
-        text: "Ya existe otra talla con ese número.",
-      });
+    if (
+      tallasCache.some(
+        (t) => t.numero_talla.toLowerCase() === nuevoNombre.toLowerCase() && t.codTalla != idTalla
+      )
+    ) {
+      mostrarMensaje("Talla duplicada", "Ya existe otra talla con ese número.", "warning");
+      return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}`, {
+      // Verificar relación
+      const relRes = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}/tienerelacion`);
+      if (!relRes.ok) throw new Error("No se pudo verificar la relación");
+      const data = await relRes.json();
+
+      if (data.tieneRelacion) {
+        mostrarMensaje("Error", "No se puede editar una talla que está relacionada.", "error");
+        return;
+      }
+
+      // Actualizar
+      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ numero_talla: nuevoNombre }),
       });
-
-      if (!response.ok) throw new Error();
-
-      await Swal.fire({
-        icon: "success",
-        title: "Talla actualizada",
-        text: "La talla se actualizó correctamente.",
-      });
-
+      if (!res.ok) throw new Error();
+      mostrarMensaje("¡Éxito!", "Talla actualizada correctamente.", "success");
       inputNuevoNombre.value = "";
       selectEditar.value = "";
-      await cargarTallas();
+      cargarTallas();
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo actualizar la talla.",
-      });
+      mostrarMensaje("Error", "No se pudo actualizar la talla.", "error");
     }
   });
 
-  // Eliminar talla
-  btnEliminar.addEventListener("click", async () => {
-    const idTalla = selectEliminar.value;
-
+  // Inactivar talla
+  btnInactivar?.addEventListener("click", async () => {
+    const idTalla = selectInactivar.value;
     if (!idTalla) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Sin selección",
-        text: "Seleccione una talla para eliminar.",
-      });
+      mostrarMensaje("Atención", "Seleccione una talla para inactivar.", "warning");
+      return;
     }
-
-    const confirmar = await Swal.fire({
-      icon: "warning",
-      title: "¿Eliminar talla?",
-      text: "Esta acción no se puede deshacer.",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    });
-
-    if (!confirmar.isConfirmed) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}`, {
-        method: "DELETE",
-      });
+      const relRes = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}/tienerelacion`);
+      if (!relRes.ok) throw new Error("No se pudo verificar la relación");
+      const data = await relRes.json();
 
-      if (!response.ok) throw new Error();
+      if (data.tieneRelacion) {
+        mostrarMensaje("Error", "No se puede inactivar una talla que está relacionada.", "error");
+        return;
+      }
 
-      await Swal.fire({
-        icon: "success",
-        title: "Talla eliminada",
-        text: "Se eliminó correctamente.",
+      const confirmacion = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción inactivará la talla seleccionada.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, inactivar",
+        cancelButtonText: "Cancelar",
       });
+      if (!confirmacion.isConfirmed) return;
 
-      selectEliminar.value = "";
-      await cargarTallas();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo eliminar la talla. Puede estar en uso.",
+      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}/inactivar`, {
+        method: "PUT",
       });
+      if (!res.ok) throw new Error();
+      mostrarMensaje("¡Éxito!", "Talla inactivada correctamente.", "success");
+      selectInactivar.value = "";
+      cargarTallas();
+    } catch {
+      mostrarMensaje("Error", "No se pudo inactivar la talla.", "error");
     }
   });
 
-  // Inicializar carga de tallas
+  // Activar talla
+  btnActivar?.addEventListener("click", async () => {
+    const idTalla = selectActivar.value;
+    if (!idTalla) {
+      mostrarMensaje("Atención", "Seleccione una talla para activar.", "warning");
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:8080/proyectoCalzado/api/tallas/${idTalla}/reactivar`, {
+        method: "PUT",
+      });
+      if (!res.ok) throw new Error();
+      mostrarMensaje("¡Éxito!", "Talla activada correctamente.", "success");
+      selectActivar.value = "";
+      cargarTallas();
+    } catch {
+      mostrarMensaje("Error", "No se pudo activar la talla.", "error");
+    }
+  });
+
   cargarTallas();
 });
-

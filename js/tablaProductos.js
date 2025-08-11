@@ -5,19 +5,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const contenedor = document.querySelector(".tablaProducto");
 
   let imagenes = [];
+  let tallas = [];
+  let empresas = [];
 
-  async function cargarImagenes() {
+  async function cargarDatosAuxiliares() {
     try {
-      const res = await fetch("http://localhost:8080/proyectoCalzado/api/imagenes");
-      imagenes = await res.json();
+      const [resImgs, resTallas, resEmpresas] = await Promise.all([
+        fetch("http://localhost:8080/proyectoCalzado/api/imagenes"),
+        fetch("http://localhost:8080/proyectoCalzado/api/tallas"),
+        fetch("http://localhost:8080/proyectoCalzado/api/empresas")
+      ]);
+      imagenes = await resImgs.json();
+      tallas = await resTallas.json();
+      empresas = await resEmpresas.json();
     } catch (e) {
-      console.error("Error cargando imágenes:", e);
+      console.error("Error cargando datos auxiliares:", e);
     }
   }
 
   function buscarNombreImagen(id) {
     const img = imagenes.find(img => img.id_imagen === id);
     return img?.nombre || "placeholder.jpg";
+  }
+
+  function buscarNombreTalla(codTalla) {
+    const talla = tallas.find(t => t.codTalla === codTalla);
+    return talla ? talla.numero_talla : "N/A";
+  }
+
+  function buscarNombreEmpresa(idEmpresa) {
+    const empresa = empresas.find(e => e.idEmpresa === idEmpresa);
+    return empresa ? empresa.nombre_empresa : "N/A";
   }
 
   async function cargarProductos() {
@@ -46,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.add("cardProducto");
 
         const nombreImagen = buscarNombreImagen(id_imagen);
+        const nombreTalla = buscarNombreTalla(cod_talla);
+        const nombreEmpresa = buscarNombreEmpresa(id_empresa);
 
         card.innerHTML = `
           <img src="http://localhost:8080/proyectoCalzado/api/imagenes/ver/${nombreImagen}" alt="Producto" class="imgProducto"/>
@@ -54,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>${descripcion_producto}</p>
             <p class="precio">$${typeof precio_producto === "number" ? precio_producto.toFixed(2) : "0.00"}</p>
             <p class="cantidad">Stock: ${cantidad_producto ?? "?"}</p>
+            <p class="talla">Talla: ${nombreTalla}</p>
+            <p class="empresa">Empresa: ${nombreEmpresa}</p>
             <div class="accionesProducto">
               <button class="btnEditar" data-id="${id_producto}">Editar</button>
               <button class="btnEliminar" data-id="${id_producto}">Eliminar</button>
@@ -106,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   (async () => {
-    await cargarImagenes();
+    await cargarDatosAuxiliares();
     await cargarProductos();
   })();
 });
