@@ -2,7 +2,8 @@ import {
   obtenerUsuarios,
   obtenerCiudades,
   obtenerRoles,
-  eliminarUsuario
+  inactivarUsuario,
+  reactivarUsuario
 } from "./api.js";
 
 export async function crearTablaUsuarios() {
@@ -20,7 +21,7 @@ export async function crearTablaUsuarios() {
     // CABECERA
     const thead = document.createElement("thead");
     const trEncabezado = document.createElement("tr");
-    const campos = ["ID", "Nombre", "Correo", "Teléfono", "Ciudad", "Rol"];
+    const campos = ["ID", "Nombre", "Correo", "Teléfono", "Ciudad", "Rol", "Estado"];
     campos.forEach(campo => {
       const th = document.createElement("th");
       th.textContent = campo;
@@ -34,7 +35,6 @@ export async function crearTablaUsuarios() {
 
     // CUERPO
     const tbody = document.createElement("tbody");
-
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"));
 
     usuarios.forEach((u) => {
@@ -42,6 +42,7 @@ export async function crearTablaUsuarios() {
 
       const ciudadNombre = ciudades.find(c => c.codCiudad === u.codCiudad)?.nombre_ciudad || "Desconocida";
       const rolNombre = roles.find(r => r.idRol === u.idRol)?.nombre_rol || "Sin rol";
+      const estadoNombre = u.estado || "Desconocido"; // <-- viene de la API (Activo/Inactivo)
 
       if (
         usuarioLogueado &&
@@ -57,7 +58,8 @@ export async function crearTablaUsuarios() {
         u.correo,
         u.telefono,
         ciudadNombre,
-        rolNombre
+        rolNombre,
+        estadoNombre
       ];
 
       datos.forEach(dato => {
@@ -73,48 +75,88 @@ export async function crearTablaUsuarios() {
       btnEditar.textContent = "✏️";
       btnEditar.classList.add("editar");
 
-      const btnEliminar = document.createElement("button");
-      btnEliminar.textContent = "🗑️";
-      btnEliminar.classList.add("eliminar");
-
-      const datosEditar = { ...u };
-      if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
-        datosEditar.rolBloqueado = true;
-      }
-
       btnEditar.addEventListener("click", () => {
+        const datosEditar = { ...u };
+        if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
+          datosEditar.rolBloqueado = true;
+        }
         localStorage.setItem("usuarioEditar", JSON.stringify(datosEditar));
         window.location.href = "../html/editarUsuario.html";
       });
 
-      if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
-        btnEliminar.disabled = true;
-        btnEliminar.title = "No puedes eliminar tu propia cuenta";
+      // Botón de estado dinámico
+      const btnEstado = document.createElement("button");
+      // Dentro de crearTablaUsuarios(), en el botón btnEstado cuando sea "Inactivar"
+if (estadoNombre.toLowerCase() === "activo") {
+  btnEstado.textContent = "🚫 Inactivar";
+  btnEstado.classList.add("inactivar");
+  btnEstado.addEventListener("click", async () => {
+
+    // Validar que no sea el usuario logueado
+    if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acción no permitida',
+        text: 'No puedes inactivar tu propia cuenta.'
+      });
+      return; // Salir sin hacer nada
+    }
+
+    const confirmar = await Swal.fire({
+      title: '¿Inactivar usuario?',
+      text: `El usuario "${u.nombre}" pasará a estado inactivo.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, inactivar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (confirmar.isConfirmed) {
+      try {
+        await inactivarUsuario(u.idUsuario);
+        Swal.fire({
+          icon: 'success',
+          title: 'Inactivado',
+          text: 'El usuario fue inactivado correctamente.'
+        });
+        crearTablaUsuarios(); // Recargar tabla
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al inactivar el usuario.'
+        });
+      }
+    }
+  });
+
       } else {
-        btnEliminar.addEventListener("click", async () => {
+        btnEstado.textContent = "✅ Reactivar";
+        btnEstado.classList.add("reactivar");
+        btnEstado.addEventListener("click", async () => {
           const confirmar = await Swal.fire({
-            title: '¿Estás seguro?',
-            text: `Eliminar al usuario "${u.nombre}"`,
-            icon: 'warning',
+            title: '¿Reactivar usuario?',
+            text: `El usuario "${u.nombre}" pasará a estado activo.`,
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Sí, eliminar',
+            confirmButtonText: 'Sí, reactivar',
             cancelButtonText: 'Cancelar'
           });
 
           if (confirmar.isConfirmed) {
             try {
-              await eliminarUsuario(u.idUsuario);
+              await reactivarUsuario(u.idUsuario);
               Swal.fire({
                 icon: 'success',
-                title: 'Eliminado',
-                text: 'El usuario fue eliminado correctamente.'
+                title: 'Reactivado',
+                text: 'El usuario fue reactivado correctamente.'
               });
-              tr.remove();
+              crearTablaUsuarios(); // Recargar tabla
             } catch (error) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Ocurrió un error al eliminar el usuario.'
+                text: 'Ocurrió un error al reactivar el usuario.'
               });
             }
           }
@@ -122,9 +164,8 @@ export async function crearTablaUsuarios() {
       }
 
       tdAcciones.appendChild(btnEditar);
-      tdAcciones.appendChild(btnEliminar);
+      tdAcciones.appendChild(btnEstado);
       tr.appendChild(tdAcciones);
-
       tbody.appendChild(tr);
     });
 

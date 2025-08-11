@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nombreImagen = document.getElementById('nombreImagen').value.trim();
     const archivo = document.getElementById('archivo').files[0];
 
-    // Validaciones
+    // Validaciones locales
     if (!nombreImagen) {
       return Swal.fire({
         icon: 'warning',
@@ -52,7 +52,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Preparar FormData
+    // Validar si el nombre ya existe consultando la API
+    try {
+      const resVerif = await fetch(`http://localhost:8080/proyectoCalzado/api/imagenes/verificar-nombre?nombre=${encodeURIComponent(nombreImagen)}`);
+      if (!resVerif.ok) throw new Error('Error al verificar nombre');
+      const data = await resVerif.json();
+
+      if (data.exists) {
+        return Swal.fire({
+          icon: 'warning',
+          title: 'Nombre duplicado',
+          text: 'Ya existe una imagen con ese nombre. Elige otro nombre.'
+        });
+      }
+    } catch (error) {
+      console.error("Error al verificar nombre:", error);
+      return Swal.fire({
+        icon: 'error',
+        title: 'Error de conexión',
+        text: 'No se pudo verificar el nombre de la imagen.'
+      });
+    }
+
+    // Si pasa todas las validaciones, subimos la imagen
     const formData = new FormData();
     formData.append('archivo', archivo);
     formData.append('nombrePersonalizado', nombreImagen);
@@ -88,5 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         text: 'No se pudo conectar con el servidor.'
       });
     }
+
   });
 });

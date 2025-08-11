@@ -83,10 +83,12 @@ async function cargarCiudades() {
     const ciudades = await response.json();
 
     ciudades.forEach(ciudad => {
-      const option = document.createElement("option");
+      if (ciudad.id_estado==1) {
+        const option = document.createElement("option");
       option.value = ciudad.codCiudad;
       option.textContent = ciudad.nombre_ciudad;
       ciudadSelect.appendChild(option);
+      }
     });
 
   } catch (error) {

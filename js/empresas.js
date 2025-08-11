@@ -20,7 +20,7 @@ async function cargarEmpresas() {
     const empresas = await res.json();
 
     // Solo empresas activas (id_estado === 1)
-    const empresasActivas = empresas.filter(e => e.id_estado === 1);
+    const empresasActivas = empresas.filter(e => e.id_estado == 1);
 
     select.innerHTML = '<option value="">-- Todas las empresas activas --</option>';
     empresasActivas.forEach((empresa) => {

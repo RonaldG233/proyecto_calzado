@@ -118,6 +118,44 @@ export async function obtenerUsuarioPorId(id) {
     throw error;
   }
 }
+// INACTIVAR USUARIO
+export async function inactivarUsuario(id) {
+  try {
+    const response = await fetch(`${API_BASE}/usuarios/${id}/inactivar`, {
+      method: "PUT"
+    });
 
+    if (!response.ok) {
+      throw new Error("Error al inactivar el usuario");
+    }
+
+    // Si hay contenido JSON, parsea; si no, solo devuelve true
+    const text = await response.text();
+    return text ? JSON.parse(text) : true;
+
+  } catch (error) {
+    console.error("Error al inactivar:", error.message);
+    throw error;
+  }
+}
+
+export async function reactivarUsuario(id) {
+  try {
+    const response = await fetch(`${API_BASE}/usuarios/${id}/reactivar`, {
+      method: "PUT"
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al reactivar el usuario");
+    }
+
+    const text = await response.text();
+    return text ? JSON.parse(text) : true;
+
+  } catch (error) {
+    console.error("Error al reactivar:", error.message);
+    throw error;
+  }
+}
 
 

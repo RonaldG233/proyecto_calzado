@@ -36,10 +36,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       const pagos = await res.json();
       selectPago.innerHTML = '<option value="">-- Selecciona método de pago --</option>';
       pagos.forEach(pago => {
-        const option = document.createElement("option");
+        if (pago.id_estado==1) {
+          const option = document.createElement("option");
         option.value = pago.id_pago;
         option.textContent = pago.metodo_pago;
         selectPago.appendChild(option);
+        }
+        
       });
     } catch (e) {
       console.error("Error cargando métodos de pago:", e);

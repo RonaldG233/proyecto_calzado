@@ -39,15 +39,26 @@
         <button type="button" id="btnEditar">Editar</button>
       </form>
 
-      <!-- Formulario ELIMINAR -->
-      <form id="formEliminarPago">
-        <h2>Eliminar Método de Pago</h2>
-        <label for="pagoEliminar">Seleccionar método</label>
-        <select id="pagoEliminar">
-          <option value="">-- Selecciona un método --</option>
-        </select>
-        <button type="button" id="btnEliminar">Eliminar</button>
-      </form>
+      <!-- Formulario INACTIVAR (antes ELIMINAR) -->
+<form id="formInactivarPago">
+  <h2>Inactivar Método de Pago</h2>
+  <label for="pagoInactivar">Seleccionar método activo</label>
+  <select id="pagoInactivar">
+    <option value="">-- Selecciona un método --</option>
+  </select>
+  <button type="button" id="btnInactivar">Inactivar</button>
+</form>
+
+<!-- Nuevo Formulario REACTIVAR -->
+<form id="formReactivarPago">
+  <h2>Reactivar Método de Pago</h2>
+  <label for="pagoReactivar">Seleccionar método inactivo</label>
+  <select id="pagoReactivar">
+    <option value="">-- Selecciona un método --</option>
+  </select>
+  <button type="button" id="btnReactivar">Reactivar</button>
+</form>
+
 
     </section>
 
