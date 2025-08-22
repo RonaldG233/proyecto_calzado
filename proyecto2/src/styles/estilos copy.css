@@ -1,0 +1,234 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Playfair Display", "Roboto", serif;
+
+}
+h1, h2, h3, button {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+}
+
+
+.primera__seccion{
+  height: 94vh;
+  background-color: #8B5E3C;
+  
+}
+
+.encabezado__pagina_principal{
+    background-color: #F5F5DC;
+    position: sticky;
+    height: 6vh;
+    z-index: 1000;
+    top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.encabezado__contenedor{
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 50px;
+    margin-right: 50px;
+    height: 100%;
+    align-items: center;
+    
+}
+.encabezado__contenedor_textos{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+/* .encabezado__contenedor_textos:hover{
+    background-color: #91643f;
+} */
+.encabezado__contenedor .encabezado__contenedor_textos .encabezado_textos_independientes {
+  color: #8B5E3C; 
+  text-decoration: none;
+}
+.encabezado_textos_independientes{
+    font-size: 24px;
+}
+.parrafo_separacion{
+    color: #8B5E3C;
+}
+
+.contenedor__primera_informacion_imagenes{
+  display: flex;
+  height: 20vh;
+  align-items: center;
+}
+.img__logo{
+  margin-left: 15vh;
+  width: 20%;
+  height: 50%;
+  
+}
+.img__primer_zapato{
+  
+  margin-left: 110vh;
+  width: 5%;
+}
+.img__segund_zapato{
+  width: 5%;
+  margin-left: 10px;
+}
+
+.contenedor__segunda_informacion_imagenes{
+  display: flex;
+  position: relative;
+}
+.img__calzado_presentacion{
+  position: absolute;
+  width:45% ;
+  height: 650px;
+  left: 15vh;
+  border-radius: 20px 0 0 20px;
+  background-image: url(img/zapato2.png);
+  background-size: cover; 
+  background-position: center;
+  animation: cambiarFondo 4s infinite alternate;
+  transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
+}
+.img__calzado_informacion{
+  position: absolute;
+  width: 40%;
+  height: 650px;
+  right: 150px;
+  border-radius: 0 20px 20px 0;
+  background-image: url(img/imagen2_calzado.jpg);
+  background-size: cover; 
+  background-position: center;
+}
+.contenedor__informacion_input{
+  position: absolute;
+  right:350px;
+  top: 110px;
+  padding: 30px 100px;
+  border-radius: 50px;
+  background-color: #F5F5DC;
+  color: #8B5E3C;
+  border: solid 5px #8B5E3C;
+  font-size: 24px;
+  
+}
+.img__zapato{
+  position: absolute;
+  width: 5%;
+  right: 210px;
+  top: 140px;
+}
+.contenedor__informacion_texto{
+  position: absolute;
+  font-size: 40px;
+  width: 500px;
+  right: 300px;
+  top: 270px;
+  color: #F5F5DC;
+  text-align: center;
+}
+.contenedor__informacion_boton{
+  position: absolute;
+  top: 500px;
+  right: 400px;
+  padding: 15px 70px;
+  background-color:#8B5E3C ;
+  border-radius: 10px;
+  color: #F5F5DC;
+  font-size: 20px;
+  
+}
+.segunda__seccion{
+  height: 100vh;
+  margin: 0;
+  background-color:#fff;
+}
+.logo__imagen{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* position: relative; */
+  
+}
+.logo__segunda_seccion{
+  /* position: absolute;
+  top: 100px;
+   */
+  margin-top: 100px;
+}
+.titulo__segunda_seccion{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+.texto__segunda_seccion{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  
+  
+}
+.b{
+  
+  font-size: 60px;
+}
+.a{
+  width: 35%;
+  font-size: 40px;
+}
+
+/*FOOTER*/
+.pie__pagina {
+  background-color: #8B5E3C;
+  color: #F5F5DC;
+  padding: 50px 20px;
+  margin-top: 50px;
+}
+
+.pie__contenedor {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.pie__informacion {
+  max-width: 400px;
+  text-align: center;
+}
+
+.pie__informacion h3 {
+  margin-bottom: 15px;
+  font-size: 28px;
+}
+
+.pie__informacion p {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.pie__creditos {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+}
+
+
+/*FINAAAAL*/
+@keyframes cambiarFondo {
+  0% {
+    background-image: url("img/zapato11.png");
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    background-image: url("img/zapato2.png");
+    opacity: 1;
+  }
+}

@@ -1,0 +1,98 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+body{
+  display: grid;
+  background-color: #F5F5DC;
+  grid-template-columns: 290px 1fr;
+  grid-template-areas: 
+  'header header'
+  'sidebar content';
+}
+
+
+/*FORMULARIO CIUDAD */
+/* Contenedor general */
+.formulario-estilo {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px;
+  
+  color: #fff;
+  flex-wrap: wrap;
+}
+
+/* Cada formulario individual */
+.formulario-estilo form {
+  background-color: #8B5E3C;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(155, 91, 85, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 280px;
+}
+
+/* Título de cada formulario */
+.formulario-estilo h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #F5F5DC;
+  padding-bottom: 5px;
+  color: #f0f0f0;
+}
+
+/* Etiquetas */
+.formulario-estilo label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* Inputs y selects */
+.formulario-estilo input,
+.formulario-estilo select {
+  padding: 10px;
+  background-color: #F5F5DC;
+  color: #8B5E3C;
+  border: 1px solid #F5F5DC;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.3s;
+}
+
+.formulario-estilo input:focus,
+.formulario-estilo select:focus {
+  border-color: #999;
+  outline: none;
+}
+
+/* Botones */
+.formulario-estilo button {
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #C7A589;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.formulario-estilo button:hover {
+  background-color: #b37c52;
+}
+
+/* Mensaje de estado */
+#mensajeEstilo {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #f0f0f0;
+}

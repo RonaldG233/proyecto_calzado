@@ -1,0 +1,98 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+body{
+  display: grid;
+  background-color: #F5F5DC;
+  grid-template-columns: 290px 1fr;
+  grid-template-areas: 
+  'header header'
+  'sidebar content';
+}
+
+/*EMPRESAAAAAAA*/
+
+/* Contenedor de formularios */
+.formulario-empresa {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px;
+  color: #fff;
+  flex-wrap: wrap;
+}
+
+/* Cada formulario */
+form {
+  background-color: #8B5E3C;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(155, 91, 85, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 280px;
+}
+
+/* Título de cada sección */
+form h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #F5F5DC;
+  padding-bottom: 5px;
+  color: #f0f0f0;
+}
+
+/* Etiquetas */
+form label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* Campos de entrada */
+form input,
+form select {
+  padding: 10px;
+  background-color: #F5F5DC;
+  color: #8B5E3C;
+  border: 1px solid #F5F5DC;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.3s;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #999;
+  outline: none;
+
+}
+
+/* Botones */
+form button {
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #C7A589;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #b37c52;
+}
+
+/* Mensaje de feedback */
+#mensajeEmpresa {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #f0f0f0;
+}
