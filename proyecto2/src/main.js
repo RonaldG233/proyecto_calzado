@@ -1,11 +1,9 @@
-import { router } from "./router/router";
-import './estilos/style.css';
+import { router } from './router/router.js';
 
-const app = document.querySelector("#app")
-
-window.addEventListener("DOMContentLoaded", ()=> {
-    router(app)
-})
-window.addEventListener("hashchange", ()=>{
-    router(app)
-})
+// Cuando cargue la app, ejecutamos el router
+document.addEventListener("DOMContentLoaded", () => {
+  if (!location.hash) {
+    location.hash = "#home"; // Redirigir a la vista home si no hay hash
+  }
+  router();
+});
