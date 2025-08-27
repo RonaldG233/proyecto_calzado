@@ -6,19 +6,19 @@
         <section class="seccion_campos_registro">
           <form id="formRegistro" novalidate>
             <div>
-              <input class="input" type="text" name="nombre" placeholder="Nombre completo">
+              <input class="input" id="nombre" type="text" name="nombre" placeholder="Nombre completo">
             </div>
             <div>
-              <input class="input" type="tel" name="telefono" placeholder="Teléfono">
+              <input class="input" id="telefono" type="tel" name="telefono" placeholder="Teléfono">
             </div>
             <div>
-              <input class="input" type="text" name="correo" placeholder="Correo electrónico">
+              <input class="input" id="correo" type="text" name="correo" placeholder="Correo electrónico">
             </div>
             <div>
-              <input class="input" type="password" name="contrasena" placeholder="Contraseña">
+              <input class="input" id="contrasena" type="password" name="contrasena" placeholder="Contraseña">
             </div>
             <div>
-              <input class="input" type="password" name="confirmaContrasena" placeholder="Confirmar contraseña">
+              <input class="input" id="confirmaContrasena" type="password" name="confirmaContrasena" placeholder="Confirmar contraseña">
             </div>
             <div class="form_ciudad">
               <select name="ciudad" id="ciudad" class="select_content">
@@ -31,7 +31,8 @@
               </select>
             </div>
             <div class="boton">
-              <button type="submit" id="btnRegistro" class="boton_registro">REGISTRARSE</button>
+              <!-- ✅ Botón con clase que tu JS busca -->
+              <button type="submit" id="btnRegistro" class="boton_registrarse">REGISTRARSE</button>
               <a href="#login" class="cambio-pagina">¡Ya tengo cuenta!</a>
             </div>
           </form>

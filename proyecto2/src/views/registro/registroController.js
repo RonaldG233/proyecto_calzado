@@ -4,7 +4,6 @@
 export const registroController = () => {
   const formulario = document.getElementById("formRegistro");
 
-  // Si no existe el formulario en el DOM, no sigue
   if (!formulario) {
     console.error("No se encontró el formulario de registro en el DOM");
     return;
@@ -19,6 +18,11 @@ export const registroController = () => {
   const ciudadSelect = formulario.querySelector("#ciudad");
   const rolSelect = formulario.querySelector("#rol");
   const btnRegistrar = formulario.querySelector(".boton_registrarse");
+
+  if (!btnRegistrar) {
+    console.error("No se encontró el botón de registro en el DOM");
+    return;
+  }
 
   // Cargar ciudades y roles al iniciar
   cargarCiudades();
@@ -62,7 +66,7 @@ export const registroController = () => {
       contrasena,
       codCiudad,
       idRol,
-      id_estado: 1  // Activo por defecto
+      id_estado: 1
     };
 
     try {
@@ -75,10 +79,7 @@ export const registroController = () => {
         confirmButtonText: 'Iniciar sesión'
       });
 
-      // Limpiar formulario
       formulario.reset();
-
-      // Redirigir a login (SPA → cambiar hash en lugar de ir a un HTML directo)
       window.location.hash = "login";
 
     } catch (error) {
@@ -124,7 +125,7 @@ async function cargarCiudades() {
   }
 }
 
-// Función para cargar roles (Usuario activo, Administrador bloqueado)
+// Función para cargar roles
 function cargarRoles() {
   const rolSelect = document.getElementById("rol");
   if (!rolSelect) return;

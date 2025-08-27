@@ -1,20 +1,9 @@
 import { routes } from './routes.js';
 
-/**
- * Función principal del router SPA.
- * Detecta el hash, carga la vista correspondiente y ejecuta el controlador.
- */
-export const router = async () => {
-  const app = document.getElementById('app'); // Contenedor donde se cargan las vistas
-  let hash = location.hash.replace("#", "");
+export const router = () => {
+  const app = document.getElementById("app");
+  let hash = location.hash.replace("#", "") || "home";
 
-  // Si no hay hash, redirigimos a home
-  if (!hash) {
-    location.hash = "home";
-    return;
-  }
-
-  // Verifica si la ruta existe en routes
   const ruta = routes[hash];
   if (!ruta) {
     app.innerHTML = "<h2>Ruta no encontrada</h2>";
@@ -22,14 +11,10 @@ export const router = async () => {
   }
 
   try {
-    // Carga el HTML de la vista
-    const response = await fetch(ruta.path);
-    if (!response.ok) throw new Error("No se pudo cargar la vista");
+    // Insertar el HTML de la vista
+    app.innerHTML = ruta.html;
 
-    const html = await response.text();
-    app.innerHTML = html;
-
-    // Ejecuta el controlador de la vista (si existe)
+    // Ejecutar el controlador si existe
     if (typeof ruta.controlador === "function") {
       ruta.controlador();
     }
@@ -41,4 +26,3 @@ export const router = async () => {
 
 // Detecta cambios en el hash
 window.addEventListener("hashchange", router);
-document.addEventListener("DOMContentLoaded", router);
