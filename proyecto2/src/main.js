@@ -1,3 +1,5 @@
+import './styles/style.css';
+
 import { router } from './router/router.js';
 
 // Cuando cargue la app, ejecutamos el router
