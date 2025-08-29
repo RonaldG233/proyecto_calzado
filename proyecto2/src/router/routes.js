@@ -8,18 +8,28 @@ import { homeController } from "../views/home/homeController.js";
 import { loginController } from "../views/login/loginController.js";
 import { registroController } from "../views/registro/registroController.js";
 
+/**
+ * Objeto de rutas principal.
+ * Cada ruta contiene:
+ *  - html: contenido de la vista
+ *  - controlador: lógica JS asociada
+ *  - private: indica si requiere login (por ahora todas son públicas)
+ */
 export const routes = {
   home: {
+    path: "home/index.html",
     html: Home,
     controlador: homeController,
     private: false
   },
   login: {
+    path: "login/index.html",
     html: Login,
     controlador: loginController,
     private: false
   },
   registro: {
+    path: "registro/index.html",
     html: Registro,
     controlador: registroController,
     private: false
