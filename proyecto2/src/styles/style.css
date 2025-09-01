@@ -77,27 +77,72 @@ form {
 /* ==============================
    CAMPOS DE ENTRADA
 ============================== */
+/* ==============================
+   CAMPOS DE ENTRADA Y ERRORES
+============================== */
 .input,
 .select_content {
   width: 20vw;
+  max-width: 300px;
   background-color: #fff;
   margin-top: 15px;
-  padding: 15px;
+  padding: 12px 15px;
   border-radius: 15px;
   border: 1px solid #ccc;
   outline: none;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
+/* Focus normal */
 .input:focus,
 .select_content:focus {
   border-color: #8B5E3C;
   box-shadow: 0 0 5px rgba(139, 94, 60, 0.6);
 }
 
-.select_content {
-  color: #717171;
+/* Error */
+.border--red {
+  border: 2px solid red !important;
+  background-color: #ffe6e6; /* rosa claro */
 }
+
+/* Mensaje de error centrado debajo del campo */
+span {
+  display: block;
+  color: red;
+  font-size: 0.85rem;
+  margin: 5px auto 0 auto; /* centrado horizontalmente */
+  text-align: center;
+  max-width: 20vw;
+  max-width: 300px;
+  word-wrap: break-word; /* quiebra la línea si es muy largo */
+}
+
+/* Para que el formulario se expanda si aparecen errores */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  transition: height 0.3s ease;
+}
+
+/* Ajuste de sección de campos para crecer */
+.seccion_campos_registro {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* se alinean arriba para que crezca */
+  flex-direction: column;
+  background-color: #8B5E3C;
+  width: 31vw;
+  min-height: 570px; /* altura mínima */
+  padding: 20px 0;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 0 5px #d9d9d9;
+  box-sizing: border-box;
+}
+
 
 /* ==============================
    BOTÓN Y ENLACES

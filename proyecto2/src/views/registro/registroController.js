@@ -1,100 +1,116 @@
-// import { registrarUsuario } from "./api.js";
+// Importa funciones de validación
+import { 
+  validarFormularioRegistro,
+  limpiar,
+  validarNombre,
+  validarTelefono,
+  validarCorreo,
+  validarContrasena,
+  validarConfirmaContrasena,
+  validarSeleccion
+} from "../../Modules/validaciones.js";
 
-// Controlador de registro
+// Importa funciones de alertas
+import { success, error } from "../../helpers/alertas.js";
+
+// Importa función para enviar datos al backend sin token
+import { postSinToken } from "../../helpers/api.js";
+
+// Importa contador de campos
+import { contarCamposFormulario } from "../../Modules/modules.js";
+
+/**
+ * Controlador para el registro de usuarios.
+ */
 export const registroController = () => {
   const formulario = document.getElementById("formRegistro");
+  if (!formulario) return console.error("No se encontró el formulario de registro");
 
-  if (!formulario) {
-    console.error("No se encontró el formulario de registro en el DOM");
-    return;
-  }
+  // Botón fuera del formulario
+  const btnRegistrar = document.getElementById("btnRegistro");
+  if (!btnRegistrar) return console.error("No se encontró el botón de registro");
 
-  // Selección segura de inputs
-  const nombreInput = formulario.querySelector("#nombre");
-  const telefonoInput = formulario.querySelector("#telefono");
-  const correoInput = formulario.querySelector("#correo");
-  const contrasenaInput = formulario.querySelector("#contrasena");
-  const confirmaContrasenaInput = formulario.querySelector("#confirmaContrasena");
-  const ciudadSelect = formulario.querySelector("#ciudad");
-  const rolSelect = formulario.querySelector("#rol");
-  const btnRegistrar = formulario.querySelector(".boton_registrarse");
-
-  if (!btnRegistrar) {
-    console.error("No se encontró el botón de registro en el DOM");
-    return;
-  }
-
-  // Cargar ciudades y roles al iniciar
+  // Carga ciudades y roles
   cargarCiudades();
   cargarRoles();
 
-  btnRegistrar.addEventListener("click", async (e) => {
+  // Inputs del formulario
+  const nombre = formulario.querySelector("#nombre");
+  const telefono = formulario.querySelector("#telefono");
+  const correo = formulario.querySelector("#correo");
+  const contrasena = formulario.querySelector("#contrasena");
+  const confirmaContrasena = formulario.querySelector("#confirmaContrasena");
+  const ciudad = formulario.querySelector("#ciudad");
+  const rol = formulario.querySelector("#rol");
+
+  // Validaciones en tiempo real
+  nombre.addEventListener("blur", () => validarNombre(nombre));
+  telefono.addEventListener("blur", () => validarTelefono(telefono));
+  correo.addEventListener("blur", () => validarCorreo(correo));
+  contrasena.addEventListener("blur", () => validarContrasena(contrasena));
+  confirmaContrasena.addEventListener("blur", () => validarConfirmaContrasena(confirmaContrasena, contrasena));
+  ciudad.addEventListener("change", () => validarSeleccion(ciudad));
+  rol.addEventListener("change", () => validarSeleccion(rol));
+
+  // Listener para botón fuera del form
+  btnRegistrar.addEventListener("click", (e) => {
+    e.preventDefault();
+    formulario.requestSubmit(); // dispara el submit del form
+  });
+
+  // Envío del formulario
+  formulario.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Validación básica
-    const nombre = nombreInput.value.trim();
-    const telefono = telefonoInput.value.trim();
-    const correo = correoInput.value.trim();
-    const contrasena = contrasenaInput.value.trim();
-    const confirmaContrasena = confirmaContrasenaInput.value.trim();
-    const codCiudad = parseInt(ciudadSelect.value);
-    const idRol = parseInt(rolSelect.value);
+    // 1. Revisar campos vacíos
+    const { vacíos } = contarCamposFormulario(formulario);
+    if (vacíos > 0) return;
 
-    if (!nombre || !telefono || !correo || !contrasena || !confirmaContrasena || isNaN(codCiudad) || isNaN(idRol)) {
-      return Swal.fire({
-        icon: 'warning',
-        title: 'Campos requeridos',
-        text: 'Todos los campos son obligatorios.',
-        confirmButtonText: 'Entendido'
-      });
+    // 2. Validación completa
+    const info = validarFormularioRegistro(e);
+
+    // 3. Validar campos requeridos
+    const camposRequeridos = ["nombre","telefono","correo","contrasena","confirmaContrasena","codCiudad","idRol"];
+    const camposFaltantes = camposRequeridos.filter(campo => !(campo in info));
+
+    if (camposFaltantes.length > 0) {
+      return error("Por favor completa todos los campos requeridos correctamente.");
     }
 
-    if (contrasena !== confirmaContrasena) {
-      return Swal.fire({
-        icon: 'error',
-        title: 'Contraseñas no coinciden',
-        text: 'Verifica que ambas contraseñas sean iguales.',
-        confirmButtonText: 'Reintentar'
-      });
-    }
-
-    // Construir objeto usuario
+    // 4. Construir objeto usuario
     const usuario = {
-      nombre,
-      telefono: Number(telefono),
-      correo,
-      contrasena,
-      codCiudad,
-      idRol,
+      nombre: info.nombre,
+      telefono: Number(info.telefono),
+      correo: info.correo,
+      contrasena: info.contrasena,
+      codCiudad: info.codCiudad,
+      idRol: info.idRol,
       id_estado: 1
     };
 
+    // 5. Enviar al backend
     try {
-      await registrarUsuario(usuario);
+      const respuesta = await postSinToken("usuarios", usuario);
+      const res = await respuesta.json();
 
-      await Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: 'Ahora puedes iniciar sesión.',
-        confirmButtonText: 'Iniciar sesión'
-      });
+      if (respuesta.ok) {
+        await success(res.mensaje || "Registro exitoso");
+        formulario.reset();
+        window.location.hash = "login";
+      } else {
+        error(res.error || "Ocurrió un error al registrar el usuario");
+      }
 
-      formulario.reset();
-      window.location.hash = "login";
-
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error en el registro',
-        text: 'No se pudo completar el registro. Intenta nuevamente.',
-        confirmButtonText: 'Entendido'
-      });
-      console.error("Error al registrar usuario:", error);
+    } catch (err) {
+      console.error("Error al registrar usuario:", err);
+      error("No se pudo completar el registro. Intenta nuevamente.");
     }
   });
 };
 
-// Función para cargar ciudades desde la API
+/**
+ * Carga dinámicamente las ciudades desde la API
+ */
 async function cargarCiudades() {
   const ciudadSelect = document.getElementById("ciudad");
   if (!ciudadSelect) return;
@@ -104,7 +120,6 @@ async function cargarCiudades() {
     if (!response.ok) throw new Error("Error al obtener ciudades");
 
     const ciudades = await response.json();
-
     ciudades.forEach(ciudad => {
       if (ciudad.id_estado === 1) {
         const option = document.createElement("option");
@@ -114,18 +129,15 @@ async function cargarCiudades() {
       }
     });
 
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error al cargar ciudades',
-      text: 'No se pudieron cargar las opciones de ciudad.',
-      confirmButtonText: 'Cerrar'
-    });
-    console.error("Error al cargar ciudades:", error);
+  } catch (err) {
+    console.error("Error al cargar ciudades:", err);
+    error("No se pudieron cargar las opciones de ciudad.");
   }
 }
 
-// Función para cargar roles
+/**
+ * Carga los roles en el select
+ */
 function cargarRoles() {
   const rolSelect = document.getElementById("rol");
   if (!rolSelect) return;
