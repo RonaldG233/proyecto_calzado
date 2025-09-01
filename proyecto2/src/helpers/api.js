@@ -1,4 +1,4 @@
-// Importa la función para decodificar el contenido del token JWT
+// Importa jwt-decode
 import * as jwt from "jwt-decode";
 const jwtDecode = jwt.default || jwt;
 
@@ -6,129 +6,161 @@ const jwtDecode = jwt.default || jwt;
 import { error } from "./alertas.js";
 
 /**
- * Valida si el token almacenado en localStorage está expirado.
- * @returns {boolean} true si el token está expirado o no existe, false si está vigente.
+ * Verifica si un token JWT expiró
+ * @param {string} token
+ * @returns {boolean} true si expiró o no existe, false si sigue válido
  */
-const isTokenExpired = () => {
-  const token = localStorage.getItem("token"); 
-  if (!token) return true; 
+export const isTokenExpired = (token) => {
+  if (!token) return true;
   try {
-    const decoded = jwtDecode(token); 
-    const currentTime = Date.now() / 1000; 
-    return decoded.exp < currentTime; 
+    const decoded = jwtDecode(token);
+    const now = Date.now() / 1000; // tiempo actual en segundos
+    return decoded.exp < now;
   } catch (e) {
-    return true; 
+    return true; // token inválido
   }
 };
 
 /**
- * Refresca el token de acceso usando el refreshToken almacenado en localStorage.
- * @returns {string|null} El nuevo token si fue exitoso, null si falla.
+ * Intenta refrescar el access token usando refreshToken
+ * @returns {string|null} nuevo token o null si falla
  */
-const refreshAccessToken = async () => {
-  const refreshToken = localStorage.getItem("refreshToken"); 
-  if (!refreshToken) return null; 
+export const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return null;
 
-  const res = await fetch(`http://localhost:8080/proyectoCalzado/api/refreshToken`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken })
-  });
+  try {
+    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/usuarios/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken })
+    });
 
-  if (res.ok) {
-    const data = await res.json(); 
-    localStorage.setItem("token", data.token); 
-    return data.token; 
-  } else {
+    if (!res.ok) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      window.location.hash = "#login"; // redirige al login
+      return null;
+    }
+
+    const data = await res.json();
+    localStorage.setItem("token", data.accessToken);
+    return data.accessToken;
+
+  } catch (err) {
+    console.error("Error refrescando token:", err);
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
-    window.location.href = "/login";
+    window.location.hash = "#login";
     return null;
   }
 };
 
 /**
- * Obtiene los headers de autenticación para las peticiones HTTP.
- * @returns {Object} Headers con Content-Type y Authorization si hay token válido
+ * Devuelve un token válido, refrescando si expiró
+ * @returns {Promise<string|null>}
+ */
+export const getValidToken = async () => {
+  let token = localStorage.getItem("token");
+  if (!token || isTokenExpired(token)) {
+    token = await refreshAccessToken();
+  }
+  return token;
+};
+
+/**
+ * Devuelve headers con Authorization si hay token válido
  */
 const getAuthHeaders = async () => {
-  let token = localStorage.getItem("token"); 
-  if (!token || isTokenExpired()) {
-    token = await refreshAccessToken(); 
-  }
+  const token = await getValidToken();
   return token
     ? { "Content-Type": "application/json", Authorization: "Bearer " + token }
     : { "Content-Type": "application/json" };
 };
 
-/**
- * Petición GET autenticada
- */
+// ================= PETICIONES =================
+
 export const get = async (endpoint) => {
-  const data = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+  const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
     headers: await getAuthHeaders()
   });
-  if (data.ok) return await data.json();
-  const men = await data.json(); 
-  error(men.error);
+  if (res.ok) return await res.json();
+  const err = await res.json();
+  error(err.error);
 };
 
-/**
- * Petición POST autenticada
- */
 export const post = async (endpoint, info) => {
   return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: 'POST',
+    method: "POST",
     headers: await getAuthHeaders(),
     body: JSON.stringify(info)
   });
 };
 
-/**
- * Petición POST sin token
- */
 export const postSinToken = async (endpoint, info) => {
   return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(info)
   });
 };
 
-/**
- * Petición POST para subir imágenes
- */
-export const post_imgs = async (formData) => {
-  const token = localStorage.getItem("token"); 
-  const headers = token ? { 'Authorization': 'Bearer ' + token } : {}; 
-  return await fetch(`http://localhost:8080/proyectoCalzado/api/imagenes`, {
-    method: 'POST',
-    headers: headers,
-    body: formData
+export const put = async (endpoint, info) => {
+  return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+    method: "PUT",
+    headers: await getAuthHeaders(),
+    body: JSON.stringify(info)
   });
 };
 
-/**
- * Petición PUT autenticada
- */
-export const put = async (endpoint, info) => {
-  try {
-    return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-      method: 'PUT',
-      headers: await getAuthHeaders(),
-      body: JSON.stringify(info)
-    });
-  } catch (error) {
-    console.log(error); 
-  }
-};
-
-/**
- * Petición DELETE autenticada
- */
 export const del = async (endpoint) => {
   return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: await getAuthHeaders()
   });
 };
+
+// ================= HELPERS USUARIOS =================
+export const obtenerUsuarios = async () => await get("usuarios");
+export const inactivarUsuario = async (id) => await put(`usuarios/inactivar/${id}`);
+export const reactivarUsuario = async (id) => await put(`usuarios/reactivar/${id}`);
+export async function obtenerCiudades() {
+  try {
+    const response = await fetch(`${API_BASE}/ciudades`);
+    if (!response.ok) throw new Error("Error al obtener ciudades");
+    return await response.json();
+  } catch (error) {
+    console.error("Error al obtener ciudades:", error);
+    throw error;
+  }
+}
+
+export async function obtenerRoles() {
+  try {
+    const response = await fetch(`${API_BASE}/roles`);
+    if (!response.ok) throw new Error("Error al obtener roles");
+    return await response.json();
+  } catch (error) {
+    console.error("Error al obtener roles:", error);
+    throw error;
+  }
+}
+//ACTUALIZAR USUARIO
+export async function actualizarUsuario(usuario) {
+  try {
+    const response = await fetch(`${API_BASE}/usuarios/${usuario.idUsuario}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuario)
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al actualizar el usuario");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error al actualizar:", error);
+    throw error;
+  }
+}

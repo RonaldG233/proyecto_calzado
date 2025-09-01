@@ -1,38 +1,43 @@
 import { routes } from "./routes.js";
+import { isTokenExpired, refreshAccessToken } from "../helpers/api.js";
 
-/**
- * Enrutador SPA.
- * Escucha cambios en el hash y carga la vista/controlador correspondiente.
- */
-export const router = () => {
+export const router = async () => {
   const app = document.getElementById("app");
-
-  // Elimina el "#" inicial del hash, si no hay hash va a "home"
   let hash = location.hash.replace("#", "") || "home";
-
-  // Buscar la ruta correspondiente
   const ruta = routes[hash];
+
   if (!ruta) {
     app.innerHTML = "<h2>Ruta no encontrada</h2>";
     return;
   }
 
+  // Rutas privadas: validar token
+  if (ruta.private) {
+    let token = localStorage.getItem("token");
+    
+    // Si no hay token o está expirado, intenta refrescar
+    if (!token || isTokenExpired()) {
+      const nuevoToken = await refreshAccessToken();
+      if (!nuevoToken) {
+        window.location.hash = "#login"; // Redirige si no hay token válido
+        return;
+      }
+    }
+  }
+
   try {
-    // Insertar el HTML de la vista
+    // Cargar vista
     app.innerHTML = ruta.html;
 
-    // Ejecutar el controlador si existe
+    // Ejecutar controlador
     if (typeof ruta.controlador === "function") {
       ruta.controlador();
     }
-  } catch (error) {
-    console.error("Error cargando la vista:", error);
+  } catch (err) {
+    console.error("Error cargando la vista:", err);
     app.innerHTML = "<h2>Error al cargar la vista</h2>";
   }
 };
 
-// Detecta cambios en el hash
 window.addEventListener("hashchange", router);
-
-// Ejecutar router al cargar la página
 window.addEventListener("DOMContentLoaded", router);

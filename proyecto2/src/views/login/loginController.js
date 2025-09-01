@@ -1,99 +1,68 @@
-// import { loginUsuario } from './api.js';
+// loginController.js
+import { postSinToken } from "../../helpers/api.js";
+import { success, error, info } from "../../helpers/alertas.js";
 
 export const loginController = () => {
   const formulario = document.getElementById("formLogin");
+  if (!formulario) return console.error("No se encontró el formulario de login.");
 
-  // Si no encuentra el formulario, no sigue ejecutando
-  if (!formulario) {
-    console.error("No se encontró el formulario de login en el DOM");
-    return;
-  }
-
-  // Selección de campos dentro del formulario
   const correoInput = formulario.querySelector("#correo");
   const contrasenaInput = formulario.querySelector("#contrasena");
-  const btnLogin = formulario.querySelector(".boton_registrarse"); // botón del login
+  const btnLogin = document.querySelector(".boton_registrarse");
+  if (!btnLogin) return console.error("No se encontró el botón de login.");
 
-  // Validaciones en tiempo real
-  correoInput.addEventListener('blur', (e) => {
-    if (validarCorreo(e.target)) limpiar(e.target);
-  });
-  correoInput.addEventListener('keydown', (e) => {
-    if (validarCorreo(e.target)) limpiar(e.target);
-  });
-  contrasenaInput.addEventListener('blur', (e) => {
-    if (validarMinimo(e.target)) limpiar(e.target);
-  });
-  contrasenaInput.addEventListener('keydown', (e) => {
-    if (validarMinimo(e.target)) limpiar(e.target);
-  });
+  // Limpia errores si hay input válido
+  const limpiarSiValido = (input) => {
+    if (input.value.trim() !== "") input.classList.remove("error");
+  };
 
-  // Manejo del login
+  correoInput.addEventListener("blur", () => limpiarSiValido(correoInput));
+  correoInput.addEventListener("keydown", () => limpiarSiValido(correoInput));
+  contrasenaInput.addEventListener("blur", () => limpiarSiValido(contrasenaInput));
+  contrasenaInput.addEventListener("keydown", () => limpiarSiValido(contrasenaInput));
+
+  // Click del botón login
   btnLogin.addEventListener("click", async (e) => {
     e.preventDefault();
-
     const correo = correoInput.value.trim();
     const contrasena = contrasenaInput.value.trim();
 
     if (!correo || !contrasena) {
-      return Swal.fire({
-        icon: 'warning',
-        title: 'Campos requeridos',
-        text: 'Todos los campos son obligatorios.',
-        confirmButtonText: 'Entendido'
-      });
+      return info("Todos los campos son obligatorios.", "Campos requeridos");
     }
 
     try {
-      // Aquí deberías llamar tu API
-      const usuario = await loginUsuario(correo, contrasena);
+      // Llamada al login de la API
+      const res = await postSinToken("usuarios/login", { correo, contrasena });
+      const data = await res.json();
 
-      if (usuario.estado?.toLowerCase() === "inactivo") {
-        return Swal.fire({
-          icon: 'error',
-          title: 'Usuario inactivo',
-          text: 'Tu cuenta está inactiva. Contacta con el administrador.',
-          confirmButtonText: 'Aceptar'
-        });
-      }
+      if (!res.ok) return error(data.error || "Error en el login.");
 
-      await Swal.fire({
-        icon: 'success',
-        title: '¡Bienvenido!',
-        text: 'Inicio de sesión exitoso.',
-        confirmButtonText: 'Continuar'
-      });
+      // Guardar tokens y usuario para autenticación SPA
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
-      // Guardar usuario en sesión local
-      localStorage.setItem("usuario", JSON.stringify(usuario));
+      await success("Inicio de sesión exitoso.");
 
-      // Redirigir según rol
-      const nombreRol = usuario.rol?.nombre_rol || usuario.rol;
-      if (nombreRol === "Administrador") {
-        window.location.href = "../html/AdminCatalogo.html";
-      } else if (nombreRol === "Usuario") {
-        window.location.href = "../html/catalogo.html";
+      // Redirección según rol usando hash SPA
+      const rol = data.usuario.rol.toLowerCase();
+      if (rol === "administrador") {
+        window.location.hash = "#usuarios"; // Admin SPA
+      } else if (rol === "usuario") {
+        window.location.hash = "#catalogo"; // Usuario SPA
       } else {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Rol no reconocido',
-          text: `El rol recibido es: ${nombreRol}`,
-          confirmButtonText: 'Aceptar'
-        });
-        console.warn("Rol recibido:", nombreRol);
+        info(`Rol no reconocido: ${rol}`, "Aviso");
       }
 
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error de autenticación',
-        text: 'Correo o contraseña incorrectos.',
-        confirmButtonText: 'Intentar de nuevo'
-      });
-      console.error("Error en el login:", error);
+    } catch (err) {
+      console.error("Error en login:", err);
+      error("Ocurrió un error al iniciar sesión. Intenta nuevamente.");
     }
   });
 
-  // Prevenir envío normal del form
-  formulario.addEventListener('submit', (e) => e.preventDefault());
+  // Evitar envío del formulario por defecto
+  formulario.addEventListener("submit", (e) => e.preventDefault());
 };
+
+

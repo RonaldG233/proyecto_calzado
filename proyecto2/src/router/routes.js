@@ -2,11 +2,13 @@
 import Home from "../views/home/index.html?raw";
 import Login from "../views/login/index.html?raw";
 import Registro from "../views/registro/index.html?raw";
+import Usuarios from "../views/administrador/usuarios/index.html?raw";
 
 // Importar controladores
 import { homeController } from "../views/home/homeController.js";
 import { loginController } from "../views/login/loginController.js";
 import { registroController } from "../views/registro/registroController.js";
+import { usuarioController } from "../views/administrador/usuarios/usuarioController.js";
 
 /**
  * Objeto de rutas principal.
@@ -33,5 +35,12 @@ export const routes = {
     html: Registro,
     controlador: registroController,
     private: false
+  },
+  usuarios: {
+    
+    path: "administrador/usuarios/index.html",
+    html: Usuarios,
+    controlador: usuarioController,
+    private: true // Requiere login
   }
 };
