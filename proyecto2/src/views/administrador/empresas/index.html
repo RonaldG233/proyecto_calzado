@@ -1,0 +1,74 @@
+<div class="holaa">
+<div id="header-container"></div>
+  <div id="sidebar-container"></div>
+
+  <main class="empresa">
+    <section class="formulario-empresa">
+
+      <!-- Formulario REGISTRAR -->
+      <form id="formRegistrarEmpresa">
+        <h2>Registrar Empresa</h2>
+        <label for="nombreEmpresa">Nombre</label>
+        <input type="text" id="nombreEmpresa" required placeholder="Ej: Calzado Andino S.A.S" />
+
+        <label for="direccionEmpresa">Dirección</label>
+        <input type="text" id="direccionEmpresa" required placeholder="Ej: Calle 123 #45-67"/>
+
+        <label for="telefonoEmpresa">Teléfono</label>
+        <input type="text" id="telefonoEmpresa" required placeholder="Ej: 3201234567"/>
+
+        <label for="correoEmpresa">Correo</label>
+        <input type="email" id="correoEmpresa" required placeholder="Ej: contacto@empresa.com"/>
+
+        <button type="submit">Registrar Empresa</button>
+      </form>
+
+      <!-- Formulario EDITAR -->
+      <form id="formEditarEmpresa">
+        <h2>Editar Empresa</h2>
+
+        <label for="empresaEditar">Seleccionar Empresa</label>
+        <select id="empresaEditar">
+          <option value="">-- Seleccione una empresa --</option>
+        </select>
+
+        <label for="nuevoNombreEmpresa">Nuevo nombre</label>
+        <input type="text" id="nuevoNombreEmpresa" placeholder="Nuevo nombre..." />
+
+        <label for="nuevaDireccionEmpresa">Nueva dirección</label>
+        <input type="text" id="nuevaDireccionEmpresa" placeholder="Nueva dirección..." />
+
+        <label for="nuevoTelefonoEmpresa">Nuevo teléfono</label>
+        <input type="text" id="nuevoTelefonoEmpresa" placeholder="Nuevo teléfono..." />
+
+        <label for="nuevoCorreoEmpresa">Nuevo correo</label>
+        <input type="email" id="nuevoCorreoEmpresa" placeholder="Nuevo correo..." />
+
+        <button type="button" id="btnEditarEmpresa">Editar Empresa</button>
+      </form>
+
+      <!-- Formulario INACTIVAR empresa -->
+      <form id="formInactivarEmpresa">
+        <h2>Inactivar Empresa</h2>
+        <label for="empresaInactivar">Seleccionar Empresa</label>
+        <select id="empresaInactivar">
+          <option value="">-- Seleccione una empresa --</option>
+        </select>
+        <button type="button" id="btnInactivarEmpresa">Inactivar Empresa</button>
+      </form>
+
+      <!-- Formulario ACTIVAR empresa -->
+      <form id="formActivarEmpresa">
+        <h2>Activar Empresa</h2>
+        <label for="empresaActivar">Seleccionar Empresa</label>
+        <select id="empresaActivar">
+          <option value="">-- Seleccione una empresa --</option>
+        </select>
+        <button type="button" id="btnActivarEmpresa">Activar Empresa</button>
+      </form>
+
+    </section>
+
+    <div id="mensajeEmpresa"></div>
+  </main>
+  </div>

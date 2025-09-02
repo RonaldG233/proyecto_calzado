@@ -1,0 +1,54 @@
+<div class="holaa">
+  <div id="header-container"></div>
+  <div id="sidebar-container"></div>
+
+  <main class="talla">
+    <section class="formulario-talla">
+
+      <!-- Formulario REGISTRAR -->
+      <form id="formRegistrarTalla">
+        <h2>Registrar Talla</h2>
+        <label for="nombreTalla">Número de talla</label>
+        <input type="number" id="nombreTalla" name="nombreTalla" required placeholder="Ej: 40" />
+        <button type="submit">Registrar Talla</button>
+      </form>
+
+      <!-- Formulario EDITAR -->
+      <form id="formEditarTalla">
+        <h2>Editar Talla</h2>
+        <label for="tallaEditar">Seleccionar Talla</label>
+        <select id="tallaEditar">
+          <option value="">-- Selecciona una Talla --</option>
+        </select>
+
+        <label for="nuevoNombreTalla">Nuevo número de talla</label>
+        <input type="number" id="nuevoNombreTalla" placeholder="Nuevo número..." />
+
+        <button type="button" id="btnEditar">Editar Talla</button>
+      </form>
+
+      <!-- Formulario INACTIVAR -->
+      <form id="formEliminarTalla">
+        <h2>Inactivar Talla</h2>
+        <label for="tallaInactivar">Seleccionar Talla</label>
+        <select id="tallaInactivar">
+          <option value="">-- Selecciona una Talla --</option>
+        </select>
+        <button type="button" id="btnInactivar">Inactivar Talla</button>
+      </form>
+
+      <!-- Formulario REACTIVAR -->
+      <form id="formActivarTalla">
+        <h2>Reactivar Talla</h2>
+        <label for="tallaActivar">Seleccionar Talla</label>
+        <select id="tallaActivar">
+          <option value="">-- Selecciona una Talla --</option>
+        </select>
+        <button type="button" id="btnActivar">Reactivar Talla</button>
+      </form>
+
+    </section>
+
+    <div id="mensajeTalla"></div>
+  </main>
+</div>

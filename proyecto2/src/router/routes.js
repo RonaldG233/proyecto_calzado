@@ -3,12 +3,18 @@ import Home from "../views/home/index.html?raw";
 import Login from "../views/login/index.html?raw";
 import Registro from "../views/registro/index.html?raw";
 import Usuarios from "../views/administrador/usuarios/index.html?raw";
+import Ciudades from "../views/administrador/ciudades/index.html?raw";
+import Tallas from "../views/administrador/tallas/index.html?raw";
+import Empresas from "../views/administrador/empresas/index.html?raw";
 
 // Importar controladores
 import { homeController } from "../views/home/homeController.js";
 import { loginController } from "../views/login/loginController.js";
 import { registroController } from "../views/registro/registroController.js";
 import { usuarioController } from "../views/administrador/usuarios/usuarioController.js";
+import { ciudadController } from "../views/administrador/ciudades/ciudadController.js";
+import { tallaController } from "../views/administrador/tallas/tallaController.js";
+import { empresaController } from "../views/administrador/empresas/empresaController.js";
 
 /**
  * Objeto de rutas principal.
@@ -42,5 +48,23 @@ export const routes = {
     html: Usuarios,
     controlador: usuarioController,
     private: true // Requiere login
+  },
+  ciudades: {
+    path: "administrador/ciudades/index.html",
+    html: Ciudades,
+    controlador: ciudadController,
+    private: true 
+  },
+  tallas: {
+    path: "administrador/tallas/index.html",
+    html: Tallas,
+    controlador: tallaController,
+    private: true
+  },
+  empresas: {
+    path: "administrador/empresas/index.html",
+    html: Empresas,
+    controlador: empresaController,
+    private: true
   }
 };

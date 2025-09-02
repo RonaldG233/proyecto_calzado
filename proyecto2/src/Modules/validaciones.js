@@ -169,3 +169,28 @@ export const validarFormularioRegistro = (event) => {
 
   return info;
 };
+
+export const validarNombreCiudad = (campo) => {
+  const valor = campo.value.trim();
+  const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  if (!valor) {
+    mostrarError(campo, "El nombre de la ciudad es obligatorio.");
+    return false;
+  }
+  if (!regex.test(valor)) {
+    mostrarError(campo, "El nombre de la ciudad solo puede contener letras y espacios.");
+    return false;
+  }
+  if (valor.length > 50) {
+    mostrarError(campo, "El nombre no puede exceder 50 caracteres.");
+    return false;
+  }
+  limpiar(campo);
+  return true;
+};
+
+export const validarTalla=(valor)=> {
+  const regex = /^[0-9]{1,2}$/; // solo números de 1 o 2 dígitos
+  return regex.test(valor);
+}
+
