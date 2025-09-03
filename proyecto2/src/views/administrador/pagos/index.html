@@ -1,0 +1,56 @@
+<div class="holaa">
+<div id="header-container"></div>
+  
+  <div id="sidebar-container"></div>
+
+  <main class="pago">
+    <section class="formulario-pago">
+
+      <!-- Formulario REGISTRAR -->
+      <form id="formRegistrarPago">
+        <h2>Registrar Método de Pago</h2>
+        <label for="nombrePago">Nombre del método</label>
+        <input type="text" id="nombrePago" name="nombrePago" required placeholder="Ej: Tarjeta de crédito" />
+        <button type="submit">Registrar</button>
+      </form>
+
+      <!-- Formulario EDITAR -->
+      <form id="formEditarPago">
+        <h2>Editar Método de Pago</h2>
+        <label for="pagoEditar">Seleccionar método</label>
+        <select id="pagoEditar">
+          <option value="">-- Selecciona un método --</option>
+        </select>
+
+        <label for="nuevoNombrePago">Nuevo nombre</label>
+        <input type="text" id="nuevoNombrePago" placeholder="Nuevo nombre..." />
+
+        <button type="button" id="btnEditar">Editar</button>
+      </form>
+
+      <!-- Formulario INACTIVAR (antes ELIMINAR) -->
+<form id="formInactivarPago">
+  <h2>Inactivar Método de Pago</h2>
+  <label for="pagoInactivar">Seleccionar método activo</label>
+  <select id="pagoInactivar">
+    <option value="">-- Selecciona un método --</option>
+  </select>
+  <button type="button" id="btnInactivar">Inactivar</button>
+</form>
+
+<!-- Nuevo Formulario REACTIVAR -->
+<form id="formReactivarPago">
+  <h2>Reactivar Método de Pago</h2>
+  <label for="pagoReactivar">Seleccionar método inactivo</label>
+  <select id="pagoReactivar">
+    <option value="">-- Selecciona un método --</option>
+  </select>
+  <button type="button" id="btnReactivar">Reactivar</button>
+</form>
+
+
+    </section>
+
+    <div id="mensajePago"></div>
+  </main>
+</div>

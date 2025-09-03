@@ -6,6 +6,8 @@ import Usuarios from "../views/administrador/usuarios/index.html?raw";
 import Ciudades from "../views/administrador/ciudades/index.html?raw";
 import Tallas from "../views/administrador/tallas/index.html?raw";
 import Empresas from "../views/administrador/empresas/index.html?raw";
+import Imagenes from "../views/administrador/imagenes/index.html?raw";
+import Pagos from "../views/administrador/pagos/index.html?raw";
 
 // Importar controladores
 import { homeController } from "../views/home/homeController.js";
@@ -15,6 +17,8 @@ import { usuarioController } from "../views/administrador/usuarios/usuarioContro
 import { ciudadController } from "../views/administrador/ciudades/ciudadController.js";
 import { tallaController } from "../views/administrador/tallas/tallaController.js";
 import { empresaController } from "../views/administrador/empresas/empresaController.js";
+import {imagenController} from "../views/administrador/imagenes/imagenController.js";
+import {pagoController} from "../views/administrador/pagos/pagoController.js";
 
 /**
  * Objeto de rutas principal.
@@ -65,6 +69,18 @@ export const routes = {
     path: "administrador/empresas/index.html",
     html: Empresas,
     controlador: empresaController,
+    private: true
+  },
+  imagenes:{
+    path: "administrador/imagenes/index.html",
+    html: Imagenes,
+    controlador: imagenController,
+    private: true
+  },
+  pagos:{
+    path: "administrador/pagos/index.html",
+    html: Pagos,
+    controlador: pagoController,
     private: true
   }
 };
