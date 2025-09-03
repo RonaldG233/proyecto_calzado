@@ -1,0 +1,67 @@
+<div class="holaa">
+  <div id="header-container"></div>
+  <div id="sidebar-container"></div>
+
+  <main class="registro-producto">
+    <h2>Registrar Producto</h2>
+
+    <form id="formularioProducto">
+      <!-- Nombre -->
+      <label for="nombreProducto">Nombre del producto:</label><br />
+      <input 
+        type="text" 
+        id="nombreProducto" 
+        name="nombreProducto" 
+        maxlength="100" 
+        placeholder="Ingrese el nombre del producto" 
+        required
+      /><br /><br />
+
+      <!-- Descripción -->
+      <label for="descripcionProducto">Descripción:</label><br />
+      <textarea 
+        id="descripcionProducto" 
+        name="descripcionProducto" 
+        maxlength="255" 
+        placeholder="Ingrese una descripción del producto"
+        required
+      ></textarea><br /><br />
+
+      <!-- Precio -->
+      <label for="precioProducto">Precio:</label><br />
+      <input 
+        type="number" 
+        id="precioProducto" 
+        name="precioProducto" 
+        step="0.01" 
+        placeholder="Ingrese el precio" 
+        required
+      /><br /><br />
+
+      <!-- Empresa -->
+      <label for="empresa">Empresa:</label><br />
+      <select id="empresa" name="empresa" required>
+        <option value="">Seleccione una empresa</option>
+        <!-- JS llenará las empresas desde la API -->
+      </select><br /><br />
+
+      <!-- Imagen -->
+      <label for="imagen">Imagen:</label><br />
+      <select id="imagen" name="imagen" required>
+        <option value="">Seleccione una imagen</option>
+        <!-- JS llenará las imágenes desde la API -->
+      </select><br /><br />
+
+      <!-- Estado -->
+      
+
+      <!-- Botones -->
+      <button type="submit">Registrar Producto</button>
+      <a href="./tablaProductos.html">
+        <button type="button">Ver Productos</button>
+      </a>
+    </form>
+
+    <div id="respuesta"></div>
+  </main>
+</div>

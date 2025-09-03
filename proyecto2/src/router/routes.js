@@ -8,6 +8,7 @@ import Tallas from "../views/administrador/tallas/index.html?raw";
 import Empresas from "../views/administrador/empresas/index.html?raw";
 import Imagenes from "../views/administrador/imagenes/index.html?raw";
 import Pagos from "../views/administrador/pagos/index.html?raw";
+import Productos from "../views/administrador/productos/index.html?raw";
 
 // Importar controladores
 import { homeController } from "../views/home/homeController.js";
@@ -18,7 +19,8 @@ import { ciudadController } from "../views/administrador/ciudades/ciudadControll
 import { tallaController } from "../views/administrador/tallas/tallaController.js";
 import { empresaController } from "../views/administrador/empresas/empresaController.js";
 import {imagenController} from "../views/administrador/imagenes/imagenController.js";
-import {pagoController} from "../views/administrador/pagos/pagoController.js";
+import { pagoController } from "../views/administrador/pagos/pagoController.js";
+import { productoController } from "../views/administrador/productos/productoController.js";
 
 /**
  * Objeto de rutas principal.
@@ -81,6 +83,12 @@ export const routes = {
     path: "administrador/pagos/index.html",
     html: Pagos,
     controlador: pagoController,
+    private: true
+  },
+  productos: {
+    path: "administrador/productos/index.html",
+    html: Productos,
+    controlador: productoController,
     private: true
   }
 };

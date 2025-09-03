@@ -90,12 +90,20 @@ export const get = async (endpoint) => {
 };
 
 export const post = async (endpoint, info) => {
-  return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: "POST",
-    headers: await getAuthHeaders(),
-    body: JSON.stringify(info)
-  });
+  try {
+    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+      method: "POST",
+      headers: await getAuthHeaders(),
+      body: JSON.stringify(info)
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, data };
+  } catch (err) {
+    console.error("Error en POST:", err);
+    return { ok: false, data: { mensaje: "Error de conexión" } };
+  }
 };
+ 
 
 export const postSinToken = async (endpoint, info) => {
   return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
