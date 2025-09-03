@@ -1,52 +1,52 @@
 <div class="holaa">
-<div id="header-container"></div>
-  
+  <div id="header-container"></div>
+
   <div id="sidebar-container"></div>
 
   <main class="pago">
-    <section class="formulario-pago">
+    <section class="contenedor_formulario">
 
       <!-- Formulario REGISTRAR -->
-      <form id="formRegistrarPago">
-        <h2>Registrar Método de Pago</h2>
-        <label for="nombrePago">Nombre del método</label>
-        <input type="text" id="nombrePago" name="nombrePago" required placeholder="Ej: Tarjeta de crédito" />
-        <button type="submit">Registrar</button>
+      <form id="formRegistrarPago" class="formulario">
+        <h2 class="formulario__titulo">Registrar Método de Pago</h2>
+        <label for="nombrePago" class="formulario__texto">Nombre del método</label>
+        <input type="text" class="formulario__input" id="nombrePago" name="nombrePago" required placeholder="Ej: Tarjeta de crédito" />
+        <button type="submit" class="boton boton--formulario">Registrar</button>
       </form>
 
       <!-- Formulario EDITAR -->
-      <form id="formEditarPago">
-        <h2>Editar Método de Pago</h2>
-        <label for="pagoEditar">Seleccionar método</label>
-        <select id="pagoEditar">
+      <form id="formEditarPago" class="formulario">
+        <h2 class="formulario__titulo">Editar Método de Pago</h2>
+        <label for="pagoEditar" class="formulario__texto">Seleccionar método</label>
+        <select id="pagoEditar" class="formulario__input">
           <option value="">-- Selecciona un método --</option>
         </select>
 
-        <label for="nuevoNombrePago">Nuevo nombre</label>
-        <input type="text" id="nuevoNombrePago" placeholder="Nuevo nombre..." />
+        <label for="nuevoNombrePago" class="formulario__texto">Nuevo nombre</label>
+        <input type="text" class="formulario__input" id="nuevoNombrePago" placeholder="Nuevo nombre..." />
 
-        <button type="button" id="btnEditar">Editar</button>
+        <button type="button" id="btnEditar" class="boton boton--formulario">Editar</button>
       </form>
 
       <!-- Formulario INACTIVAR (antes ELIMINAR) -->
-<form id="formInactivarPago">
-  <h2>Inactivar Método de Pago</h2>
-  <label for="pagoInactivar">Seleccionar método activo</label>
-  <select id="pagoInactivar">
-    <option value="">-- Selecciona un método --</option>
-  </select>
-  <button type="button" id="btnInactivar">Inactivar</button>
-</form>
+      <form id="formInactivarPago" class="formulario">
+        <h2 class="formulario__titulo">Inactivar Método de Pago</h2>
+        <label for="pagoInactivar" class="formulario__texto">Seleccionar método activo</label>
+        <select id="pagoInactivar" class="formulario__input">
+          <option value="">-- Selecciona un método --</option>
+        </select>
+        <button type="button" id="btnInactivar" class="boton boton--formulario">Inactivar</button>
+      </form>
 
-<!-- Nuevo Formulario REACTIVAR -->
-<form id="formReactivarPago">
-  <h2>Reactivar Método de Pago</h2>
-  <label for="pagoReactivar">Seleccionar método inactivo</label>
-  <select id="pagoReactivar">
-    <option value="">-- Selecciona un método --</option>
-  </select>
-  <button type="button" id="btnReactivar">Reactivar</button>
-</form>
+      <!-- Nuevo Formulario REACTIVAR -->
+      <form id="formReactivarPago" class="formulario">
+        <h2 class="formulario__titulo">Reactivar Método de Pago</h2>
+        <label for="pagoReactivar" class="formulario__texto">Seleccionar método inactivo</label>
+        <select id="pagoReactivar" class="formulario__input">
+          <option value="">-- Selecciona un método --</option>
+        </select>
+        <button type="button" id="btnReactivar" class="boton boton--formulario">Reactivar</button>
+      </form>
 
 
     </section>

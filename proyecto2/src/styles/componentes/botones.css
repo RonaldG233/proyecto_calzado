@@ -1,0 +1,18 @@
+.boton {
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+}
+
+.boton--formulario {
+  background-color: #C7A589;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.boton--formulario:hover {
+  background-color: #b37c52;
+}

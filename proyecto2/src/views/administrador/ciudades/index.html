@@ -4,48 +4,49 @@
   <div id="sidebar-container"></div>
 
   <main class="ciudad">
-  <section class="formulario-ciudad">
+  <section class="contenedor_formulario">
 
     <!-- Formulario REGISTRAR -->
-    <form id="formRegistrarCiudad">
-      <h2>Registrar Ciudad</h2>
-      <label for="nombreCiudad">Nombre de la Ciudad</label>
-      <input type="text" id="nombreCiudad" name="nombreCiudad" required placeholder="Ej: Bogotá" />
-      <button type="submit">Registrar Ciudad</button>
+    <form id="formRegistrarCiudad" class="formulario">
+      <h2 class="formulario__titulo">Registrar Ciudad</h2>
+      <label for="nombreCiudad" class="formulario__texto">Nombre de la Ciudad</label>
+      <input type="text" id="nombreCiudad" name="nombreCiudad" class="formulario__input" required placeholder="Ej: Bogotá" />
+      <button type="submit" class="boton boton--formulario">Registrar Ciudad</button>
     </form>
 
     <!-- Formulario EDITAR -->
-    <form id="formEditarCiudad">
-  <h2>Editar Ciudad</h2>
-  <label for="ciudadesEditar">Seleccionar Ciudad</label>
-  <select id="ciudadesEditar">
+    <form id="formEditarCiudad" class="formulario">
+  <h2 class="formulario__titulo">Editar Ciudad</h2>
+  <label for="ciudadesEditar" class="formulario__texto">Seleccionar Ciudad</label>
+  <select id="ciudadesEditar" class="formulario__input">
     <option value="">-- Selecciona una ciudad --</option>
   </select>
 
-  <label for="nuevoNombreCiudad">Nuevo nombre</label>
-  <input type="text" id="nuevoNombreCiudad" placeholder="Nuevo nombre..." />
+  <label for="nuevoNombreCiudad" class="formulario__texto">Nuevo nombre</label>
+  <input type="text" id="nuevoNombreCiudad" class="formulario__input" placeholder="Nuevo nombre..." />
 
-  <button type="button" id="btnEditar">Editar Ciudad</button>
+  <button type="button" id="btnEditar" class="boton boton--formulario">Editar Ciudad</button>
 </form>
 
 
     <!-- Formulario ELIMINAR -->
-    <form id="formEliminarCiudad">
-      <h2>Eliminar Ciudad</h2>
-      <label for="ciudadesEliminar">Seleccionar Ciudad</label>
-      <select id="ciudadesEliminar">
+    <form id="formEliminarCiudad" class="formulario">
+      <h2 class="formulario__titulo">Eliminar Ciudad</h2>
+      <label for="ciudadesEliminar" class="formulario__texto">Seleccionar Ciudad</label>
+      <select id="ciudadesEliminar" class="formulario__input">
         <option value="">-- Selecciona una ciudad --</option>
       </select>
-      <button type="button" id="btnEliminar">Eliminar Ciudad</button>
+      <button type="button" id="btnEliminar" class="boton boton--formulario">Eliminar Ciudad</button>
     </form>
+
     <!-- Formulario REACTIVAR -->
-<form id="formReactivarCiudad">
-  <h2>Reactivar Ciudad</h2>
-  <label for="ciudadesReactivar">Seleccionar Ciudad</label>
-  <select id="ciudadesReactivar">
+<form id="formReactivarCiudad" class="formulario">
+  <h2 class="formulario__titulo">Reactivar Ciudad</h2>
+  <label for="ciudadesReactivar" class="formulario__texto">Seleccionar Ciudad</label>
+  <select id="ciudadesReactivar" class="formulario__input">
     <option value="">-- Selecciona una ciudad --</option>
   </select>
-  <button type="button" id="btnReactivar">Reactivar Ciudad</button>
+  <button type="button" id="btnReactivar" class="boton boton--formulario">Reactivar Ciudad</button>
 </form>
 
 

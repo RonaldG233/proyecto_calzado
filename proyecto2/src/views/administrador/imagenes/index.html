@@ -1,37 +1,21 @@
 <div class="holaa">
-<div id="header-container"></div>
-  
+  <div id="header-container"></div>
   <div id="sidebar-container"></div>
-  
-<main class="imagen">
-  <h2>Subir Imagen</h2>
-  <form id="formularioImagen" enctype="multipart/form-data">
-    <label for="nombreImagen">Nombre de la imagen:</label><br />
-    <input 
-      type="text" 
-      id="nombreImagen" 
-      name="nombreImagen" 
-      maxlength="50" 
-      placeholder="Ingrese un nombre para la imagen" 
-      required
-    /><br /><br />
-
-    <label for="archivo">Seleccione la imagen:</label><br />
-    <input 
-      type="file" 
-      id="archivo" 
-      name="archivo" 
-      accept="image/*" 
-      required
-    /><br /><br />
-
-    <button type="submit">Subir Imagen</button>
-    <a href="./tablaImagenes.html">
-  <button type="button">Ver imágenes</button>
-</a>
-
-  </form>
-
-  <div id="respuesta"></div>
-</main>
+  <main class="imagen">
+    <section class="contenedor_formulario">
+      <form id="formularioImagen" class="formulario formulario--width" enctype="multipart/form-data">
+        <h2 class="formulario__titulo">Subir Imagen</h2>
+        <label for="nombreImagen" class="formulario__texto">Nombre de la imagen:</label>
+        <input type="text" id="nombreImagen" class="formulario__input" name="nombreImagen" maxlength="50"
+          placeholder="Nombre para la imagen" required />
+    
+        <label for="archivo" class="formulario__texto">Seleccione la imagen:</label>
+        <input type="file" id="archivo" class="formulario__input" name="archivo" accept="image/*" required />
+    
+        <button type="submit" class="boton boton--formulario">Subir Imagen</button>
+        <button type="button" class="boton boton--formulario">Ver imágenes</button>
+      </form>
+      <div id="respuesta"></div>
+    </section>
+  </main>
 </div>
