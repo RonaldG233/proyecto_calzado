@@ -33,10 +33,11 @@ export const loginController = () => {
 
     try {
       // Llamada al login de la API
-      const res = await postSinToken("usuarios/login", { correo, contrasena });
-      const data = await res.json();
+      const { status, data } = await postSinToken("usuarios/login", { correo, contrasena });
 
-      if (!res.ok) return error(data.error || "Error en el login.");
+      if (status !== 200) {
+        return error(data.error || "Error en el login.");
+      }
 
       // Guardar tokens y usuario para autenticación SPA
       localStorage.setItem("token", data.accessToken);
@@ -46,7 +47,7 @@ export const loginController = () => {
       await success("Inicio de sesión exitoso.");
 
       // Redirección según rol usando hash SPA
-      const rol = data.usuario.rol.toLowerCase();
+      const rol = data.usuario.rol?.toLowerCase();
       if (rol === "administrador") {
         window.location.hash = "#usuarios"; // Admin SPA
       } else if (rol === "usuario") {
@@ -64,5 +65,3 @@ export const loginController = () => {
   // Evitar envío del formulario por defecto
   formulario.addEventListener("submit", (e) => e.preventDefault());
 };
-
-

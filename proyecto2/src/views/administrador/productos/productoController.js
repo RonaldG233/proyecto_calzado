@@ -31,10 +31,6 @@ export const productoController = () => {
   let listaImagenes = [];
   let listaEmpresas = [];
 
-  const mostrarAlerta = (titulo, texto, icono = "success") => {
-    Swal.fire({ title: titulo, text: texto, icon: icono, confirmButtonText: "Aceptar" });
-  };
-
   // Cargar empresas e imágenes desde API
   const cargarDatos = async () => {
     try {
@@ -48,7 +44,7 @@ export const productoController = () => {
       listaEmpresas
         .filter(emp => emp.id_estado === 1)
         .forEach(emp => {
-          const option = new Option(emp.nombre_empresa, emp.id_empresa);
+          const option = new Option(emp.nombre_empresa, emp.idEmpresa);
           selectEmpresa.appendChild(option);
         });
 
@@ -60,7 +56,7 @@ export const productoController = () => {
 
     } catch (err) {
       console.error("Error cargando selects:", err);
-      mostrarAlerta("Error", "No se pudieron cargar empresas o imágenes", "error");
+      error("Error", "No se pudieron cargar empresas o imágenes");
     }
   };
 
@@ -92,13 +88,20 @@ export const productoController = () => {
     if (!validarSeleccion(selectEmpresa)) return info("Faltan datos", "Debe seleccionar una empresa.");
     if (!validarSeleccion(selectImagen)) return info("Faltan datos", "Debe seleccionar una imagen.");
 
+    // IDs numéricos
+    const idEmpresa = parseInt(selectEmpresa.value);
+    const idImagen = parseInt(selectImagen.value);
+
+    if (isNaN(idEmpresa)) return info("Error", "ID de empresa inválido.");
+    if (isNaN(idImagen)) return info("Error", "ID de imagen inválido.");
+
     const producto = {
       nombre_producto: inputNombre.value.trim(),
       descripcion_producto: inputDescripcion.value.trim(),
       precio_producto: parseFloat(inputPrecio.value),
-      id_empresa: parseInt(selectEmpresa.value),
-      id_imagen: selectImagen.value ? parseInt(selectImagen.value) : null,
-      id_estado: 1 // por defecto disponible
+      id_empresa: idEmpresa,
+      id_imagen: idImagen,
+      id_estado: 1
     };
 
     console.log("Producto a enviar:", producto);
@@ -106,12 +109,14 @@ export const productoController = () => {
     try {
       const res = await post("productos", producto);
 
-      if (res.ok) {
+      // Consideramos cualquier respuesta 200 o 201 como éxito
+      if (res.ok || res.status === 201 || res.status === 200) {
         await success("Producto registrado correctamente.");
         formRegistrar.reset();
         vistaPrevia.src = "";
         vistaPrevia.style.display = "none";
       } else {
+        // Si el backend devuelve error con mensaje
         const mensaje = res.data?.mensaje || "No se pudo registrar el producto.";
         error("Error", mensaje);
       }

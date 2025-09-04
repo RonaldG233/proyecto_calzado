@@ -5,26 +5,18 @@ const jwtDecode = jwt.default || jwt;
 // Importa la función para mostrar mensajes de error
 import { error } from "./alertas.js";
 
-/**
- * Verifica si un token JWT expiró
- * @param {string} token
- * @returns {boolean} true si expiró o no existe, false si sigue válido
- */
+// ================= TOKEN =================
 export const isTokenExpired = (token) => {
   if (!token) return true;
   try {
     const decoded = jwtDecode(token);
-    const now = Date.now() / 1000; // tiempo actual en segundos
+    const now = Date.now() / 1000;
     return decoded.exp < now;
   } catch (e) {
-    return true; // token inválido
+    return true;
   }
 };
 
-/**
- * Intenta refrescar el access token usando refreshToken
- * @returns {string|null} nuevo token o null si falla
- */
 export const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) return null;
@@ -39,7 +31,7 @@ export const refreshAccessToken = async () => {
     if (!res.ok) {
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
-      window.location.hash = "#login"; // redirige al login
+      window.location.hash = "#login";
       return null;
     }
 
@@ -56,10 +48,6 @@ export const refreshAccessToken = async () => {
   }
 };
 
-/**
- * Devuelve un token válido, refrescando si expiró
- * @returns {Promise<string|null>}
- */
 export const getValidToken = async () => {
   let token = localStorage.getItem("token");
   if (!token || isTokenExpired(token)) {
@@ -68,9 +56,6 @@ export const getValidToken = async () => {
   return token;
 };
 
-/**
- * Devuelve headers con Authorization si hay token válido
- */
 const getAuthHeaders = async () => {
   const token = await getValidToken();
   return token
@@ -79,14 +64,13 @@ const getAuthHeaders = async () => {
 };
 
 // ================= PETICIONES =================
-
 export const get = async (endpoint) => {
   const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
     headers: await getAuthHeaders()
   });
   if (res.ok) return await res.json();
-  const err = await res.json();
-  error(err.error);
+  const err = await res.json().catch(() => ({}));
+  error(err.error || "Error en GET");
 };
 
 export const post = async (endpoint, info) => {
@@ -96,37 +80,60 @@ export const post = async (endpoint, info) => {
       headers: await getAuthHeaders(),
       body: JSON.stringify(info)
     });
+
     const data = await res.json().catch(() => ({}));
-    return { ok: res.ok, data };
+    // DEVUELVE COMO ANTES: { status, data }
+    return { status: res.status, data };
   } catch (err) {
     console.error("Error en POST:", err);
-    return { ok: false, data: { mensaje: "Error de conexión" } };
+    return { status: 0, data: { mensaje: "Error de conexión" } };
   }
 };
- 
 
 export const postSinToken = async (endpoint, info) => {
-  return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(info)
-  });
+  try {
+    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(info)
+    });
+    const data = await res.json().catch(() => ({}));
+    return { status: res.status, data };
+  } catch (err) {
+    console.error("Error en POST sin token:", err);
+    return { status: 0, data: { mensaje: "Error de conexión" } };
+  }
 };
 
 export const put = async (endpoint, info) => {
-  return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: "PUT",
-    headers: await getAuthHeaders(),
-    body: JSON.stringify(info)
-  });
+  try {
+    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+      method: "PUT",
+      headers: await getAuthHeaders(),
+      body: JSON.stringify(info)
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, data };
+  } catch (err) {
+    console.error("Error en PUT:", err);
+    return { ok: false, data: { mensaje: "Error de conexión" } };
+  }
 };
 
 export const del = async (endpoint) => {
-  return await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
-    method: "DELETE",
-    headers: await getAuthHeaders()
-  });
+  try {
+    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+      method: "DELETE",
+      headers: await getAuthHeaders()
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, data };
+  } catch (err) {
+    console.error("Error en DELETE:", err);
+    return { ok: false, data: { mensaje: "Error de conexión" } };
+  }
 };
+
 
 // ================= HELPERS USUARIOS =================
 export const obtenerUsuarios = async () => await get("usuarios");

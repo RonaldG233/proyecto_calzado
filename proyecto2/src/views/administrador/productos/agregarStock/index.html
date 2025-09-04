@@ -1,0 +1,43 @@
+<div class="holaa">
+<div id="header-container"></div>
+  <div id="sidebar-container"></div>
+<main class="agregarStock">
+  
+
+  <section id="main-content">
+    <div id="producto-info">
+      <h3 id="nombre-producto"></h3>
+      <p id="descripcion-producto"></p>
+      <p>Precio: $<span id="precio-producto"></span></p>
+    </div>
+
+    <div id="stock-form">
+      <label for="select-talla">Seleccionar Talla:</label>
+      <select id="select-talla">
+        <option disabled selected>Seleccionar talla</option>
+        <!-- Opciones se llenan desde JS -->
+      </select>
+
+      <label for="input-stock">Stock:</label>
+      <input type="number" id="input-stock" min="0" placeholder="Ingrese la cantidad de stock">
+
+      <button id="btn-guardar-stock">Guardar Stock</button>
+    </div>
+
+    <div id="tabla-stock">
+      <table>
+        <thead>
+          <tr>
+            <th>Talla</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-stock">
+          <tr><td colspan="3">No hay stock añadido</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</div>

@@ -9,6 +9,10 @@ import Empresas from "../views/administrador/empresas/index.html?raw";
 import Imagenes from "../views/administrador/imagenes/index.html?raw";
 import Pagos from "../views/administrador/pagos/index.html?raw";
 import Productos from "../views/administrador/productos/index.html?raw";
+import TablaImagenes  from "../views/administrador/imagenes/tablaImagenes/index.html?raw";
+import TablaProductos  from "../views/administrador/productos/tablaProductos/index.html?raw";
+import AgregarTalla  from "../views/administrador/productos/agregarTalla/index.html?raw";
+import AgregarStock  from "../views/administrador/productos/agregarStock/index.html?raw";
 
 // Importar controladores
 import { homeController } from "../views/home/homeController.js";
@@ -21,6 +25,11 @@ import { empresaController } from "../views/administrador/empresas/empresaContro
 import {imagenController} from "../views/administrador/imagenes/imagenController.js";
 import { pagoController } from "../views/administrador/pagos/pagoController.js";
 import { productoController } from "../views/administrador/productos/productoController.js";
+import { tablaImagenesController } from "../views/administrador/imagenes/tablaImagenes/tablaImagenesController.js";
+import { tablaProductosController } from "../views/administrador/productos/tablaProductos/tablaProductosController.js";
+import { agregarTallaController } from "../views/administrador/productos/agregarTalla/agregarTallaController.js";
+import { agregarStockController } from "../views/administrador/productos/agregarStock/agregarStockController.js";
+
 
 /**
  * Objeto de rutas principal.
@@ -73,12 +82,21 @@ export const routes = {
     controlador: empresaController,
     private: true
   },
-  imagenes:{
+  imagenes: {
     path: "administrador/imagenes/index.html",
     html: Imagenes,
     controlador: imagenController,
-    private: true
+    private: true,
+    subroutes: {
+      tablaImagenes: {
+        path: "administrador/imagenes/tablaImagenes/index.html",
+        html: TablaImagenes,
+        controlador: tablaImagenesController,
+        private: true
+      }
+    }
   },
+
   pagos:{
     path: "administrador/pagos/index.html",
     html: Pagos,
@@ -89,6 +107,26 @@ export const routes = {
     path: "administrador/productos/index.html",
     html: Productos,
     controlador: productoController,
-    private: true
+    private: true,
+    subroutes: {
+      tablaProductos: {
+        path: "administrador/productos/tablaProdutos/index.html",
+        html: TablaProductos,
+        controlador: tablaProductosController,
+        private: true
+      },
+      agregarTalla: { // <-- nueva subruta
+      path: "administrador/productos/agregarTalla/index.html",
+      html: AgregarTalla, // importado arriba con ?raw
+      controlador: agregarTallaController, // importado arriba
+      private: true
+      },
+    agregarStock: { // <-- nueva subruta
+      path: "administrador/productos/agregarStock/index.html",
+      html: AgregarStock, // importado arriba con ?raw
+      controlador: agregarStockController, // importado arriba
+      private: true
+      }
+    }
   }
 };
