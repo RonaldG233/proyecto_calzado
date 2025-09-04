@@ -97,13 +97,22 @@ export const postSinToken = async (endpoint, info) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info)
     });
-    const data = await res.json().catch(() => ({}));
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      data = {};
+    }
+
     return { status: res.status, data };
+
   } catch (err) {
     console.error("Error en POST sin token:", err);
-    return { status: 0, data: { mensaje: "Error de conexión" } };
+    return { status: 0, data: { error: "Error de conexión" } };
   }
 };
+
 
 export const put = async (endpoint, info) => {
   try {

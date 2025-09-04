@@ -12,7 +12,8 @@ import Productos from "../views/administrador/productos/index.html?raw";
 import TablaImagenes  from "../views/administrador/imagenes/tablaImagenes/index.html?raw";
 import TablaProductos  from "../views/administrador/productos/tablaProductos/index.html?raw";
 import AgregarTalla  from "../views/administrador/productos/agregarTalla/index.html?raw";
-import AgregarStock  from "../views/administrador/productos/agregarStock/index.html?raw";
+import AgregarStock from "../views/administrador/productos/agregarStock/index.html?raw";
+import UsuarioEditar  from "../views/administrador/usuarios/usuarioEditar/index.html?raw";
 
 // Importar controladores
 import { homeController } from "../views/home/homeController.js";
@@ -29,6 +30,7 @@ import { tablaImagenesController } from "../views/administrador/imagenes/tablaIm
 import { tablaProductosController } from "../views/administrador/productos/tablaProductos/tablaProductosController.js";
 import { agregarTallaController } from "../views/administrador/productos/agregarTalla/agregarTallaController.js";
 import { agregarStockController } from "../views/administrador/productos/agregarStock/agregarStockController.js";
+import { usuarioEditarController } from "../views/administrador/usuarios/usuarioEditar/usuarioEditarController.js";
 
 
 /**
@@ -62,7 +64,15 @@ export const routes = {
     path: "administrador/usuarios/index.html",
     html: Usuarios,
     controlador: usuarioController,
-    private: true // Requiere login
+    private: true,
+    subroutes: {
+      usuarioEditar: {
+        path: "administrador/usuarios/usuarioEditar/index.html",
+        html: UsuarioEditar,
+        controlador: usuarioEditarController,
+        private: true
+      }
+    }
   },
   ciudades: {
     path: "administrador/ciudades/index.html",

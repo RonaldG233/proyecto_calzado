@@ -3,11 +3,12 @@
   <div id="sidebar-container"></div>
 
   <main class="registro-producto">
-    <h2>Registrar Producto</h2>
-
-    <form id="formularioProducto">
+    
+    <section class="contenedor_formulario">
+    <form id="formularioProducto" class="formulario">
+      <h2 class="formulario__titulo">Registrar Producto</h2>
       <!-- Nombre -->
-      <label for="nombreProducto">Nombre del producto:</label><br />
+      <label for="nombreProducto" class="formulario__texto">Nombre del producto:</label>
       <input 
         type="text" 
         id="nombreProducto" 
@@ -15,20 +16,22 @@
         maxlength="100" 
         placeholder="Ingrese el nombre del producto" 
         required
-      /><br /><br />
+        class="formulario__input"
+      />
 
       <!-- Descripción -->
-      <label for="descripcionProducto">Descripción:</label><br />
+      <label for="descripcionProducto" class="formulario__texto">Descripción:</label>
       <textarea 
         id="descripcionProducto" 
         name="descripcionProducto" 
         maxlength="255" 
         placeholder="Ingrese una descripción del producto"
         required
-      ></textarea><br /><br />
+        class="formulario__input"
+      ></textarea>
 
       <!-- Precio -->
-      <label for="precioProducto">Precio:</label><br />
+      <label for="precioProducto" class="formulario__texto">Precio:</label>
       <input 
         type="number" 
         id="precioProducto" 
@@ -36,32 +39,33 @@
         step="0.01" 
         placeholder="Ingrese el precio" 
         required
-      /><br /><br />
+        class="formulario__input"
+      />
 
       <!-- Empresa -->
-      <label for="empresa">Empresa:</label><br />
-      <select id="empresa" name="empresa" required>
+      <label for="empresa" class="formulario__texto">Empresa:</label>
+      <select id="empresa" name="empresa" required class="formulario__input">
         <option value="">Seleccione una empresa</option>
         <!-- JS llenará las empresas desde la API -->
-      </select><br /><br />
+      </select>
 
       <!-- Imagen -->
-      <label for="imagen">Imagen:</label><br />
-      <select id="imagen" name="imagen" required>
+      <label for="imagen" class="formulario__texto">Imagen:</label>
+      <select id="imagen" name="imagen" required class="formulario__input">
         <option value="">Seleccione una imagen</option>
         <!-- JS llenará las imágenes desde la API -->
-      </select><br /><br />
+      </select>
 
       <!-- Estado -->
       
 
       <!-- Botones -->
-      <button type="submit">Registrar Producto</button>
-      <a href="#productos/tablaProductos">
+      <button type="submit" class="boton boton--formulario">Registrar Producto</button>
+      <a href="#productos/tablaProductos" class="boton boton--formulario">
         <button type="button">Ver Productos</button>
       </a>
     </form>
-
+    </section>
     <div id="respuesta"></div>
   </main>
 </div>

@@ -3,48 +3,48 @@
   <div id="sidebar-container"></div>
 
   <main class="talla">
-    <section class="formulario-talla">
+    <section class="contenedor_formulario">
 
       <!-- Formulario REGISTRAR -->
-      <form id="formRegistrarTalla">
-        <h2>Registrar Talla</h2>
-        <label for="nombreTalla">Número de talla</label>
-        <input type="number" id="nombreTalla" name="nombreTalla" required placeholder="Ej: 40" />
-        <button type="submit">Registrar Talla</button>
+      <form id="formRegistrarTalla" class="formulario">
+        <h2 class="formulario__titulo">Registrar Talla</h2>
+        <label for="nombreTalla" class="formulario__texto">Número de talla</label>
+        <input type="number" class="formulario__input" id="nombreTalla" name="nombreTalla" required placeholder="Ej: 40" />
+        <button type="submit" class="boton boton--formulario">Registrar Talla</button>
       </form>
 
       <!-- Formulario EDITAR -->
-      <form id="formEditarTalla">
-        <h2>Editar Talla</h2>
-        <label for="tallaEditar">Seleccionar Talla</label>
-        <select id="tallaEditar">
+      <form id="formEditarTalla" class="formulario">
+        <h2 class="formulario__titulo">Editar Talla</h2>
+        <label for="tallaEditar" class="formulario__texto">Seleccionar Talla</label>
+        <select id="tallaEditar" class="formulario__input">
           <option value="">-- Selecciona una Talla --</option>
         </select>
 
-        <label for="nuevoNombreTalla">Nuevo número de talla</label>
-        <input type="number" id="nuevoNombreTalla" placeholder="Nuevo número..." />
+        <label for="nuevoNombreTalla" class="formulario__texto">Nuevo número de talla</label>
+        <input type="number" class="formulario__input" id="nuevoNombreTalla" placeholder="Nuevo número..." />
 
-        <button type="button" id="btnEditar">Editar Talla</button>
+        <button type="button" id="btnEditar" class="boton boton--formulario">Editar Talla</button>
       </form>
 
       <!-- Formulario INACTIVAR -->
-      <form id="formEliminarTalla">
-        <h2>Inactivar Talla</h2>
-        <label for="tallaInactivar">Seleccionar Talla</label>
-        <select id="tallaInactivar">
+      <form id="formEliminarTalla" class="formulario">
+        <h2 class="formulario__titulo">Inactivar Talla</h2>
+        <label for="tallaInactivar" class="formulario__texto">Seleccionar Talla</label>
+        <select id="tallaInactivar" class="formulario__input">
           <option value="">-- Selecciona una Talla --</option>
         </select>
-        <button type="button" id="btnInactivar">Inactivar Talla</button>
+        <button type="button" id="btnInactivar" class="boton boton--formulario">Inactivar Talla</button>
       </form>
 
       <!-- Formulario REACTIVAR -->
-      <form id="formActivarTalla">
-        <h2>Reactivar Talla</h2>
-        <label for="tallaActivar">Seleccionar Talla</label>
-        <select id="tallaActivar">
+      <form id="formActivarTalla" class="formulario">
+        <h2 class="formulario__titulo">Reactivar Talla</h2>
+        <label for="tallaActivar" class="formulario__texto">Seleccionar Talla</label>
+        <select id="tallaActivar" class="formulario__input">
           <option value="">-- Selecciona una Talla --</option>
         </select>
-        <button type="button" id="btnActivar">Reactivar Talla</button>
+        <button type="button" id="btnActivar" class="boton boton--formulario">Reactivar Talla</button>
       </form>
 
     </section>

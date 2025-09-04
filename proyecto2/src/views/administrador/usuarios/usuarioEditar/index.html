@@ -1,0 +1,32 @@
+<div class="holaa">
+  <div id="header-container"></div>
+<div id="sidebar-container"></div>
+<main class="editarUsuarios">
+  <div class="contenedor">
+      <h2>Editar Usuario</h2>
+      <form id="formEditarUsuario">
+        <input type="hidden" name="idUsuario" id="idUsuario" />
+
+        <label>Nombre</label>
+        <input type="text" id="nombre" required />
+
+        <label>Correo</label>
+        <input type="email" id="correo" required />
+
+
+        <label>Teléfono</label>
+        <input type="tel" id="telefono" required />
+
+        <label>Ciudad</label>
+        <select id="codCiudad" required></select>
+
+        <label>Rol</label>
+        <select id="idRol" required></select>
+
+        <button type="submit">Actualizar</button>
+        <a href="#usuarios" class="cancelar">Cancelar</a>
+      </form>
+    </div>
+</main>
+
+  </div>

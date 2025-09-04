@@ -1,74 +1,77 @@
 <div class="holaa">
-<div id="header-container"></div>
+  <div id="header-container"></div>
   <div id="sidebar-container"></div>
 
   <main class="empresa">
-    <section class="formulario-empresa">
+    <section class="contenedor_formulario">
 
       <!-- Formulario REGISTRAR -->
-      <form id="formRegistrarEmpresa">
-        <h2>Registrar Empresa</h2>
-        <label for="nombreEmpresa">Nombre</label>
-        <input type="text" id="nombreEmpresa" required placeholder="Ej: Calzado Andino S.A.S" />
+      <form id="formRegistrarEmpresa" class="formulario">
+        <h2 class="formulario__titulo">Registrar Empresa</h2>
+        <label for="nombreEmpresa" class="formulario__texto">Nombre</label>
+        <input type="text" id="nombreEmpresa" class="formulario__input" required
+          placeholder="Ej: Calzado Andino S.A.S" />
 
-        <label for="direccionEmpresa">Dirección</label>
-        <input type="text" id="direccionEmpresa" required placeholder="Ej: Calle 123 #45-67"/>
+        <label for="direccionEmpresa" class="formulario__texto">Dirección</label>
+        <input type="text" id="direccionEmpresa" class="formulario__input" required
+          placeholder="Ej: Calle 123 #45-67" />
 
-        <label for="telefonoEmpresa">Teléfono</label>
-        <input type="text" id="telefonoEmpresa" required placeholder="Ej: 3201234567"/>
+        <label for="telefonoEmpresa" class="formulario__texto">Teléfono</label>
+        <input type="text" id="telefonoEmpresa" class="formulario__input" required placeholder="Ej: 3201234567" />
 
-        <label for="correoEmpresa">Correo</label>
-        <input type="email" id="correoEmpresa" required placeholder="Ej: contacto@empresa.com"/>
+        <label for="correoEmpresa" class="formulario__texto">Correo</label>
+        <input type="email" id="correoEmpresa" class="formulario__input" required
+          placeholder="Ej: contacto@empresa.com" />
 
-        <button type="submit">Registrar Empresa</button>
+        <button type="submit" class="boton boton--formulario">Registrar Empresa</button>
       </form>
 
       <!-- Formulario EDITAR -->
-      <form id="formEditarEmpresa">
-        <h2>Editar Empresa</h2>
+      <form id="formEditarEmpresa" class="formulario">
+        <h2 class="formulario__titulo">Editar Empresa</h2>
 
-        <label for="empresaEditar">Seleccionar Empresa</label>
-        <select id="empresaEditar">
+        <label for="empresaEditar" class="formulario__texto">Seleccionar Empresa</label>
+        <select id="empresaEditar" class="formulario__input">
           <option value="">-- Seleccione una empresa --</option>
         </select>
 
-        <label for="nuevoNombreEmpresa">Nuevo nombre</label>
-        <input type="text" id="nuevoNombreEmpresa" placeholder="Nuevo nombre..." />
+        <label for="nuevoNombreEmpresa" class="formulario__texto">Nuevo nombre</label>
+        <input type="text" id="nuevoNombreEmpresa" class="formulario__input" placeholder="Nuevo nombre..." />
 
-        <label for="nuevaDireccionEmpresa">Nueva dirección</label>
-        <input type="text" id="nuevaDireccionEmpresa" placeholder="Nueva dirección..." />
+        <label for="nuevaDireccionEmpresa" class="formulario__texto">Nueva dirección</label>
+        <input type="text" id="nuevaDireccionEmpresa" class="formulario__input" placeholder="Nueva dirección..." />
 
-        <label for="nuevoTelefonoEmpresa">Nuevo teléfono</label>
-        <input type="text" id="nuevoTelefonoEmpresa" placeholder="Nuevo teléfono..." />
+        <label for="nuevoTelefonoEmpresa" class="formulario__texto">Nuevo teléfono</label>
+        <input type="text" id="nuevoTelefonoEmpresa" class="formulario__input" placeholder="Nuevo teléfono..." />
 
-        <label for="nuevoCorreoEmpresa">Nuevo correo</label>
-        <input type="email" id="nuevoCorreoEmpresa" placeholder="Nuevo correo..." />
+        <label for="nuevoCorreoEmpresa" class="formulario__texto">Nuevo correo</label>
+        <input type="email" id="nuevoCorreoEmpresa" class="formulario__input" placeholder="Nuevo correo..." />
 
-        <button type="button" id="btnEditarEmpresa">Editar Empresa</button>
+        <button type="button" id="btnEditarEmpresa" class="boton boton--formulario">Editar Empresa</button>
       </form>
 
       <!-- Formulario INACTIVAR empresa -->
-      <form id="formInactivarEmpresa">
-        <h2>Inactivar Empresa</h2>
-        <label for="empresaInactivar">Seleccionar Empresa</label>
-        <select id="empresaInactivar">
+      <form id="formInactivarEmpresa" class="formulario">
+        <h2 class="formulario__titulo">Inactivar Empresa</h2>
+        <label for="empresaInactivar" class="formulario__texto">Seleccionar Empresa</label>
+        <select id="empresaInactivar" class="formulario__input">
           <option value="">-- Seleccione una empresa --</option>
         </select>
-        <button type="button" id="btnInactivarEmpresa">Inactivar Empresa</button>
+        <button type="button" id="btnInactivarEmpresa" class="boton boton--formulario">Inactivar Empresa</button>
       </form>
 
       <!-- Formulario ACTIVAR empresa -->
-      <form id="formActivarEmpresa">
-        <h2>Activar Empresa</h2>
-        <label for="empresaActivar">Seleccionar Empresa</label>
-        <select id="empresaActivar">
+      <form id="formActivarEmpresa" class="formulario">
+        <h2 class="formulario__titulo">Activar Empresa</h2>
+        <label for="empresaActivar" class="formulario__texto">Seleccionar Empresa</label>
+        <select id="empresaActivar" class="formulario__input">
           <option value="">-- Seleccione una empresa --</option>
         </select>
-        <button type="button" id="btnActivarEmpresa">Activar Empresa</button>
+        <button type="button" id="btnActivarEmpresa" class="boton boton--formulario"  >Activar Empresa</button>
       </form>
 
     </section>
 
     <div id="mensajeEmpresa"></div>
   </main>
-  </div>
+</div>

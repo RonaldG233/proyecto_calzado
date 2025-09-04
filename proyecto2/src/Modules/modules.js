@@ -70,9 +70,13 @@ export async function crearTablaUsuarios() {
 
       // Botón editar
       const btnEditar = document.createElement("button");
-      btnEditar.textContent = "✏️";
+      btnEditar.textContent = "✏️ Editar";
       btnEditar.classList.add("editar");
       tdAcc.appendChild(btnEditar);
+      btnEditar.addEventListener("click", () => {
+        localStorage.setItem("usuarioEditar", JSON.stringify(prod));
+        window.location.hash = "#usuarios/usuarioEditar/usuarioEditar";
+      });
 
       // Botón activar/inactivar
       const btnEstado = document.createElement("button");
