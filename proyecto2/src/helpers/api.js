@@ -1,9 +1,10 @@
-// Importa jwt-decode
-import * as jwt from "jwt-decode";
-const jwtDecode = jwt.default || jwt;
+// ================= IMPORTS =================
+import { jwtDecode } from "jwt-decode";
 
-// Importa la función para mostrar mensajes de error
 import { error } from "./alertas.js";
+
+// ================= BASE API =================
+const API_BASE = "http://localhost:8080/proyectoCalzado/api";
 
 // ================= TOKEN =================
 export const isTokenExpired = (token) => {
@@ -22,7 +23,7 @@ export const refreshAccessToken = async () => {
   if (!refreshToken) return null;
 
   try {
-    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/usuarios/refresh`, {
+    const res = await fetch(`${API_BASE}/usuarios/refresh`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken })
@@ -65,7 +66,7 @@ const getAuthHeaders = async () => {
 
 // ================= PETICIONES =================
 export const get = async (endpoint) => {
-  const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+  const res = await fetch(`${API_BASE}/${endpoint}`, {
     headers: await getAuthHeaders()
   });
   if (res.ok) return await res.json();
@@ -75,14 +76,13 @@ export const get = async (endpoint) => {
 
 export const post = async (endpoint, info) => {
   try {
-    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+    const res = await fetch(`${API_BASE}/${endpoint}`, {
       method: "POST",
       headers: await getAuthHeaders(),
       body: JSON.stringify(info)
     });
 
     const data = await res.json().catch(() => ({}));
-    // DEVUELVE COMO ANTES: { status, data }
     return { status: res.status, data };
   } catch (err) {
     console.error("Error en POST:", err);
@@ -92,7 +92,7 @@ export const post = async (endpoint, info) => {
 
 export const postSinToken = async (endpoint, info) => {
   try {
-    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+    const res = await fetch(`${API_BASE}/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info)
@@ -109,14 +109,13 @@ export const postSinToken = async (endpoint, info) => {
 
   } catch (err) {
     console.error("Error en POST sin token:", err);
-    return { status: 0, data: { error: "Error de conexión" } };
+    return { status: 0, data: { mensaje: "Error de conexión" } };
   }
 };
 
-
 export const put = async (endpoint, info) => {
   try {
-    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+    const res = await fetch(`${API_BASE}/${endpoint}`, {
       method: "PUT",
       headers: await getAuthHeaders(),
       body: JSON.stringify(info)
@@ -131,7 +130,7 @@ export const put = async (endpoint, info) => {
 
 export const del = async (endpoint) => {
   try {
-    const res = await fetch(`http://localhost:8080/proyectoCalzado/api/${endpoint}`, {
+    const res = await fetch(`${API_BASE}/${endpoint}`, {
       method: "DELETE",
       headers: await getAuthHeaders()
     });
@@ -143,11 +142,12 @@ export const del = async (endpoint) => {
   }
 };
 
-
 // ================= HELPERS USUARIOS =================
 export const obtenerUsuarios = async () => await get("usuarios");
-export const inactivarUsuario = async (id) => await put(`usuarios/inactivar/${id}`);
-export const reactivarUsuario = async (id) => await put(`usuarios/reactivar/${id}`);
+export const inactivarUsuario = async (id) => await put(`usuarios/${id}/inactivar`);
+export const reactivarUsuario = async (id) => await put(`usuarios/${id}/reactivar`);
+
+
 export async function obtenerCiudades() {
   try {
     const response = await fetch(`${API_BASE}/ciudades`);
@@ -169,7 +169,7 @@ export async function obtenerRoles() {
     throw error;
   }
 }
-//ACTUALIZAR USUARIO
+
 export async function actualizarUsuario(usuario) {
   try {
     const response = await fetch(`${API_BASE}/usuarios/${usuario.idUsuario}`, {

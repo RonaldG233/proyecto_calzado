@@ -1,6 +1,4 @@
 import { 
-  validarFormularioRegistro,
-  limpiar,
   validarNombre,
   validarTelefono,
   validarCorreo,
@@ -10,7 +8,7 @@ import {
 } from "../../Modules/validaciones.js";
 
 import { success, error } from "../../helpers/alertas.js";
-import { postSinToken } from "../../helpers/api.js";
+import { postSinToken, obtenerCiudades, obtenerRoles } from "../../helpers/api.js";
 import { contarCamposFormulario } from "../../Modules/modules.js";
 
 export const registroController = () => {
@@ -20,9 +18,10 @@ export const registroController = () => {
   const btnRegistrar = document.getElementById("btnRegistro");
   if (!btnRegistrar) return console.error("No se encontró el botón de registro");
 
-  cargarCiudades();
-  cargarRoles();
+  // Cargar selects dinámicos
+  cargarSelects();
 
+  // Elementos del formulario
   const nombre = formulario.querySelector("#nombre");
   const telefono = formulario.querySelector("#telefono");
   const correo = formulario.querySelector("#correo");
@@ -31,6 +30,7 @@ export const registroController = () => {
   const ciudad = formulario.querySelector("#ciudad");
   const rol = formulario.querySelector("#rol");
 
+  // Validaciones en blur/change
   nombre.addEventListener("blur", () => validarNombre(nombre));
   telefono.addEventListener("blur", () => validarTelefono(telefono));
   correo.addEventListener("blur", () => validarCorreo(correo));
@@ -39,44 +39,48 @@ export const registroController = () => {
   ciudad.addEventListener("change", () => validarSeleccion(ciudad));
   rol.addEventListener("change", () => validarSeleccion(rol));
 
+  // Click en botón -> submit
   btnRegistrar.addEventListener("click", (e) => {
     e.preventDefault();
     formulario.requestSubmit();
   });
 
+  // Submit del formulario
   formulario.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Validar campos vacíos
     const { vacíos } = contarCamposFormulario(formulario);
-    if (vacíos > 0) return;
+    if (vacíos > 0) return error("Por favor completa todos los campos requeridos.");
 
-    const info = validarFormularioRegistro(e);
-    const camposRequeridos = ["nombre","telefono","correo","contrasena","confirmaContrasena"];
-    const camposFaltantes = camposRequeridos.filter(campo => !(campo in info));
-
-    if (!ciudad.value || !rol.value || camposFaltantes.length > 0) {
-      return error("Por favor completa todos los campos requeridos correctamente.");
+    // Validar cada campo individualmente
+    if (!validarNombre(nombre) || !validarTelefono(telefono) || !validarCorreo(correo) ||
+        !validarContrasena(contrasena) || !validarConfirmaContrasena(confirmaContrasena, contrasena) ||
+        !validarSeleccion(ciudad) || !validarSeleccion(rol)) {
+      return error("Por favor completa correctamente todos los campos.");
     }
 
+    // Preparar objeto para la API
     const usuario = {
-      nombre: info.nombre,
-      telefono: info.telefono,
-      correo: info.correo,
-      contrasena: info.contrasena,
+      nombre: nombre.value.trim(),
+      telefono: telefono.value.trim(),
+      correo: correo.value.trim(),
+      contrasena: contrasena.value.trim(),
       codCiudad: Number(ciudad.value),
-      idRol: Number(rol.value),
-      id_estado: 1
+      idRol: Number(rol.value)
     };
 
     try {
+      // Llamada a API
       const { status, data } = await postSinToken("usuarios", usuario);
 
       if (status >= 200 && status < 300) {
-        await success(data.mensaje || "Registro exitoso");
+        await success(data?.mensaje || "Usuario registrado correctamente");
         formulario.reset();
-        window.location.hash = "login";
+        window.location.hash = "#login";
       } else {
-        await error(data.error || data.mensaje || "Ocurrió un error al registrar el usuario");
+        const msg = data?.mensaje || data?.error || "Ocurrió un error al registrar el usuario";
+        await error(msg);
       }
 
     } catch (err) {
@@ -86,50 +90,41 @@ export const registroController = () => {
   });
 };
 
-async function cargarCiudades() {
+// ==================== Funciones auxiliares ====================
+async function cargarSelects() {
   const ciudadSelect = document.getElementById("ciudad");
-  if (!ciudadSelect) return;
-
-  try {
-    const response = await fetch("http://localhost:8080/proyectoCalzado/api/ciudades");
-    if (!response.ok) throw new Error("Error al obtener ciudades");
-
-    const ciudades = await response.json();
-    ciudadSelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
-
-    ciudades.forEach(ciudad => {
-      if (ciudad.id_estado === 1) {
-        const option = document.createElement("option");
-        option.value = ciudad.codCiudad;
-        option.textContent = ciudad.nombre_ciudad;
-        ciudadSelect.appendChild(option);
-      }
-    });
-
-  } catch (err) {
-    console.error("Error al cargar ciudades:", err);
-    error("No se pudieron cargar las opciones de ciudad.");
-  }
-}
-
-function cargarRoles() {
   const rolSelect = document.getElementById("rol");
-  if (!rolSelect) return;
 
-  rolSelect.innerHTML = '<option value="">-- Selecciona un rol --</option>';
-  const roles = [
-    { idRol: 1, nombre_rol: "Usuario" },
-    { idRol: 2, nombre_rol: "Administrador" }
-  ];
-
-  roles.forEach(rol => {
-    const option = document.createElement("option");
-    option.value = rol.idRol;
-    option.textContent = rol.nombre_rol;
-    if (rol.idRol === 2) {
-      option.disabled = true;
-      option.textContent += " (No disponible)";
+  if (ciudadSelect) {
+    try {
+      const ciudades = await obtenerCiudades();
+      ciudadSelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+      ciudades.forEach(c => {
+        if (c.id_estado === 1) {
+          ciudadSelect.add(new Option(c.nombre_ciudad, c.cod_ciudad));
+        }
+      });
+    } catch (err) {
+      console.error("Error cargando ciudades:", err);
+      error("No se pudieron cargar las ciudades.");
     }
-    rolSelect.appendChild(option);
-  });
+  }
+
+  if (rolSelect) {
+    try {
+      const roles = await obtenerRoles();
+      rolSelect.innerHTML = '<option value="">-- Selecciona un rol --</option>';
+      roles.forEach(r => {
+        const option = new Option(r.nombre_rol, r.id_rol);
+        if (r.id_rol === 2) { // deshabilitar admin
+          option.disabled = true;
+          option.textContent += " (No disponible)";
+        }
+        rolSelect.add(option);
+      });
+    } catch (err) {
+      console.error("Error cargando roles:", err);
+      error("No se pudieron cargar los roles.");
+    }
+  }
 }

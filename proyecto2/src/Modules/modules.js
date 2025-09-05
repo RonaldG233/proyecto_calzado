@@ -31,13 +31,13 @@ export async function crearTablaUsuarios() {
 
     // ----- Cabecera -----
     const thead = document.createElement("thead");
-    const tr = document.createElement("tr");
-    ["ID","Nombre","Correo","Teléfono","Ciudad","Rol","Estado","Acciones"].forEach(text => {
+    const trHead = document.createElement("tr");
+    ["ID", "Nombre", "Correo", "Teléfono", "Ciudad", "Rol", "Estado", "Acciones"].forEach(text => {
       const th = document.createElement("th");
       th.textContent = text;
-      tr.appendChild(th);
+      trHead.appendChild(th);
     });
-    thead.appendChild(tr);
+    thead.appendChild(trHead);
     tabla.appendChild(thead);
 
     // ----- Cuerpo -----
@@ -46,16 +46,20 @@ export async function crearTablaUsuarios() {
 
     usuarios.forEach(u => {
       const tr = document.createElement("tr");
-      if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) tr.classList.add("resaltado-logueado");
 
-      // Extraer datos, asegurando strings
+      // Resaltar usuario logueado
+      if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
+        tr.classList.add("resaltado-logueado");
+      }
+
+      // Datos de la fila
       const datos = [
         u.idUsuario,
         u.nombre,
         u.correo,
         u.telefono,
-        u.ciudad || "",                      // nombre de la ciudad
-        u.rol ? u.rol.nombre_rol : "",       // nombre del rol
+        u.ciudad || "",
+        u.rol || "Sin rol",
         u.estado
       ];
 
@@ -65,18 +69,8 @@ export async function crearTablaUsuarios() {
         tr.appendChild(td);
       });
 
-      // ----- Acciones -----
+      // Acciones
       const tdAcc = document.createElement("td");
-
-      // Botón editar
-      const btnEditar = document.createElement("button");
-      btnEditar.textContent = "✏️ Editar";
-      btnEditar.classList.add("editar");
-      tdAcc.appendChild(btnEditar);
-      btnEditar.addEventListener("click", () => {
-        localStorage.setItem("usuarioEditar", JSON.stringify(prod));
-        window.location.hash = "#usuarios/usuarioEditar/usuarioEditar";
-      });
 
       // Botón activar/inactivar
       const btnEstado = document.createElement("button");
@@ -85,18 +79,20 @@ export async function crearTablaUsuarios() {
         btnEstado.classList.add("inactivar");
         btnEstado.addEventListener("click", async () => {
           if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
-            Swal.fire("No permitido","No puedes inactivar tu cuenta","warning");
+            Swal.fire("No permitido", "No puedes inactivar tu propia cuenta", "warning");
             return;
           }
+
           const confirm = await Swal.fire({
             title: "Inactivar usuario?",
             text: `El usuario ${u.nombre} pasará a inactivo`,
             icon: "warning",
-            showCancelButton:true
+            showCancelButton: true
           });
+
           if (confirm.isConfirmed) {
             await inactivarUsuario(u.idUsuario);
-            Swal.fire("Inactivado","Usuario inactivado","success");
+            Swal.fire("Inactivado", "Usuario inactivado", "success");
             crearTablaUsuarios();
           }
         });
@@ -107,12 +103,13 @@ export async function crearTablaUsuarios() {
           const confirm = await Swal.fire({
             title: "Reactivar usuario?",
             text: `El usuario ${u.nombre} pasará a activo`,
-            icon:"question",
-            showCancelButton:true
+            icon: "question",
+            showCancelButton: true
           });
+
           if (confirm.isConfirmed) {
             await reactivarUsuario(u.idUsuario);
-            Swal.fire("Reactivado","Usuario activado","success");
+            Swal.fire("Reactivado", "Usuario activado", "success");
             crearTablaUsuarios();
           }
         });
@@ -128,7 +125,7 @@ export async function crearTablaUsuarios() {
 
   } catch (err) {
     console.error(err);
-    Swal.fire("Error","No se pudo cargar la tabla","error");
+    Swal.fire("Error", "No se pudo cargar la tabla", "error");
   }
 }
 // ==================== CREAR TABLA DE IMÁGENES ====================
