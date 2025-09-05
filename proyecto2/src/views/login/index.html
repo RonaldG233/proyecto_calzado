@@ -2,31 +2,30 @@
   <section class="ventana_registro">
     <!-- Título con logo -->
     <div class="titulo_registro">
-      <img src="../../../public/Group7.png" class="texto_titulo">
+      <img src="../../../public/Group7.png" class="texto_titulo" alt="Logo Classic Prestige MEN">
     </div>
 
     <!-- Zona de campos (fondo café) -->
     <div class="campos_registro">
       <section class="seccion_campos_registro">
-        <form id="formLogin" novalidate class="formulario">
-  <div>
-    <input class="input" id="correo" type="text" name="correo" placeholder="Correo electrónico">
-  </div>
-  <div>
-    <input class="input" id="contrasena" type="password" name="contrasena" placeholder="Contraseña">
-  </div>
-  <div class="boton">
-    <button type="submit" class="boton_registrarse">INICIAR SESIÓN</button>
-  </div>
-</form>
+        <form id="formLogin" novalidate class="formulario1">
 
+          <div class="grupo_campo">
+            <input class="input" id="correo" type="text" name="correo" placeholder="Correo electrónico" required>
+          </div>
+
+          <div class="grupo_campo">
+            <input class="input" id="contrasena" type="password" name="contrasena" placeholder="Contraseña" required>
+          </div>
+
+          <div class="contenedor_boton">
+            <button type="submit" class="boton_registrarse">INICIAR SESIÓN</button>
+            <a href="#registro" class="cambio-pagina">Crear cuenta</a>
+          </div>
+          
+        </form>
       </section>
-    </div>
-
-    <!-- ✅ Botón y enlace ABAJO en la parte blanca -->
-    <div class="boton">
-      <button type="submit" form="formLogin" class="boton_registrarse">INICIAR SESIÓN</button>
-      <a href="#registro" class="cambio-pagina">Crear cuenta</a>
     </div>
   </section>
 </div>
+

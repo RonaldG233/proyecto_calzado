@@ -1,7 +1,7 @@
 import HeaderAdmin from "../../../../components/headerAdmin.html?raw";
 import SidebarAdmin from "../../../../components/sidebarAdmin.html?raw";
 import { confirmar, success, error } from "../../../../helpers/alertas.js";
-import { get, post } from "../../../../helpers/api.js";
+import { get, post } from "../../../../helpers/api.js"; // post() ya hace fetch
 
 export const agregarTallaController = async () => {
   const headerContainer = document.getElementById("header-container");
@@ -10,21 +10,20 @@ export const agregarTallaController = async () => {
 
   if (!headerContainer || !sidebarContainer || !mainContainer) return;
 
-  // Cargar header y sidebar
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
 
   // Recuperar producto
   const producto = JSON.parse(localStorage.getItem("productoTalla"));
   if (!producto) {
-    document.getElementById("main-content").innerHTML = "<p>No se ha seleccionado un producto.</p>";
+    mainContainer.innerHTML = "<p>No se ha seleccionado un producto.</p>";
     return;
   }
-// Mostrar datos producto
-document.getElementById("nombre-producto").value = producto.nombre_producto;
-document.getElementById("descripcion-producto").value = producto.descripcion_producto;
-document.getElementById("precio-producto").value = `$${producto.precio_producto.toFixed(2)}`;
 
+  // Mostrar datos producto
+  document.getElementById("nombre-producto").value = producto.nombre_producto;
+  document.getElementById("descripcion-producto").value = producto.descripcion_producto;
+  document.getElementById("precio-producto").value = `$${producto.precio_producto.toFixed(2)}`;
 
   const selectTallas = document.getElementById("select-tallas");
   const btnAgregarTalla = document.getElementById("btn-agregar-talla");
@@ -33,36 +32,26 @@ document.getElementById("precio-producto").value = `$${producto.precio_producto.
   let tallas = [];
   try {
     tallas = await get("tallas"); // /api/tallas
-    tallas.forEach(t => {
-      const option = document.createElement("option");
-      option.value = t.codTalla;
-      option.textContent = t.numero_talla;
-      selectTallas.appendChild(option);
-    });
   } catch (err) {
     console.error("Error cargando tallas:", err);
     selectTallas.innerHTML = "<option disabled>Error cargando tallas</option>";
     return;
   }
 
-  let tallasSeleccionadas = [];
+  let tallasSeleccionadas = JSON.parse(localStorage.getItem(`tallasProducto_${producto.id_producto}`)) || [];
 
-  // Agregar talla
-  btnAgregarTalla.addEventListener("click", () => {
-    const codTalla = parseInt(selectTallas.value);
-    const talla = tallas.find(t => t.codTalla === codTalla);
-    if (!talla) return;
+  function renderSelectTallas() {
+    selectTallas.innerHTML = '<option value="">-- Selecciona una talla --</option>';
+    tallas.forEach(t => {
+      if (!tallasSeleccionadas.find(ts => ts.codTalla === t.codTalla)) {
+        const option = document.createElement("option");
+        option.value = t.codTalla;
+        option.textContent = t.numero_talla;
+        selectTallas.appendChild(option);
+      }
+    });
+  }
 
-    if (tallasSeleccionadas.find(t => t.codTalla === codTalla)) {
-      error("Esta talla ya fue añadida");
-      return;
-    }
-
-    tallasSeleccionadas.push(talla);
-    renderTablaTallas();
-  });
-
-  // Render tabla
   function renderTablaTallas() {
     tablaTallas.innerHTML = "";
     if (tallasSeleccionadas.length === 0) {
@@ -81,6 +70,7 @@ document.getElementById("precio-producto").value = `$${producto.precio_producto.
       btnEliminar.addEventListener("click", () => {
         tallasSeleccionadas = tallasSeleccionadas.filter(sel => sel.codTalla !== t.codTalla);
         renderTablaTallas();
+        renderSelectTallas();
       });
 
       tdAcc.appendChild(btnEliminar);
@@ -90,7 +80,22 @@ document.getElementById("precio-producto").value = `$${producto.precio_producto.
     });
   }
 
-  // Guardar tallas
+  renderSelectTallas();
+  renderTablaTallas();
+
+  btnAgregarTalla.addEventListener("click", () => {
+    const codTalla = parseInt(selectTallas.value);
+    if (!codTalla) return;
+
+    const talla = tallas.find(t => t.codTalla === codTalla);
+    if (!talla) return;
+
+    tallasSeleccionadas.push(talla);
+    renderTablaTallas();
+    renderSelectTallas();
+  });
+
+  // Guardar tallas en backend
   document.getElementById("btn-guardar-tallas").addEventListener("click", async () => {
     if (tallasSeleccionadas.length === 0) {
       error("Debe añadir al menos una talla");
@@ -98,22 +103,22 @@ document.getElementById("precio-producto").value = `$${producto.precio_producto.
     }
 
     try {
-      for (const t of tallasSeleccionadas) {
-        await post(`productos/${producto.id_producto}/tallas`, { cod_talla: t.codTalla });
+      // Enviar solo nuevas tallas al backend
+      const nuevasTallas = tallasSeleccionadas.filter(ts => !(ts.idProductoBackend || false));
+      for (const t of nuevasTallas) {
+        const res = await post(`productos/${producto.id_producto}/tallas`, { codTalla: t.codTalla });
+        if (res.ok) {
+          t.idProductoBackend = true; // marcar como guardado
+        }
       }
 
-      localStorage.setItem(
-        `tallasProducto_${producto.id_producto}`,
-        JSON.stringify(tallasSeleccionadas)
-      );
-
+      localStorage.setItem(`tallasProducto_${producto.id_producto}`, JSON.stringify(tallasSeleccionadas));
       success("Tallas guardadas correctamente");
       window.location.hash = "#productos/tablaProductos";
+
     } catch (err) {
       console.error(err);
       error("Error al guardar tallas");
     }
   });
-
-  renderTablaTallas();
 };

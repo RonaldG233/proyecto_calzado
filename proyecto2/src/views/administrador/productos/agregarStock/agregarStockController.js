@@ -19,7 +19,6 @@ export const agregarStockController = () => {
     return;
   }
 
-  // Obtener tallas del producto
   const tallasProducto = JSON.parse(localStorage.getItem(`tallasProducto_${producto.id_producto}`)) || [];
 
   if (tallasProducto.length === 0) {
@@ -27,7 +26,6 @@ export const agregarStockController = () => {
     return;
   }
 
-  // Renderizar formulario de stock
   mainContainer.innerHTML = `
     <div id="producto-info">
       <h3>${producto.nombre_producto}</h3>
@@ -57,25 +55,19 @@ export const agregarStockController = () => {
   const inputsStock = mainContainer.querySelectorAll("#tabla-stock tbody input");
 
   btnGuardar.addEventListener("click", async () => {
-    const nuevoStock = [];
-
-    inputsStock.forEach(input => {
-      const codTalla = parseInt(input.dataset.codTalla);
-      const stock = parseInt(input.value) || 0;
-
-      const talla = tallasProducto.find(t => t.codTalla === codTalla);
-      if (talla) {
-        talla.stock = stock; // Actualizar stock en la talla
-        nuevoStock.push(talla);
-      }
-    });
-
     try {
-      // Guardar stock en backend (opcional, si tu API lo soporta)
-      // await put(`productos/${producto.id_producto}/stock`, nuevoStock);
+      for (const input of inputsStock) {
+        const codTalla = parseInt(input.dataset.codTalla);
+        const stock = parseInt(input.value) || 0;
+        await put(`productos/${producto.id_producto}/tallas/${codTalla}`, { numeroStock: stock });
+      }
 
-      // Guardar en localStorage para tablaProductos
-      localStorage.setItem(`tallasProducto_${producto.id_producto}`, JSON.stringify(nuevoStock));
+      // Actualizar LocalStorage
+      tallasProducto.forEach(t => {
+        const input = [...inputsStock].find(i => parseInt(i.dataset.codTalla) === t.codTalla);
+        if (input) t.stock = parseInt(input.value);
+      });
+      localStorage.setItem(`tallasProducto_${producto.id_producto}`, JSON.stringify(tallasProducto));
 
       success("Stock guardado correctamente");
       window.location.hash = "#productos/tablaProductos";

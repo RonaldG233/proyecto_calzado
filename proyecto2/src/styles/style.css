@@ -15,6 +15,12 @@
 /* ==============================
    CONTENEDOR PRINCIPAL
 ============================== */
+/* ==============================
+   CONTENEDOR PRINCIPAL
+============================== */
+/* ==============================
+   CONTENEDOR PRINCIPAL
+============================== */
 .ventana {
   display: flex;
   align-items: center;
@@ -22,134 +28,135 @@
   height: 100vh;
   width: 100%;
   background-color: #F5F5DC;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* ==============================
    TARJETA DE REGISTRO
 ============================== */
 .ventana_registro {
-  margin-top: 50px;
   background-color: #fff;
-  width: 31vw;
-  height: 800px;
-  border-radius: 15px;
-  box-shadow: 15px 10px 15px rgba(82, 82, 82, 0.5);
+  width: 100%;
+  max-width: 520px;
+  border-radius: 20px;
+  box-shadow: 0 6px 25px rgba(82, 82, 82, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+  animation: aparecer 0.4s ease-in-out;
+  
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ==============================
    LOGO / TÍTULO
 ============================== */
 .titulo_registro {
+  padding: 35px 0 20px 0;
   display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  align-items: center;
+  justify-content: center;
+  background: #fff;
 }
 
 .texto_titulo {
-  width: 40%;
+  width: 220px;         /* más ancho */
+  max-width: 75%;       /* permite que crezca en pantallas grandes */
+  transform: scale(1.05); /* leve aumento visual */
+  transition: transform 0.3s ease;
 }
+
+.texto_titulo:hover {
+  transform: scale(1.15); /* efecto al pasar el mouse */
+}
+
 
 /* ==============================
    FORMULARIO
 ============================== */
 .campos_registro {
-  margin-top: 30px;
-}
-
-.seccion_campos_registro {
+  width: 100%;
+  background-color: #8B5E3C;
+  padding: 35px 25px 15px 25px;
+  border-radius: 0 0 20px 20px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #8B5E3C;
-  width: 31vw;
-  height: 570px;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 0 5px #d9d9d9;
 }
 
-
+.formulario1 {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
 /* ==============================
    CAMPOS DE ENTRADA
 ============================== */
-/* ==============================
-   CAMPOS DE ENTRADA Y ERRORES
-============================== */
-.input,
-.select_content {
-  width: 20vw;
-  max-width: 300px;
-  background-color: #fff;
-  margin-top: 15px;
-  padding: 12px 15px;
-  border-radius: 15px;
-  border: 1px solid #ccc;
-  outline: none;
-  font-size: 14px;
-  box-sizing: border-box;
+.grupo_campo {
+  width: 100%;
 }
 
-/* Focus normal */
+.input,
+.select_content {
+  width: 100%;
+  background-color: #fff;
+  padding: 12px 30px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
 .input:focus,
 .select_content:focus {
   border-color: #8B5E3C;
-  box-shadow: 0 0 5px rgba(139, 94, 60, 0.6);
+  box-shadow: 0 0 6px rgba(139, 94, 60, 0.6);
 }
 
 /* Error */
 .border--red {
   border: 2px solid red !important;
   background-color: #ffe6e6;
-  /* rosa claro */
+  color: red;
 }
 
-/* Mensaje de error centrado debajo del campo */
+/* Mensaje de error */
 span {
   display: block;
   font-size: 0.85rem;
-  margin: 5px auto 0 auto;
-  /* centrado horizontalmente */
-  text-align: center;
-  max-width: 20vw;
-  max-width: 300px;
-  word-wrap: break-word;
-  /* quiebra la línea si es muy largo */
+  margin-top: 5px;
+  text-align: left;
+  color: #fff;
+  font-style: italic;
 }
-
-
-
-/* Ajuste de sección de campos para crecer */
-.seccion_campos_registro {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  /* se alinean arriba para que crezca */
-  flex-direction: column;
-  background-color: #8B5E3C;
-  width: 31vw;
-  min-height: 570px;
-  /* altura mínima */
-  padding: 20px 0;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 0 5px #d9d9d9;
-  box-sizing: border-box;
-}
-
-
 
 /* ==============================
    BOTÓN Y ENLACES
 ============================== */
+.contenedor_boton {
+  width: 100%;
+  /* background-color: #fff; */
+  padding: 25px 0;
+  border-radius: 0 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
 
 .boton_registrarse {
-  background-color: #8B5E3C;
-  color: #fff;
-  padding: 15px 70px;
-  border-radius: 10px;
+  background-color: #F5F5DC;
+  color: #8B5E3C;
+  padding: 14px 50px;
+  border-radius: 12px;
   border: none;
   font-weight: bold;
   font-size: 16px;
@@ -164,14 +171,28 @@ span {
 
 .cambio-pagina {
   color: #F5F5DC;
-  text-decoration: underline;
   font-size: 14px;
-  transition: color 0.3s ease;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .cambio-pagina:hover {
-  color: #ddd;
+  text-decoration: underline;
 }
+
+/* ==============================
+   RESPONSIVE
+============================== */
+@media (max-width: 480px) {
+  .ventana_registro {
+    max-width: 95%;
+  }
+  .boton_registrarse {
+    width: 90%;
+  }
+}
+
+
 
 /**PAGINAAA PRINCIPAL ADMIN*/
 .holaa {

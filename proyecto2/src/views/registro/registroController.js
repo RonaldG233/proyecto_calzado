@@ -66,12 +66,13 @@ export const registroController = () => {
       telefono: telefono.value.trim(),
       correo: correo.value.trim(),
       contrasena: contrasena.value.trim(),
-      codCiudad: Number(ciudad.value),
-      idRol: Number(rol.value)
+    codCiudad: ciudad.value.toString(), // convertir a texto
+    idRol: rol.value.toString()    
     };
 
     try {
       // Llamada a API
+      console.log(usuario);
       const { status, data } = await postSinToken("usuarios", usuario);
 
       if (status >= 200 && status < 300) {
@@ -95,13 +96,16 @@ async function cargarSelects() {
   const ciudadSelect = document.getElementById("ciudad");
   const rolSelect = document.getElementById("rol");
 
+  // ================= CARGAR CIUDADES =================
   if (ciudadSelect) {
     try {
       const ciudades = await obtenerCiudades();
       ciudadSelect.innerHTML = '<option value="">-- Selecciona una ciudad --</option>';
+
       ciudades.forEach(c => {
         if (c.id_estado === 1) {
-          ciudadSelect.add(new Option(c.nombre_ciudad, c.cod_ciudad));
+          // value como número
+          ciudadSelect.add(new Option(c.nombre_ciudad,(c.codCiudad)));
         }
       });
     } catch (err) {
@@ -110,12 +114,15 @@ async function cargarSelects() {
     }
   }
 
+
   if (rolSelect) {
     try {
       const roles = await obtenerRoles();
+      
       rolSelect.innerHTML = '<option value="">-- Selecciona un rol --</option>';
       roles.forEach(r => {
-        const option = new Option(r.nombre_rol, r.id_rol);
+        const option = new Option(r.nombre_rol, r.idRol);
+        option.value = r.idRol; // convertir a número
         if (r.id_rol === 2) { // deshabilitar admin
           option.disabled = true;
           option.textContent += " (No disponible)";

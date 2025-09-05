@@ -1,41 +1,50 @@
 <div class="ventana">
   <section class="ventana_registro">
+    
+    <!-- Logo -->
     <div class="titulo_registro">
-      <img src="../../../public/Group7.png" class="texto_titulo">
+      <img src="../../../public/Group7.png" class="texto_titulo" alt="Logo Registro">
     </div>
 
+    <!-- Campos -->
     <div class="campos_registro">
       <section class="seccion_campos_registro">
-        <form id="formRegistro" novalidate class="formulario">
+        <form id="formRegistro" novalidate class="formulario1">
 
-          <div>
+          <div class="grupo_campo">
             <input class="input" id="nombre" type="text" name="nombre" placeholder="Nombre completo">
           </div>
-          <div>
+
+          <div class="grupo_campo">
             <input class="input" id="telefono" type="tel" name="telefono" placeholder="Teléfono">
           </div>
-          <div>
+
+          <div class="grupo_campo">
             <input class="input" id="correo" type="text" name="correo" placeholder="Correo electrónico">
           </div>
-          <div>
+
+          <div class="grupo_campo">
             <input class="input" id="contrasena" type="password" name="contrasena" placeholder="Contraseña">
           </div>
-          <div>
+
+          <div class="grupo_campo">
             <input class="input" id="confirmaContrasena" type="password" name="confirmaContrasena" placeholder="Confirmar contraseña">
           </div>
 
-          <div class="form_ciudad">
+          <div class="grupo_campo">
             <select name="ciudad" id="ciudad" class="select_content">
               <option value="">Seleccionar la ciudad...</option>
             </select>
           </div>
-          <div class="form_rol">
+
+          <div class="grupo_campo">
             <select name="rol" id="rol" class="select_content">
               <option value="">Elegir el rol...</option>
             </select>
           </div>
 
-          <div class="boton">
+          <!-- Botones -->
+          <div class="contenedor_boton">
             <button type="submit" id="btnRegistro" class="boton_registrarse">REGISTRARSE</button>
             <a href="#login" class="cambio-pagina">¡Ya tengo cuenta!</a>
           </div>
