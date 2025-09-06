@@ -1,6 +1,6 @@
 // modules.js
 import { error } from "../helpers/alertas.js";
-import { obtenerUsuarios, inactivarUsuario, reactivarUsuario } from "../helpers/api.js";
+import { obtenerUsuarios, inactivarUsuario, reactivarUsuario, cambiarRolUsuario } from "../helpers/api.js";
 import Swal from "sweetalert2";
 
 // ==================== VALIDACIÓN DE FORMULARIOS ====================
@@ -20,6 +20,10 @@ export const contarCamposFormulario = (formulario) => {
 };
 
 // ==================== CREAR TABLA DE USUARIOS ====================
+const rolesMap = {
+  "Administrador": 2,
+  "Usuario": 1
+};
 export async function crearTablaUsuarios() {
   try {
     const usuarios = await obtenerUsuarios();
@@ -63,9 +67,43 @@ export async function crearTablaUsuarios() {
         u.estado
       ];
 
-      datos.forEach(d => {
+      datos.forEach((d, i) => {
         const td = document.createElement("td");
         td.textContent = d;
+
+        // 👉 Si es la columna de Rol
+        if (i === 5) {
+          td.classList.add("col-rol");
+
+          // Solo permitir cambio si NO es el usuario logueado
+          if (!(usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario)) {
+            td.style.cursor = "pointer";
+            td.title = "Click para cambiar rol";
+
+            td.addEventListener("click", async () => {
+  const nuevoRolNombre = d.toLowerCase() === "administrador" ? "Usuario" : "Administrador";
+
+  const confirm = await Swal.fire({
+    title: "Cambiar rol?",
+    text: `El usuario ${u.nombre} pasará a rol ${nuevoRolNombre}`,
+    icon: "question",
+    showCancelButton: true
+  });
+
+  if (confirm.isConfirmed) {
+    try {
+      await cambiarRolUsuario(u.idUsuario, nuevoRolNombre); // ahora enviamos el nombre del rol
+      Swal.fire("Rol actualizado", `El rol se cambió a ${nuevoRolNombre}`, "success");
+      crearTablaUsuarios();
+    } catch (err) {
+      Swal.fire("Error", "No se pudo cambiar el rol", "error");
+    }
+  }
+});
+
+          }
+        }
+
         tr.appendChild(td);
       });
 
@@ -128,6 +166,7 @@ export async function crearTablaUsuarios() {
     Swal.fire("Error", "No se pudo cargar la tabla", "error");
   }
 }
+
 // ==================== CREAR TABLA DE IMÁGENES ====================
 export async function crearTablaImagenes() {
   const main = document.querySelector("main.imagenes") || document.querySelector(".tablaImagen");

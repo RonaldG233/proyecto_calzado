@@ -188,3 +188,26 @@ export async function actualizarUsuario(usuario) {
     throw error;
   }
 }
+
+export async function cambiarRolUsuario(idUsuario, nombreRol) {
+  try {
+    const res = await fetch(`${API_BASE}/usuarios/${idUsuario}/cambiarRol`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify({ nombreRol }) // 🔑 enviamos nombreRol en vez de idRol
+    });
+
+    if (!res.ok) {
+      const msg = await res.json().catch(() => ({}));
+      throw new Error(msg.error || "Error al cambiar rol");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Error al cambiar rol:", err);
+    throw err;
+  }
+}
