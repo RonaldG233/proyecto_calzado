@@ -1,4 +1,3 @@
-// loginController.js
 import { postSinToken } from "../../helpers/api.js";
 import { success, error, info } from "../../helpers/alertas.js";
 
@@ -11,7 +10,6 @@ export const loginController = () => {
   const btnLogin = document.querySelector(".boton_registrarse");
   if (!btnLogin) return console.error("No se encontró el botón de login.");
 
-  // Limpia errores si hay input válido
   const limpiarSiValido = (input) => {
     if (input.value.trim() !== "") input.classList.remove("error");
   };
@@ -21,7 +19,6 @@ export const loginController = () => {
   contrasenaInput.addEventListener("blur", () => limpiarSiValido(contrasenaInput));
   contrasenaInput.addEventListener("keydown", () => limpiarSiValido(contrasenaInput));
 
-  // Click del botón login
   btnLogin.addEventListener("click", async (e) => {
     e.preventDefault();
     const correo = correoInput.value.trim();
@@ -32,28 +29,49 @@ export const loginController = () => {
     }
 
     try {
-      // Llamada al login de la API
       const { status, data } = await postSinToken("usuarios/login", { correo, contrasena });
+
+      // ---------------- Manejo de errores ----------------
+      if (status === 403) {
+        return info(data.error || "Usuario inactivo. Contacta al administrador.", "Usuario inactivo");
+      }
 
       if (status !== 200) {
         return error(data.error || "Error en el login.");
       }
 
-      // Guardar tokens y usuario para autenticación SPA
+      // Validar que el usuario esté activo (redundante, pero seguro)
+      if (data.usuario.estado && data.usuario.estado.toLowerCase() !== "activo") {
+        return info("Tu cuenta está inactiva. Contacta al administrador.", "Usuario inactivo");
+      }
+
+      // Guardar tokens y usuario completo
       localStorage.setItem("token", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
       await success("Inicio de sesión exitoso.");
 
-      // Redirección según rol usando hash SPA
-      const rol = data.usuario.rol?.toLowerCase();
-      if (rol === "administrador") {
-        window.location.hash = "#usuarios"; // Admin SPA
-      } else if (rol === "usuario") {
-        window.location.hash = "#catalogo"; // Usuario SPA
+      // ================= MANEJO DE ROL =================
+      let rolNombre = null;
+      if (typeof data.usuario.rol === "string") {
+        rolNombre = data.usuario.rol.toLowerCase();
+      } else if (typeof data.usuario.rol === "object" && data.usuario.rol.nombre) {
+        rolNombre = data.usuario.rol.nombre.toLowerCase();
+      }
+
+      if (!rolNombre) {
+        info("No se encontró el rol del usuario.", "Aviso");
+        return;
+      }
+
+      // Redirección según rol
+      if (rolNombre === "administrador") {
+        window.location.hash = "#usuarios";
+      } else if (rolNombre === "usuario") {
+        window.location.hash = "#catalogo";
       } else {
-        info(`Rol no reconocido: ${rol}`, "Aviso");
+        info(`Rol no reconocido: ${rolNombre}`, "Aviso");
       }
 
     } catch (err) {
@@ -62,6 +80,5 @@ export const loginController = () => {
     }
   });
 
-  // Evitar envío del formulario por defecto
   formulario.addEventListener("submit", (e) => e.preventDefault());
 };

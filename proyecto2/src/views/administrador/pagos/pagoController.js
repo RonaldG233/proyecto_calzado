@@ -1,6 +1,5 @@
 import HeaderAdmin from "../../../components/headerAdmin.html?raw";
 import SidebarAdmin from "../../../components/sidebarAdmin.html?raw";
-import { validarNombre, validarSeleccion } from "../../../Modules/validaciones.js";
 import { confirmar, success, error, info } from "../../../helpers/alertas.js";
 import { get, post, put } from "../../../helpers/api.js";
 
@@ -8,11 +7,26 @@ export const pagoController = () => {
   const headerContainer = document.getElementById("header-container");
   const sidebarContainer = document.getElementById("sidebar-container");
 
-  // Insertar layout
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
+  
+  const btnHamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
 
-  // Formularios
+  if (btnHamburger && sidebar) {
+    btnHamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("activo");
+    });
+
+    // Opcional: cerrar sidebar al dar click en un link
+    sidebar.querySelectorAll(".sidebar-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("activo");
+      });
+    });
+  }
+
+  // Formularios y campos
   const formRegistrar = document.getElementById("formRegistrarPago");
   const selectEditar = document.getElementById("pagoEditar");
   const selectInactivar = document.getElementById("pagoInactivar");
@@ -27,27 +41,25 @@ export const pagoController = () => {
 
   let listaPagos = [];
 
-  // Cargar métodos de pago
+  // ------------------ AUX ------------------
+  const limpiarSelect = (select) => {
+    select.innerHTML = "<option value=''>-- Seleccione un método --</option>";
+  };
+
+  // ------------------ CARGAR PAGOS ------------------
   const cargarPagos = async () => {
     try {
       const activos = await get("pagos/activas");
       const inactivos = await get("pagos/inactivas");
       listaPagos = [...activos, ...inactivos];
 
-      // Llenar selects
       [selectEditar, selectInactivar].forEach(sel => {
-        sel.innerHTML = `<option value="">-- Seleccione un método --</option>`;
-        activos.forEach(p => {
-          const option = new Option(p.metodo_pago, p.id_pago);
-          sel.add(option);
-        });
+        limpiarSelect(sel);
+        activos.forEach(p => sel.add(new Option(p.metodo_pago, p.id_pago)));
       });
 
-      selectReactivar.innerHTML = `<option value="">-- Seleccione un método --</option>`;
-      inactivos.forEach(p => {
-        const option = new Option(p.metodo_pago, p.id_pago);
-        selectReactivar.add(option);
-      });
+      limpiarSelect(selectReactivar);
+      inactivos.forEach(p => selectReactivar.add(new Option(p.metodo_pago, p.id_pago)));
 
     } catch (err) {
       error("Error al cargar métodos de pago.");
@@ -55,71 +67,78 @@ export const pagoController = () => {
     }
   };
 
-  // REGISTRAR
-  formRegistrar.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// ------------------ REGISTRAR ------------------
+formRegistrar.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const nombre = inputNombre.value.trim();
 
-    if (!validarNombre(inputNombre)) return;
+  if (!nombre) return error("Debes ingresar un nombre.");
 
-    const nombre = inputNombre.value.trim();
-    if (listaPagos.some(p => p.metodo_pago.toLowerCase() === nombre.toLowerCase())) {
-      return info("Nombre duplicado", "Ya existe un método con ese nombre.");
+  // ✅ Validar duplicados
+  if (listaPagos.some(p => p.metodo_pago.toLowerCase() === nombre.toLowerCase())) {
+    return info("Duplicado", "Ese método de pago ya existe.");
+  }
+
+  try {
+    const res = await post("pagos", { metodo_pago: nombre, id_estado: 1 });
+
+    if (res.status === 201) {
+      await success("Método registrado correctamente.");
+      formRegistrar.reset();
+      cargarPagos();
+    } else {
+      error("Error al registrar el método.");
     }
+  } catch (err) {
+    error("Error en la solicitud.");
+    console.error(err);
+  }
+});
 
-    try {
-      const res = await post("pagos", {
-        metodo_pago: nombre,
-        id_estado: 1, // Activo por defecto
-      });
 
-      if (res.status === 201) {
-        await success("Método registrado correctamente.");
-        formRegistrar.reset();
-        cargarPagos();
-      } else if (res.status === 409) {
-        info("Duplicado", "Ese método de pago ya existe.");
-      } else {
-        error("Error al registrar el método.");
-      }
-    } catch (err) {
-      error("Error en la solicitud.");
-      console.error(err);
-    }
+  // ------------------ EDITAR ------------------
+  selectEditar.addEventListener("change", () => {
+    const pago = listaPagos.find(p => p.id_pago == selectEditar.value);
+    inputNuevoNombre.value = pago ? pago.metodo_pago : "";
   });
 
-  // EDITAR
-  btnEditar.addEventListener("click", async () => {
-    if (!validarSeleccion(selectEditar) || !validarNombre(inputNuevoNombre)) return;
+// ------------------ EDITAR ------------------
+btnEditar.addEventListener("click", async () => {
+  const id = selectEditar.value;
+  const nuevoNombre = inputNuevoNombre.value.trim();
 
-    const id = selectEditar.value;
-    const nuevoNombre = inputNuevoNombre.value.trim();
+  if (!id || !nuevoNombre) return error("Selecciona un método y escribe un nombre.");
 
-    if (listaPagos.some(p => p.metodo_pago.toLowerCase() === nuevoNombre.toLowerCase() && p.id_pago != id)) {
-      return info("Nombre duplicado", "Ya existe otro método con ese nombre.");
+  // ✅ Validar duplicados, ignorando el mismo registro que se edita
+  if (listaPagos.some(p => p.metodo_pago.toLowerCase() === nuevoNombre.toLowerCase() && p.id_pago != id)) {
+    return info("Duplicado", "Ya existe otro método de pago con ese nombre.");
+  }
+
+  const confirmResp = await confirmar(`editar el método "${nuevoNombre}"`);
+  if (!confirmResp.isConfirmed) return;
+
+  try {
+    const res = await put(`pagos/${id}`, { metodo_pago: nuevoNombre });
+
+    if (res.ok) {
+      await success("Método actualizado correctamente.");
+      selectEditar.value = "";
+      inputNuevoNombre.value = "";
+      cargarPagos();
+    } else {
+      error("No se pudo actualizar el método.");
     }
+  } catch (err) {
+    error("Error al actualizar el método.");
+    console.error(err);
+  }
+});
 
-    try {
-      const res = await put(`pagos/${id}`, { metodo_pago: nuevoNombre });
-
-      if (res.ok) {
-        await success("Método actualizado correctamente.");
-        selectEditar.value = "";
-        inputNuevoNombre.value = "";
-        cargarPagos();
-      } else {
-        error("No se pudo actualizar el método.");
-      }
-    } catch (err) {
-      error("Error al actualizar el método.");
-      console.error(err);
-    }
-  });
-
-  // INACTIVAR
+  // ------------------ INACTIVAR ------------------
   btnInactivar.addEventListener("click", async () => {
-    if (!validarSeleccion(selectInactivar)) return;
-
     const id = selectInactivar.value;
+    if (!id) return;
+
     const confirmResp = await confirmar("inactivar el método de pago");
     if (!confirmResp.isConfirmed) return;
 
@@ -138,11 +157,10 @@ export const pagoController = () => {
     }
   });
 
-  // REACTIVAR
+  // ------------------ REACTIVAR ------------------
   btnReactivar.addEventListener("click", async () => {
-    if (!validarSeleccion(selectReactivar)) return;
-
     const id = selectReactivar.value;
+    if (!id) return;
 
     try {
       const res = await put(`pagos/reactivar/${id}`);
@@ -159,5 +177,6 @@ export const pagoController = () => {
     }
   });
 
+  // ------------------ INICIALIZAR ------------------
   cargarPagos();
 };

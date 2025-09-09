@@ -15,7 +15,7 @@ export const tablaImagenesController = async () => {
 
   // Verificar token antes de mostrar la vista
   const token = localStorage.getItem("token");
-  if (!token || isTokenExpired()) {
+  if (!token || isTokenExpired(token)) {
     const nuevoToken = await refreshAccessToken();
     if (!nuevoToken) {
       window.location.hash = "#login";
@@ -27,6 +27,23 @@ export const tablaImagenesController = async () => {
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
 
-  // Cargar tabla de imágenes (con eventos de editar/eliminar definidos en modules.js)
-  crearTablaImagenes();
+  const btnHamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (btnHamburger && sidebar) {
+    btnHamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("activo");
+    });
+
+    // Cerrar sidebar al hacer click en un link
+    sidebar.querySelectorAll(".sidebar-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("activo");
+      });
+    });
+  }
+
+  // ------------------ Cargar tabla de imágenes ------------------
+  // ✅ Pasamos el contenedor al módulo para evitar duplicación
+  await crearTablaImagenes(mainContainer);
 };

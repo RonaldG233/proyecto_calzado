@@ -1,6 +1,5 @@
 import HeaderAdmin from "../../../components/headerAdmin.html?raw";
 import SidebarAdmin from "../../../components/sidebarAdmin.html?raw";
-import { validarTalla, validarSeleccion } from "../../../Modules/validaciones.js";
 import { confirmar, success, error } from "../../../helpers/alertas.js";
 import { get, post, put } from "../../../helpers/api.js";
 
@@ -10,6 +9,22 @@ export const tallaController = () => {
 
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
+
+  const btnHamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (btnHamburger && sidebar) {
+    btnHamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("activo");
+    });
+
+    // Opcional: cerrar sidebar al dar click en un link
+    sidebar.querySelectorAll(".sidebar-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("activo");
+      });
+    });
+  }
 
   const formRegistrar = document.getElementById("formRegistrarTalla");
   const selectEditar = document.getElementById("tallaEditar");
@@ -22,7 +37,7 @@ export const tallaController = () => {
   const btnInactivar = document.getElementById("btnInactivar");
   const btnActivar = document.getElementById("btnActivar");
 
-  // Cargar tallas en los selects
+  // ------------------ CARGAR TALLAS ------------------
   async function cargarTallas() {
     try {
       const activas = await get("tallas/activas");
@@ -48,89 +63,115 @@ export const tallaController = () => {
     }
   }
 
-  // REGISTRAR TALLA
-  formRegistrar.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const numero = inputNombre.value.trim();
+  // ------------------ REGISTRAR TALLA ------------------
+  // ------------------ REGISTRAR TALLA ------------------
+formRegistrar.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const numero = inputNombre.value.trim();
 
-    if (!numero || isNaN(numero) || Number(numero) <= 0) {
-      error("Ingrese un número válido para la talla.");
-      return;
+  if (!numero) return;
+
+  try {
+    // Primero verificamos si la talla ya existe
+    const todas = await get("tallas"); // traer todas
+    if (todas.some(t => t.numero_talla === numero)) {
+      return error("Ya existe una talla con ese número."); // SweetAlert
     }
 
-    try {
-      const res = await post("tallas", { numero_talla: Number(numero) });
-      if (res.status === 201) {
-        await success("Talla registrada correctamente.");
-        formRegistrar.reset();
-        cargarTallas();
-      } else if (res.status === 409) {
-        error("Ya existe una talla con ese número.");
-      } else {
-        error("Error al registrar la talla.");
-      }
-    } catch (err) {
-      error("Error en la solicitud.");
-      console.error(err);
+    const res = await post("tallas", { numero_talla: Number(numero) });
+    if (res.status === 201) {
+      await success("Talla registrada correctamente.");
+      formRegistrar.reset();
+      cargarTallas();
+    } else {
+      error("Error al registrar la talla.");
     }
-  });
+  } catch (err) {
+    error("Error en la solicitud.");
+    console.error(err);
+  }
+});
 
-  // EDITAR TALLA
-  btnEditar.addEventListener("click", async () => {
-    if (!validarSeleccion(selectEditar) || !validarTalla(inputNuevoNombre)) return;
+// ------------------ EDITAR TALLA ------------------
+// ------------------ EDITAR TALLA ------------------
+btnEditar.addEventListener("click", async () => {
+  const idTalla = selectEditar.value;
+  const nuevoNumero = inputNuevoNombre.value.trim();
+  const numeroActual = selectEditar.options[selectEditar.selectedIndex]?.text;
 
-    const idTalla = selectEditar.value;
-    const nuevoNombre = inputNuevoNombre.value.trim();
+  if (!idTalla || !nuevoNumero) return;
 
-    try {
-      const res = await put(`tallas/${idTalla}`, { numero_talla: Number(nuevoNombre) });
-      if (res.ok) {
-        await success("Talla actualizada correctamente.");
-        inputNuevoNombre.value = "";
-        selectEditar.value = "";
-        cargarTallas();
-      } else {
-        error("No se pudo actualizar la talla.");
-      }
-    } catch (err) {
-      error("Error al actualizar la talla.");
-      console.error(err);
+  try {
+    // Verificar si la talla está asociada
+    const rel = await get(`tallas/${idTalla}/tienerelacion`);
+    if (rel.tieneRelacion) {
+      return error("No se puede editar una talla que ya está asociada a productos.");
     }
-  });
 
-  // INACTIVAR TALLA
-  btnInactivar.addEventListener("click", async () => {
-    if (!validarSeleccion(selectInactivar)) return;
+    // Verificar si el nuevo número ya existe en otra talla
+    const todas = await get("tallas");
+    if (todas.some(t => t.numero_talla === nuevoNumero && t.codTalla != idTalla)) {
+      return error("No se puede cambiar a una talla que ya está registrada.");
+    }
 
-    const idTalla = selectInactivar.value;
+    const confirmResp = await confirmar(`editar la talla "${numeroActual}" a "${nuevoNumero}"`);
+    if (!confirmResp.isConfirmed) return;
+
+    const res = await put(`tallas/${idTalla}`, { numero_talla: Number(nuevoNumero) });
+    if (res.ok) {
+      await success("Talla actualizada correctamente.");
+      inputNuevoNombre.value = "";
+      selectEditar.value = "";
+      cargarTallas();
+    } else {
+      error("No se pudo actualizar la talla.");
+    }
+  } catch (err) {
+    error("Error al actualizar la talla.");
+    console.error(err);
+  }
+});
+
+
+// ------------------ INACTIVAR TALLA ------------------
+btnInactivar.addEventListener("click", async () => {
+  const idTalla = selectInactivar.value;
+  if (!idTalla) return;
+
+  try {
+    // Verificar si la talla está asociada
+    const rel = await get(`tallas/${idTalla}/tienerelacion`);
+    if (rel.tieneRelacion) {
+      return error("No se puede inactivar una talla que está asociada a productos.");
+    }
+
     const confirmResp = await confirmar("inactivar la talla");
     if (!confirmResp.isConfirmed) return;
 
-    try {
-      const res = await put(`tallas/${idTalla}/inactivar`);
-      if (res.ok) {
-        await success("Talla inactivada correctamente.");
-        selectInactivar.value = "";
-        cargarTallas();
-      } else {
-        error("No se pudo inactivar la talla.");
-      }
-    } catch (err) {
-      error("Error al inactivar talla.");
-      console.error(err);
+    const res = await put(`tallas/${idTalla}/inactivar`);
+    if (res.ok) {
+      await success("Talla inactivada correctamente.");
+      selectInactivar.value = "";
+      cargarTallas();
+    } else {
+      error("No se pudo inactivar la talla.");
     }
-  });
+  } catch (err) {
+    error("Error al inactivar talla.");
+    console.error(err);
+  }
+});
 
-  // REACTIVAR TALLA
+
+  // ------------------ REACTIVAR TALLA ------------------
   btnActivar.addEventListener("click", async () => {
-    if (!validarSeleccion(selectActivar)) return;
-
     const idTalla = selectActivar.value;
+    if (!idTalla) return;
 
     try {
       const res = await put(`tallas/${idTalla}/reactivar`);
       if (res.ok) {
-        await success("Talla reactivada.");
+        await success("Talla reactivada correctamente.");
         selectActivar.value = "";
         cargarTallas();
       } else {
@@ -142,6 +183,6 @@ export const tallaController = () => {
     }
   });
 
+  // ------------------ INICIALIZAR ------------------
   cargarTallas();
 };
-

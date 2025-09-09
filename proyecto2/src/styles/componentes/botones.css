@@ -12,7 +12,13 @@
   cursor: pointer;
   transition: 0.3s;
 }
-
+.rojo{
+  background-color: red;
+}
+.boton3{
+  background-color: #C7A589;
+  cursor: pointer;
+}
 .boton--formulario:hover {
   background-color: #b37c52;
 }

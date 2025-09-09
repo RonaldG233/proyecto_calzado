@@ -11,7 +11,7 @@ import { success, error } from "../../helpers/alertas.js";
 import { postSinToken, obtenerCiudades, obtenerRoles } from "../../helpers/api.js";
 import { contarCamposFormulario } from "../../Modules/modules.js";
 
-export const registroController = () => {
+export const registroAdministradorController = () => {
   const formulario = document.getElementById("formRegistro");
   if (!formulario) return console.error("No se encontró el formulario de registro");
 
@@ -116,32 +116,22 @@ async function cargarSelects() {
 
 
   if (rolSelect) {
-  try {
-    const roles = await obtenerRoles();
-
-    rolSelect.innerHTML = '<option value="">-- Selecciona un rol --</option>';
-    roles.forEach(r => {
-      const option = new Option(r.nombre_rol, r.idRol); // valor consistente
-      if (r.idRol === 2) { // bloquear administrador
-        option.disabled = true;
-        option.textContent += " (No disponible)";
-      }
-      rolSelect.add(option);
-    });
-
-    // Evitar que alguien manipule el DOM y seleccione admin
-    rolSelect.addEventListener("change", () => {
-      if (parseInt(rolSelect.value) === 2) {
-        rolSelect.value = "";
-        error("No puedes seleccionar el rol de administrador.");
-      }
-    });
-
-  } catch (err) {
-    console.error("Error cargando roles:", err);
-    error("No se pudieron cargar los roles.");
+    try {
+      const roles = await obtenerRoles();
+      
+      rolSelect.innerHTML = '<option value="">-- Selecciona un rol --</option>';
+      roles.forEach(r => {
+        const option = new Option(r.nombre_rol, r.idRol);
+        option.value = r.idRol; // convertir a número
+        if (r.id_rol === 2) { // deshabilitar admin
+          option.disabled = true;
+          option.textContent += " (No disponible)";
+        }
+        rolSelect.add(option);
+      });
+    } catch (err) {
+      console.error("Error cargando roles:", err);
+      error("No se pudieron cargar los roles.");
+    }
   }
-}
-
-
 }

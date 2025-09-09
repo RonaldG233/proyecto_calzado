@@ -1,0 +1,50 @@
+<div class="ventana">
+  <section class="ventana_registro">
+
+    <!-- Logo / Título -->
+    <div class="titulo_registro">
+      <img src="../../../public/Group7.png" class="texto_titulo" alt="Logo Perfil">
+    </div>
+
+    <!-- Campos -->
+    <div class="campos_registro">
+      <section class="seccion_campos_registro">
+        <form id="formPerfilUsuario" novalidate class="formulario1">
+
+          <input type="hidden" id="idUsuario" />
+
+          <div class="grupo_campo">
+            <input class="input" id="nombre" type="text" placeholder="Nombre completo" required />
+          </div>
+
+          <div class="grupo_campo">
+            <input class="input" id="telefono" type="tel" placeholder="Teléfono" required />
+          </div>
+
+          <div class="grupo_campo">
+            <input class="input" id="correo" type="email" placeholder="Correo electrónico" required />
+          </div>
+
+          <div class="grupo_campo">
+            <select name="ciudad" id="ciudad" class="select_content" required>
+              <option value="">Seleccionar la ciudad...</option>
+            </select>
+          </div>
+
+          <div class="grupo_campo">
+            <input class="input" id="rol" type="text" placeholder="Rol" readonly />
+          </div>
+
+          <!-- Botones -->
+          <div class="contenedor_boton">
+            <button type="submit" class="boton_registrarse">Actualizar</button>
+            <button type="button" id="btnVolver" class="boton_registrarse">Volver</button>
+            <button type="button" id="btnCerrarSesion" class="rojo boton">Cerrar Sesión</button>
+          </div>
+
+        </form>
+      </section>
+    </div>
+
+  </section>
+</div>

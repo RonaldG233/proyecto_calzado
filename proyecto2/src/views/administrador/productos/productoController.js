@@ -12,6 +12,22 @@ export const productoController = () => {
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
 
+  const btnHamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (btnHamburger && sidebar) {
+    btnHamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("activo");
+    });
+
+    // Opcional: cerrar sidebar al dar click en un link
+    sidebar.querySelectorAll(".sidebar-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("activo");
+      });
+    });
+  }
+
   // Formulario e inputs
   const formRegistrar = document.getElementById("formularioProducto");
   const inputNombre = document.getElementById("nombreProducto");

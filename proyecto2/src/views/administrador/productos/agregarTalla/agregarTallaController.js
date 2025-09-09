@@ -13,6 +13,22 @@ export const agregarTallaController = async () => {
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
 
+  const btnHamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (btnHamburger && sidebar) {
+    btnHamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("activo");
+    });
+
+    // Opcional: cerrar sidebar al dar click en un link
+    sidebar.querySelectorAll(".sidebar-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("activo");
+      });
+    });
+  }
+
   // Recuperar producto
   const producto = JSON.parse(localStorage.getItem("productoTalla"));
   if (!producto) {
@@ -67,10 +83,33 @@ export const agregarTallaController = async () => {
       const tdAcc = document.createElement("td");
       const btnEliminar = document.createElement("button");
       btnEliminar.textContent = "Eliminar";
-      btnEliminar.addEventListener("click", () => {
-        tallasSeleccionadas = tallasSeleccionadas.filter(sel => sel.codTalla !== t.codTalla);
-        renderTablaTallas();
-        renderSelectTallas();
+
+      // 🔥 Ahora sí elimina también en la BD
+      btnEliminar.addEventListener("click", async () => {
+        try {
+          const confirmResp = await confirmar(`eliminar la talla ${t.numero_talla}`);
+          if (!confirmResp.isConfirmed) return;
+
+          const res = await fetch(
+            `http://localhost:8080/proyectoCalzado/api/productos/${producto.id_producto}/tallas/${t.codTalla}`,
+            { method: "DELETE" }
+          );
+
+          if (res.ok) {
+            tallasSeleccionadas = tallasSeleccionadas.filter(sel => sel.codTalla !== t.codTalla);
+            localStorage.setItem(`tallasProducto_${producto.id_producto}`, JSON.stringify(tallasSeleccionadas));
+
+            renderTablaTallas();
+            renderSelectTallas();
+            success("Talla eliminada correctamente");
+          } else {
+            const data = await res.json();
+            error(data.mensaje || "No se pudo eliminar la talla");
+          }
+        } catch (err) {
+          console.error(err);
+          error("Error en la solicitud al eliminar la talla");
+        }
       });
 
       tdAcc.appendChild(btnEliminar);

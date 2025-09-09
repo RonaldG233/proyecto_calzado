@@ -1,5 +1,6 @@
 import { routes } from "./routes.js";
 import { isTokenExpired, refreshAccessToken } from "../helpers/api.js";
+import Swal from "sweetalert2";
 
 export const router = async () => {
   const app = document.getElementById("app");
@@ -15,14 +16,47 @@ export const router = async () => {
     return;
   }
 
-  // Rutas privadas: validar token
+  // ============= VALIDAR TOKEN =============
+  let token = localStorage.getItem("token");
+
   if (ruta.private) {
-    let token = localStorage.getItem("token");
-    
-    if (!token || isTokenExpired()) {
+    if (!token || isTokenExpired(token)) {
       const nuevoToken = await refreshAccessToken();
       if (!nuevoToken) {
         window.location.hash = "#login";
+        return;
+      }
+      token = nuevoToken; // actualizar token
+    }
+
+    // ============= VALIDAR PERMISOS =============
+    if (ruta.permisos && ruta.permisos.length > 0) {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+      if (!usuario || !usuario.rol) {
+        Swal.fire("Acceso denegado", "No tienes permisos para acceder a esta vista", "error")
+          .then(() => window.history.back());
+        return;
+      }
+
+      let permisosUsuario = [];
+
+      // Caso 1: rol como objeto con array de permisos
+      if (typeof usuario.rol === "object" && usuario.rol.permisos) {
+        permisosUsuario = usuario.rol.permisos; // array de strings
+      }
+
+      // Caso 2: rol como string
+      else if (typeof usuario.rol === "string") {
+        permisosUsuario = [usuario.rol]; // lo ponemos en un array para comparar
+      }
+
+      // Validar si tiene al menos un permiso requerido
+      const tienePermiso = ruta.permisos.some(p => permisosUsuario.includes(p));
+
+      if (!tienePermiso) {
+        Swal.fire("Acceso denegado", "No tienes permisos para acceder a esta vista", "error")
+          .then(() => window.history.back());
         return;
       }
     }

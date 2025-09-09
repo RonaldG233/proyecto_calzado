@@ -13,6 +13,22 @@ export const agregarStockController = () => {
   headerContainer.innerHTML = HeaderAdmin;
   sidebarContainer.innerHTML = SidebarAdmin;
 
+  const btnHamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (btnHamburger && sidebar) {
+    btnHamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("activo");
+    });
+
+    // Opcional: cerrar sidebar al dar click en un link
+    sidebar.querySelectorAll(".sidebar-item").forEach(link => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("activo");
+      });
+    });
+  }
+
   const producto = JSON.parse(localStorage.getItem("productoStock"));
   if (!producto) {
     mainContainer.innerHTML = "<p>No se ha seleccionado un producto.</p>";
@@ -60,13 +76,11 @@ export const agregarStockController = () => {
         const codTalla = parseInt(input.dataset.codTalla);
         const stock = parseInt(input.value) || 0;
         await put(`productos/${producto.id_producto}/tallas/${codTalla}`, { numeroStock: stock });
-      }
 
-      // Actualizar LocalStorage
-      tallasProducto.forEach(t => {
-        const input = [...inputsStock].find(i => parseInt(i.dataset.codTalla) === t.codTalla);
-        if (input) t.stock = parseInt(input.value);
-      });
+        // Actualizar localStorage inmediatamente
+        const t = tallasProducto.find(t => t.codTalla === codTalla);
+        if (t) t.stock = stock;
+      }
       localStorage.setItem(`tallasProducto_${producto.id_producto}`, JSON.stringify(tallasProducto));
 
       success("Stock guardado correctamente");

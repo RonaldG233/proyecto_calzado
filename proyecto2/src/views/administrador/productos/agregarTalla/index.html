@@ -1,14 +1,20 @@
 <!-- agregarTalla.html -->
 <div class="holaa">
-<div id="header-container"></div>
-<div id="sidebar-container"></div>
+  <!-- Header y Sidebar -->
+  <div id="header-container"></div>
+  <div id="sidebar-container"></div>
 
-<main class="agregarTalla">
-  <section id="main-content" class="contenedor_formulario" >
-  <form class="formulario">
-    <h2 class="formulario__titulo">Agregar Talla</h2>
-  
-    <div id="producto-info">
+  <!-- Main -->
+  <main class="agregarTalla">
+    <section class="contenedor_formulario">
+      
+      <!-- Formulario -->
+      <form class="formulario">
+
+        <h2 class="formulario__titulo">Agregar Talla</h2>
+
+        <!-- Información del Producto -->
+        <div id="producto-info">
           <div class="campo">
             <label for="nombre-producto" class="formulario__texto">Nombre:</label>
             <input type="text" id="nombre-producto" disabled class="formulario__input"/>
@@ -21,32 +27,30 @@
 
           <div class="campo">
             <label for="precio-producto" class="formulario__texto">Precio:</label>
-            <input type="text" id="precio-producto" disabled  class="formulario__input"/>
+            <input type="text" id="precio-producto" disabled class="formulario__input"/>
           </div>
         </div>
 
-    <div id="form-tallas">
-      
-      <label for="select-tallas" class="formulario__texto">Seleccionar talla:</label>
-      <select id="select-tallas" class="formulario__input">
-        <option disabled selected>Seleccionar talla</option>
-      </select>
-      <button id="btn-agregar-talla" class="boton boton--formulario" >Añadir Talla</button>
-      
-    </div>
+        <!-- Selección y Agregar Talla -->
+        <div id="form-tallas">
+          <label for="select-tallas" class="formulario__texto">Seleccionar talla:</label>
+          <select id="select-tallas" class="formulario__input">
+            <option disabled selected>Seleccionar talla</option>
+          </select>
+          <button id="btn-agregar-talla" class="boton boton--formulario">Añadir Talla</button>
+        </div>
 
-    <div id="tabla-container">
-      <table id="tabla-tallas" class="formulario__texto">
-        <tr ><td colspan="2" >No hay tallas añadidas</td></tr>
-      </table>
-    </div>
+        <!-- Tabla de Tallas Añadidas -->
+        <div id="tabla-container">
+          <table id="tabla-tallas" class="formulario__texto">
+            <tr><td colspan="2">No hay tallas añadidas</td></tr>
+          </table>
+        </div>
 
-    <button id="btn-guardar-tallas" class="boton boton--formulario" >Guardar Tallas</button>
-    </form>
-  </section>
-  
-</main>
+        <!-- Guardar Tallas -->
+        <button id="btn-guardar-tallas" class="boton boton--formulario">Guardar Tallas</button>
 
-
-
-  </div>
+      </form>
+    </section>
+  </main>
+</div>

@@ -1,6 +1,6 @@
 // modules.js
 import { error } from "../helpers/alertas.js";
-import { obtenerUsuarios, inactivarUsuario, reactivarUsuario, cambiarRolUsuario } from "../helpers/api.js";
+import { obtenerUsuarios, inactivarUsuario, reactivarUsuario, cambiarRolUsuario, put  } from "../helpers/api.js";
 import Swal from "sweetalert2";
 
 // ==================== VALIDACIÓN DE FORMULARIOS ====================
@@ -26,6 +26,7 @@ const rolesMap = {
 };
 export async function crearTablaUsuarios() {
   try {
+    
     const usuarios = await obtenerUsuarios();
     const main = document.querySelector("main.usuarios");
     main.innerHTML = "";
@@ -63,9 +64,10 @@ export async function crearTablaUsuarios() {
         u.correo,
         u.telefono,
         u.ciudad || "",
-        u.rol || "Sin rol",
+        u.rol?.nombre || "Sin rol", // 👈 aquí
         u.estado
       ];
+
 
       datos.forEach((d, i) => {
         const td = document.createElement("td");
@@ -81,7 +83,8 @@ export async function crearTablaUsuarios() {
             td.title = "Click para cambiar rol";
 
             td.addEventListener("click", async () => {
-  const nuevoRolNombre = d.toLowerCase() === "administrador" ? "Usuario" : "Administrador";
+  const rolActual = u.rol?.nombre.toLowerCase();
+  const nuevoRolNombre = rolActual === "administrador" ? "Usuario" : "Administrador";
 
   const confirm = await Swal.fire({
     title: "Cambiar rol?",
@@ -92,7 +95,7 @@ export async function crearTablaUsuarios() {
 
   if (confirm.isConfirmed) {
     try {
-      await cambiarRolUsuario(u.idUsuario, nuevoRolNombre); // ahora enviamos el nombre del rol
+      await cambiarRolUsuario(u.idUsuario, nuevoRolNombre);
       Swal.fire("Rol actualizado", `El rol se cambió a ${nuevoRolNombre}`, "success");
       crearTablaUsuarios();
     } catch (err) {
@@ -100,6 +103,7 @@ export async function crearTablaUsuarios() {
     }
   }
 });
+
 
           }
         }
@@ -168,21 +172,19 @@ export async function crearTablaUsuarios() {
 }
 
 // ==================== CREAR TABLA DE IMÁGENES ====================
-export async function crearTablaImagenes() {
-  const main = document.querySelector("main.imagenes") || document.querySelector(".tablaImagen");
-  if (!main) return;
+export async function crearTablaImagenes(contenedor) {
+  if (!contenedor) return;
 
-  // ✅ Limpiar el contenedor antes de renderizar
-  main.innerHTML = "";
+  // Limpiar contenedor antes de renderizar
+  contenedor.innerHTML = "";
 
   try {
     const response = await fetch("http://localhost:8080/proyectoCalzado/api/imagenes");
     if (!response.ok) throw new Error("Error al obtener las imágenes");
 
     const imagenes = await response.json();
-
     if (!imagenes.length) {
-      main.innerHTML = "<p>No hay imágenes registradas.</p>";
+      contenedor.innerHTML = "<p>No hay imágenes registradas.</p>";
       return;
     }
 
@@ -190,7 +192,6 @@ export async function crearTablaImagenes() {
     const tabla = document.createElement("table");
     tabla.classList.add("tabla");
 
-    // Cabecera
     const thead = document.createElement("thead");
     const trHead = document.createElement("tr");
     ["ID", "Nombre", "Imagen", "Acciones"].forEach(text => {
@@ -201,21 +202,17 @@ export async function crearTablaImagenes() {
     thead.appendChild(trHead);
     tabla.appendChild(thead);
 
-    // Cuerpo
     const tbody = document.createElement("tbody");
 
     imagenes.forEach(img => {
       const tr = document.createElement("tr");
 
-      // ID
       const tdId = document.createElement("td");
       tdId.textContent = img.id_imagen;
 
-      // Nombre
       const tdNombre = document.createElement("td");
       tdNombre.textContent = img.nombre;
 
-      // Imagen (vista previa)
       const tdImg = document.createElement("td");
       const imgTag = document.createElement("img");
       imgTag.src = `http://localhost:8080/proyectoCalzado/imagenes?nombre=${img.nombre}`;
@@ -223,10 +220,7 @@ export async function crearTablaImagenes() {
       imgTag.width = 100;
       tdImg.appendChild(imgTag);
 
-      // Acciones
       const tdAcc = document.createElement("td");
-
-      // Botón eliminar
       const btnEliminar = document.createElement("button");
       btnEliminar.textContent = "🗑️ Eliminar";
       btnEliminar.classList.add("eliminar");
@@ -250,41 +244,38 @@ export async function crearTablaImagenes() {
 
             Swal.fire("Eliminada", "La imagen fue eliminada correctamente.", "success");
 
-            // ✅ Quitar la fila directamente sin duplicar tabla
             tr.remove();
-
-            // Si ya no quedan filas, mostrar mensaje vacío
             if (!tbody.querySelector("tr")) {
-              main.innerHTML = "<p>No hay imágenes registradas.</p>";
+              contenedor.innerHTML = "<p>No hay imágenes registradas.</p>";
             }
-
           } catch (err) {
             console.error("Error al eliminar:", err);
             Swal.fire("Error", "No se pudo eliminar la imagen.", "error");
           }
         }
       });
-      tdAcc.appendChild(btnEliminar);
 
-      // Insertar celdas en la fila
+      tdAcc.appendChild(btnEliminar);
       [tdId, tdNombre, tdImg, tdAcc].forEach(td => tr.appendChild(td));
       tbody.appendChild(tr);
     });
 
     tabla.appendChild(tbody);
-    main.appendChild(tabla);
+    contenedor.appendChild(tabla);
 
   } catch (err) {
     console.error(err);
-    main.innerHTML = "<p>Error al cargar imágenes.</p>";
+    contenedor.innerHTML = "<p>Error al cargar imágenes.</p>";
   }
 }
 
-// ==================== CREAR TABLA DE PRODUCTOS ====================
+
+
 export async function crearTablaProductos() {
   const main = document.querySelector("main.productos");
   if (!main) return;
 
+  // ✅ Limpiar contenedor antes de renderizar
   main.innerHTML = "";
 
   try {
@@ -297,24 +288,28 @@ export async function crearTablaProductos() {
       return;
     }
 
+    // ✅ Crear tabla
     const tabla = document.createElement("table");
     tabla.classList.add("tabla");
 
+    // Cabecera
     const thead = document.createElement("thead");
     const trHead = document.createElement("tr");
-    ["ID","Nombre","Descripción","Precio","Empresa","Imagen","Tallas","Stock","Acciones"].forEach(text => {
-      const th = document.createElement("th");
-      th.textContent = text;
-      trHead.appendChild(th);
-    });
+    ["ID","Nombre","Descripción","Precio","Empresa","Imagen","Tallas","Stock","Estado","Acciones"]
+      .forEach(text => {
+        const th = document.createElement("th");
+        th.textContent = text;
+        trHead.appendChild(th);
+      });
     thead.appendChild(trHead);
     tabla.appendChild(thead);
 
     const tbody = document.createElement("tbody");
 
-    productos.forEach(prod => {
+    for (const prod of productos) {
       const tr = document.createElement("tr");
 
+      // Celdas
       const tdId = document.createElement("td"); tdId.textContent = prod.id_producto;
       const tdNombre = document.createElement("td"); tdNombre.textContent = prod.nombre_producto;
       const tdDescripcion = document.createElement("td"); tdDescripcion.textContent = prod.descripcion_producto;
@@ -330,15 +325,27 @@ export async function crearTablaProductos() {
       imgTag.width = 100;
       tdImg.appendChild(imgTag);
 
-      // Tallas y Select
+      // Tallas, Stock y Estado
       const tdTallas = document.createElement("td");
       const tdStock = document.createElement("td");
-      const tallasLocal = JSON.parse(localStorage.getItem(`tallasProducto_${prod.id_producto}`));
+      const tdEstado = document.createElement("td");
 
-      if (tallasLocal && tallasLocal.length > 0) {
+      const tallasLocal = JSON.parse(localStorage.getItem(`tallasProducto_${prod.id_producto}`)) || [];
+
+      const actualizarEstadoVisual = (tallaSeleccionada) => {
+        const stock = tallaSeleccionada ? tallaSeleccionada.stock || 0 : 0;
+        tdStock.textContent = stock;
+
+        const todasAgotadas = tallasLocal.every(t => t.stock <= 0);
+        const nuevoEstado = todasAgotadas ? 2 : 1;
+
+        tdEstado.textContent = todasAgotadas ? "Agotado" : "Disponible";
+        tdEstado.style.color = todasAgotadas ? "red" : "green";
+      };
+
+      if (tallasLocal.length > 0) {
         const select = document.createElement("select");
         select.innerHTML = "<option disabled selected>Seleccionar talla</option>";
-
         tallasLocal.forEach(t => {
           const option = document.createElement("option");
           option.value = t.codTalla;
@@ -346,28 +353,29 @@ export async function crearTablaProductos() {
           select.appendChild(option);
         });
 
-        // Evento para actualizar el stock según la talla seleccionada
         select.addEventListener("change", () => {
           const codTalla = parseInt(select.value);
-          const tallaSeleccionada = tallasLocal.find(t => t.codTalla === codTalla);
-          tdStock.textContent = tallaSeleccionada ? tallaSeleccionada.stock || 0 : 0;
+          const tallaSel = tallasLocal.find(t => t.codTalla === codTalla);
+          actualizarEstadoVisual(tallaSel);
         });
 
         tdTallas.appendChild(select);
 
-        // Mostrar stock de la primera talla por defecto (opcional)
-        tdStock.textContent = tallasLocal[0].stock || 0;
-        select.selectedIndex = 1; // seleccionar primera talla por defecto
+        select.selectedIndex = 1;
+        actualizarEstadoVisual(tallasLocal[0]);
       } else {
         tdTallas.textContent = "No hay tallas";
         tdTallas.style.color = "red";
         tdStock.textContent = "0";
+        tdEstado.textContent = "Agotado";
+        tdEstado.style.color = "red";
       }
 
       // Acciones
       const tdAcc = document.createElement("td");
       const btnTalla = document.createElement("button");
       btnTalla.textContent = "➕ Añadir talla";
+      btnTalla.classList.add("btn-talla");
       btnTalla.addEventListener("click", () => {
         localStorage.setItem("productoTalla", JSON.stringify(prod));
         window.location.hash = "#productos/agregarTalla";
@@ -375,6 +383,7 @@ export async function crearTablaProductos() {
 
       const btnStock = document.createElement("button");
       btnStock.textContent = "➕ Añadir stock";
+      btnStock.classList.add("btn-stock");
       btnStock.addEventListener("click", () => {
         localStorage.setItem("productoStock", JSON.stringify(prod));
         window.location.hash = "#productos/agregarStock";
@@ -383,9 +392,9 @@ export async function crearTablaProductos() {
       tdAcc.appendChild(btnTalla);
       tdAcc.appendChild(btnStock);
 
-      [tdId, tdNombre, tdDescripcion, tdPrecio, tdEmpresa, tdImg, tdTallas, tdStock, tdAcc].forEach(td => tr.appendChild(td));
+      [tdId, tdNombre, tdDescripcion, tdPrecio, tdEmpresa, tdImg, tdTallas, tdStock, tdEstado, tdAcc].forEach(td => tr.appendChild(td));
       tbody.appendChild(tr);
-    });
+    }
 
     tabla.appendChild(tbody);
     main.appendChild(tabla);
