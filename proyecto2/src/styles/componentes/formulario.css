@@ -1,4 +1,4 @@
-.contenedor_formulario{
+.contenedor_formulario {
   display: flex;
   justify-content: center;
   gap: 30px;
@@ -7,58 +7,59 @@
 }
 
 .formulario {
-  background-color: #8B5E3C;
+  background-color: var(--color-marron);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(155, 91, 85, 0.6);
+  box-shadow: 0 0 12px rgba(155, 91, 85, 0.6); /* 🔸 puedes definirlo como variable si lo usas mucho */
   display: flex;
   flex-direction: column;
   gap: 14px;
   width: 280px;
   text-align: center;
 }
+
 .formulario span {
   display: block;
   font-size: 12px;
-  color: #ff5555;
-  min-height: 16px; /* Mantiene espacio aunque no haya error */
-  margin-top: -4px; /* Ajusta si quieres acercar al input */
-} 
+  color: var(--color-error);
+  min-height: 16px; /* mantiene espacio aunque no haya error */
+  margin-top: -4px;
+}
 
-
-.formulario--width{
+.formulario--width {
   width: 400px;
 }
 
 .formulario__titulo {
   font-size: 20px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #F5F5DC;
+  border-bottom: 1px solid var(--color-beige);
   padding-bottom: 5px;
-  color: #ffffff;
+  color: var(--color-blanco);
 }
 
 .formulario__texto {
   font-weight: bold;
   font-size: 15px;
-  color: #fffdfd;
+  color: var(--color-blanco);
 }
 
 .formulario__input {
   text-align: center;
   padding: 10px;
-  background-color: #F5F5DC;
-  color: #8B5E3C;
-  border: 1px solid #F5F5DC;
+  background-color: var(--color-beige);
+  color: var(--color-marron);
+  border: 1px solid var(--color-beige);
   border-radius: 6px;
   font-size: 14px;
   transition: border 0.3s;
 }
 
 .formulario__input:focus {
-  border-color: #999;
+  border-color: #999; /* ⚠️ si quieres también la pasamos a variable */
   outline: none;
 }
+
 #producto-info .campo,
 #form-tallas {
   margin-bottom: 1rem;
@@ -66,4 +67,3 @@
   flex-direction: column;
   gap: 0.3rem;
 }
-

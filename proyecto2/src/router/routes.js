@@ -114,7 +114,7 @@ export const routes = {
     html: Empresas,
     controlador: empresaController,
     private: true,
-    permisos: ["  "]
+    permisos: ["GESTION_EMPRESAS"]
   },
   imagenes: {
     path: "administrador/imagenes/index.html",

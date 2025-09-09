@@ -1,120 +1,115 @@
-  h1, h2, h3, button {
-    font-family: "Playfair Display", serif;
-    font-weight: 600;
-  }
+h1, h2, h3, button {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+}
 
-  /* ====== SECCIONES ====== */
-  /* ====== BASE DE TODAS LAS SECCIONES ====== */
-  .seccion {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    min-height: 100vh;   /* asegura que todas las secciones ocupen la pantalla */
-    display: block;
-  }
+/* ====== SECCIONES ====== */
+.seccion {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
+  display: block;
+}
 
-  /* ====== PRIMERA SECCIÓN ====== */
-  .seccion--primera {
-    background-color: #8B5E3C;
-    max-height: max-content; /* permite que crezca según contenido */
-  }
+/* ====== PRIMERA SECCIÓN ====== */
+.seccion--primera {
+  background-color: var(--color-marron);
+  max-height: max-content;
+}
 
-  /* ====== SEGUNDA SECCIÓN ====== */
-  .seccion--segunda {
-    /* background-color: #fff; */
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* deja espacio arriba para el logo */
-    padding: 50px 20px;
-    background-image: url("../../img/imagen fondo calzado.avif");
-    background-size: cover;
-  }
+/* ====== SEGUNDA SECCIÓN ====== */
+.seccion--segunda {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 50px 20px;
+  background-image: url("../../img/imagen fondo calzado.avif");
+  background-size: cover;
+}
 
+/* ====== HEADER ====== */
+.header {
+  background-color: var(--color-beige);
+  position: sticky;
+  height: 6vh;
+  z-index: 1000;
+  top: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-  /* ====== HEADER ====== */
-  .header {
-    background-color: #F5F5DC;
-    position: sticky;
-    height: 6vh;
-    z-index: 1000;
-    top: 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
+.header__menu {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 50px;
+  margin-right: 50px;
+  height: 100%;
+  align-items: center;
+}
 
-  .header__menu {
-    list-style: none;
-    display: flex;
-    justify-content: flex-end;
-    gap: 50px;
-    margin-right: 50px;
-    height: 100%;
-    align-items: center;
-  }
+.header__item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
 
-  .header__item {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
+.header__link {
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--color-marron);
+  transition: color 0.3s ease;
+}
 
-  .header__link {
-    font-size: 20px;
-    text-decoration: none;
-    color: #8B5E3C;
-    transition: color 0.3s ease;
-  }
+.header__link:hover {
+  color: var(--color-acento-hover);
+}
 
-  .header__link:hover {
-    color: #5c3c26;
-  }
+.header__separador {
+  color: var(--color-marron);
+  font-size: 22px;
+}
 
-  .header__separador {
-    color: #8B5E3C;
-    font-size: 22px;
-  }
+/* ====== PRESENTACION ====== */
+.presentacion {
+  display: flex;
+  align-items: center;
+  height: 20vh;
+  text-align: center;
+}
 
-  /* ====== PRESENTACION (IMÁGENES SUPERIORES) ====== */
-  .presentacion {
-    display: flex;
-    align-items: center;
-    height: 20vh;
-    text-align: center;
+.presentacion__logo {
+  height: auto;
+  margin: auto;
+}
 
-  }
+/* ====== INFO ====== */
+.info {
+  display: flex;
+  position: relative;
+  height: 74vh;
+}
 
-  .presentacion__logo {
-    height: auto;
-    margin: auto;
-  }
+.info__imagen {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+}
 
+.info__imagen--principal {
+  width: 45%;
+  height: 650px;
+  left: 15vh;
+  border-radius: 20px 0 0 20px;
+  background-image: url("../../img/zapato2.png");
+  animation: cambiarFondo 6s infinite alternate;
+  transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
+}
 
-  /* ====== INFO (BLOQUES INFORMATIVOS) ====== */
-  .info {
-    display: flex;
-    position: relative;
-    height: 74vh;
-  }
-
-  .info__imagen {
-    position: absolute;
-    background-size: cover;
-    background-position: center;
-    border-radius: 20px;
-  }
-
-  .info__imagen--principal {
-    width: 45%;
-    height: 650px;
-    left: 15vh;
-    border-radius: 20px 0 0 20px;
-    background-image: url("../../img/zapato2.png");
-    animation: cambiarFondo 6s infinite alternate;
-    transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
-  }
-
-  .info__imagen--lateral {
+.info__imagen--lateral {
   width: 40%;
   height: 650px;
   right: 150px;
@@ -122,45 +117,38 @@
   background-image: url("../../img/imagen2_calzado.jpg");
   background-size: cover;
   background-position: center;
-
-  /* ✅ Flexbox para centrar el contenido */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   padding: 20px;
   text-align: center;
 }
 
-/* ====== Ajustes de los hijos ====== */
 .info__titulo {
-  position: static; /* ❌ ya no absolute */
   padding: 20px 40px;
   border-radius: 50px;
-  background-color: #F5F5DC;
-  color: #8B5E3C;
-  border: solid 4px #8B5E3C;
+  background-color: var(--color-beige);
+  color: var(--color-marron);
+  border: solid 4px var(--color-marron);
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
 .info__texto {
-  position: static; /* ❌ ya no absolute */
   font-size: 24px;
   max-width: 400px;
-  color: #F5F5DC;
+  color: var(--color-beige);
   margin-bottom: 30px;
 }
 
 .info__boton {
-  position: static; /* ❌ ya no absolute */
   padding: 15px 50px;
-  background-color: #8B5E3C;
+  background-color: var(--color-marron);
   border-radius: 10px;
   border: none;
-  color: #F5F5DC;
+  color: var(--color-beige);
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
@@ -168,112 +156,102 @@
 }
 
 .info__boton:hover {
-  background-color: #5c3c26;
+  background-color: var(--color-acento-hover);
   transform: translateY(-3px);
 }
 
+/* ====== SEGUNDA SECCION ====== */
+.seccion__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  /* ====== SEGUNDA SECCION ====== */
-  .seccion__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.seccion__logo-img {
+  margin-top: 100px;
+  margin-left: -70vh;
+  width: 400px;
+}
+
+.seccion__titulo {
+  margin-top: 50px;
+  margin-left: -70vh;
+  font-size: 65px;
+  color: var(--color-marron);
+  font-weight: bolder;
+}
+
+.seccion__texto {
+  margin-top: 50px;
+  margin-left: -70vh;
+  width: 40%;
+  font-size: 40px;
+  color: var(--color-marron-oscuro);
+  line-height: 1.6;
+  font-weight: bolder;
+}
+
+/* ====== FOOTER ====== */
+.footer {
+  background-color: var(--color-marron);
+  color: var(--color-beige);
+  padding: 50px 20px;
+}
+
+.footer__contenedor {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer__info {
+  max-width: 400px;
+  text-align: center;
+}
+
+.footer__titulo {
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.footer__texto {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.footer__creditos {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  border-top: 1px solid rgba(245, 245, 220, 0.3);
+  padding-top: 15px;
+}
+
+/* ====== ANIMACIÓN FONDO ====== */
+@keyframes cambiarFondo {
+  0% {
+    background-image: url("../../img/zapato11.png");
+    opacity: 1;
   }
-
-  .seccion__logo-img {
-    margin-top: 100px;
-    margin-left: -70vh; 
-    width: 400px;
+  50% {
+    opacity: 0.5;
   }
-
-  .seccion__titulo {
-    margin-top: 50px;
-    margin-left: -70vh;
-    font-size: 65px;
-    color: #8B5E3C;
-    font-weight: bolder;
+  100% {
+    background-image: url("../../img/zapato2.png");
+    opacity: 1;
   }
+}
 
-  .seccion__texto {
-    margin-top: 50px;
-    margin-left: -70vh;
-    width: 40%;
-    font-size: 40px;
-    color: #333;
-    line-height: 1.6;
-    font-weight: bolder;
-    /* margin-left: auto; */
-    /* margin-right: auto; */
-  }
-
-  /* ====== FOOTER ====== */
-  .footer {
-    background-color: #8B5E3C;
-    color: #F5F5DC;
-    padding: 50px 20px;
-  }
-
-  .footer__contenedor {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 40px;
-  }
-
-  .footer__info {
-    max-width: 400px;
-    text-align: center;
-  }
-
-  .footer__titulo {
-    margin-bottom: 15px;
-    font-size: 24px;
-  }
-
-  .footer__texto {
-    margin-bottom: 8px;
-    font-size: 16px;
-  }
-
-  .footer__creditos {
-    text-align: center;
-    margin-top: 30px;
-    font-size: 14px;
-    border-top: 1px solid rgba(245, 245, 220, 0.3);
-    padding-top: 15px;
-  }
-
-  /* ====== ANIMACIÓN FONDO ====== */
-  @keyframes cambiarFondo {
-    0% {
-      background-image: url("../../img/zapato11.png");
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      background-image: url("../../img/zapato2.png");
-      opacity: 1;
-    }
-  }
-
-
-/* ==================== MEDIA QUERIES ==================== */
-
-/* 📱 Móviles (hasta 767px) */
+/* ====== MEDIA QUERIES ====== */
 @media (max-width: 767px) {
-  /* HEADER */
   .header__menu {
-    
     gap: 10px;
     margin-right: 0;
   }
 
-   /* INFO: poner imágenes en columna */
   .info {
-    display: flex;
-    flex-direction: column; /* columna */
+    flex-direction: column;
     align-items: center;
     height: auto;
   }
@@ -281,12 +259,11 @@
   .info__imagen--principal,
   .info__imagen--lateral {
     position: static !important;
-    width: 90%;   /* ancho ajustado */
+    width: 90%;
     height: 200px;
     border-radius: 20px;
     background-size: cover;
-    background-position: center
-    /* margin: 15px 0; separacion entre ellas */
+    background-position: center;
   }
 
   .info__titulo {
@@ -304,7 +281,6 @@
     padding: 12px 30px;
   }
 
-  /* SEGUNDA SECCIÓN */
   .seccion__logo-img {
     margin: 30px auto 0;
     width: 200px;
@@ -312,26 +288,18 @@
 
   .seccion__titulo {
     margin: 20px auto 0;
-    /* font-size: 72px; */
     margin-left: 0;
   }
 
   .seccion__texto {
     margin: 20px auto 0;
     width: 90%;
-    /* font-size: 18px; */
     margin-left: 0;
   }
 }
 
-/* ==================== MEDIA QUERIES ==================== */
-
-/* 📱 Móviles (hasta 767px) */
 @media (max-width: 767px) {
-
-  /* HEADER */
   .header__menu {
-    /* flex-direction: column; */
     gap: 10px;
     margin: 0;
     padding: 10px 0;
@@ -347,29 +315,22 @@
     font-size: 16px;
   }
 
-  /* PRESENTACION */
   .presentacion__logo {
     width: 320px;
     margin: 0 auto;
   }
 
-  /* INFO: poner imágenes en columna */
   .info {
-    display: flex;
-    flex-direction: column; /* columna */
+    flex-direction: column;
     align-items: center;
     height: auto;
   }
 
   .info__imagen--principal,
   .info__imagen--lateral {
-    position: static !important;
-    width: 80%;  
-    height: 250px; 
+    width: 80%;
+    height: 250px;
     margin: 15px 0;
-    border-radius: 20px;
-    background-size: cover;
-    background-position: center
   }
 
   .info__titulo {
@@ -387,11 +348,9 @@
   .info__boton {
     font-size: 16px;
     padding: 10px 25px;
-    display: block;
     margin: 0 auto;
   }
 
-  /* SEGUNDA SECCION: CENTRAR TODO */
   .seccion--segunda {
     padding: 40px 20px;
     text-align: center;
@@ -415,14 +374,8 @@
   }
 }
 
-/* 📱 Tablets (768px – 1199px) */
 @media (min-width: 768px) and (max-width: 1199px) {
-
-  /* HEADER */
   .header__menu {
-    /* flex-direction: row; */
-    /* flex-wrap: wrap; */
-    /* gap: 20px; */
     margin: 0 auto;
     justify-content: center;
   }
@@ -431,29 +384,22 @@
     font-size: 18px;
   }
 
-  /* INFO: poner imágenes en columna */
   .info {
-    display: flex;
-    flex-direction: column; /* columna */
+    flex-direction: column;
     align-items: center;
     height: auto;
   }
 
   .info__imagen--principal,
   .info__imagen--lateral {
-    position: relative !important;
-    width: 80%;  
-    height: 300px; 
+    width: 80%;
+    height: 300px;
     margin: 15px 0;
-    border-radius: 20px;
-    background-size: cover;
-    background-position: center;
   }
 
   .info__titulo {
     font-size: 20px;
     text-align: center;
-    
   }
 
   .info__texto {
@@ -465,11 +411,9 @@
   .info__boton {
     font-size: 18px;
     padding: 12px 40px;
-    display: block;
     margin: 0 auto;
   }
 
-  /* SEGUNDA SECCION: CENTRAR TODO */
   .seccion--segunda {
     align-items: center;
     text-align: center;

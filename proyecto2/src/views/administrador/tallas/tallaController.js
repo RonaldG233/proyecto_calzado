@@ -139,13 +139,13 @@ btnInactivar.addEventListener("click", async () => {
   if (!idTalla) return;
 
   try {
-    // Verificar si la talla está asociada
+    // Preguntar al backend si tiene relación
     const rel = await get(`tallas/${idTalla}/tienerelacion`);
-    if (rel.tieneRelacion) {
+    if (!rel || rel.tieneRelacion) {
       return error("No se puede inactivar una talla que está asociada a productos.");
     }
 
-    const confirmResp = await confirmar("inactivar la talla");
+    const confirmResp = await confirmar("¿Seguro que deseas inactivar esta talla?");
     if (!confirmResp.isConfirmed) return;
 
     const res = await put(`tallas/${idTalla}/inactivar`);
@@ -161,6 +161,7 @@ btnInactivar.addEventListener("click", async () => {
     console.error(err);
   }
 });
+
 
 
   // ------------------ REACTIVAR TALLA ------------------

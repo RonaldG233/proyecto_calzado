@@ -7,18 +7,21 @@
 }
 
 .boton--formulario {
-  background-color: #C7A589;
-  color: #fff;
+  background-color: var(--color-dorado); /* antes #C7A589 */
+  color: var(--color-blanco); /* antes #fff */
   cursor: pointer;
   transition: 0.3s;
 }
-.rojo{
-  background-color: red;
+
+.rojo {
+  background-color: var(--color-rojo); /* antes red */
 }
-.boton3{
-  background-color: #C7A589;
+
+.boton3 {
+  background-color: var(--color-dorado); /* antes #C7A589 */
   cursor: pointer;
 }
+
 .boton--formulario:hover {
-  background-color: #b37c52;
+  background-color: var(--color-dorado-hover); /* antes #b37c52 */
 }
