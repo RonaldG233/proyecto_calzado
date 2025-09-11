@@ -345,7 +345,8 @@ export async function crearTablaProductos() {
 
       if (tallasLocal.length > 0) {
         const select = document.createElement("select");
-        select.innerHTML = "<option disabled selected>Seleccionar talla</option>";
+        select.classList.add("select_content");
+        select.innerHTML = "<option disabled selected >Seleccionar talla</option>";
         tallasLocal.forEach(t => {
           const option = document.createElement("option");
           option.value = t.codTalla;
@@ -376,6 +377,8 @@ export async function crearTablaProductos() {
       const btnTalla = document.createElement("button");
       btnTalla.textContent = "➕ Añadir talla";
       btnTalla.classList.add("btn-talla");
+      
+      
       btnTalla.addEventListener("click", () => {
         localStorage.setItem("productoTalla", JSON.stringify(prod));
         window.location.hash = "#productos/agregarTalla";

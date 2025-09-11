@@ -1,43 +1,42 @@
 <div class="holaa">
-<div id="header-container"></div>
+  <div id="header-container"></div>
   <div id="sidebar-container"></div>
-<main class="agregarStock">
-  
 
-  <section id="main-content">
-    <div id="producto-info">
-      <h3 id="nombre-producto"></h3>
-      <p id="descripcion-producto"></p>
-      <p>Precio: $<span id="precio-producto"></span></p>
-    </div>
+  <main class="agregarStock">
+    <section id="main-content" class="stock__contenido">
+      <div id="producto-info" class="stock__producto-info">
+        <h3 id="nombre-producto" class="stock__nombre"></h3>
+        <p id="descripcion-producto" class="stock__descripcion"></p>
+        <p>Precio: $<span id="precio-producto" class="stock__precio"></span></p>
+      </div>
 
-    <div id="stock-form">
-      <label for="select-talla">Seleccionar Talla:</label>
-      <select id="select-talla">
-        <option disabled selected>Seleccionar talla</option>
-        <!-- Opciones se llenan desde JS -->
-      </select>
+      <div id="stock-form" class="stock__formulario">
+        <label for="select-talla" class="stock__label">Seleccionar Talla:</label>
+        <select id="select-talla" class="stock__select">
+          <option disabled selected>Seleccionar talla</option>
+          <!-- Opciones se llenan desde JS -->
+        </select>
 
-      <label for="input-stock">Stock:</label>
-      <input type="number" id="input-stock" min="0" placeholder="Ingrese la cantidad de stock">
+        <label for="input-stock" class="stock__label">Stock:</label>
+        <input type="number" id="input-stock" class="stock__input" min="0" placeholder="Ingrese la cantidad de stock">
 
-      <button id="btn-guardar-stock">Guardar Stock</button>
-    </div>
+        <button id="btn-guardar-stock" class="btn-stock-azul">Guardar Stock</button>
+      </div>
 
-    <div id="tabla-stock">
-      <table>
-        <thead>
-          <tr>
-            <th>Talla</th>
-            <th>Stock</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tbody-stock">
-          <tr><td colspan="3">No hay stock añadido</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-</main>
+      <div id="tabla-stock" class="stock__tabla">
+        <table class="tabla-stock">
+          <thead>
+            <tr>
+              <th>Talla</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-stock">
+            <tr><td colspan="3">No hay stock añadido</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 </div>

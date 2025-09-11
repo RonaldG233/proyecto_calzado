@@ -43,29 +43,32 @@ export const agregarStockController = () => {
   }
 
   mainContainer.innerHTML = `
-    <div id="producto-info">
-      <h3>${producto.nombre_producto}</h3>
-      <p>${producto.descripcion_producto}</p>
-      <p>Precio: $${producto.precio_producto.toFixed(2)}</p>
-    </div>
-    <table id="tabla-stock">
-      <thead>
-        <tr>
-          <th>Talla</th>
-          <th>Stock</th>
+  <div id="producto-info" class="stock__producto-info">
+    <h3 class="stock__nombre">${producto.nombre_producto}</h3>
+    <p class="stock__descripcion">${producto.descripcion_producto}</p>
+    <p class="stock__precio">Precio: $${producto.precio_producto.toFixed(2)}</p>
+  </div>
+  <table id="tabla-stock" class="stock__tabla">
+    <thead class="stock__tabla-encabezado">
+      <tr>
+        <th class="stock__tabla-columna">Talla</th>
+        <th class="stock__tabla-columna">Stock</th>
+      </tr>
+    </thead>
+    <tbody class="stock__tabla-cuerpo">
+      ${tallasProducto.map(t => `
+        <tr class="stock__fila">
+          <td class="stock__talla">${t.numero_talla}</td>
+          <td class="stock__celda-input">
+            <input type="number" min="0" value="${t.stock || 0}" data-cod-talla="${t.codTalla}" class="stock__input">
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        ${tallasProducto.map(t => `
-          <tr>
-            <td>${t.numero_talla}</td>
-            <td><input type="number" min="0" value="${t.stock || 0}" data-cod-talla="${t.codTalla}"></td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
-    <button id="btn-guardar-stock">Guardar Stock</button>
-  `;
+      `).join("")}
+    </tbody>
+  </table>
+  <button id="btn-guardar-stock" class="stock__btn-guardar">Guardar Stock</button>
+`;
+
 
   const btnGuardar = document.getElementById("btn-guardar-stock");
   const inputsStock = mainContainer.querySelectorAll("#tabla-stock tbody input");
