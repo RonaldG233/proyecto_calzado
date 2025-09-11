@@ -79,10 +79,19 @@ export const agregarTallaController = async () => {
       const tr = document.createElement("tr");
       const tdTalla = document.createElement("td");
       tdTalla.textContent = t.numero_talla;
+      tdTalla.style.fontWeight = "bold";
 
       const tdAcc = document.createElement("td");
       const btnEliminar = document.createElement("button");
-      btnEliminar.textContent = "Eliminar";
+      btnEliminar.textContent = "🗑️ ELIMINAR";
+      btnEliminar.style.backgroundColor = "red"; // ✅ Azul
+      btnEliminar.style.color = "white";  
+      btnEliminar.style.border = "none";
+      btnEliminar.style.padding = "5px";
+      btnEliminar.style.cursor = "pointer";
+      btnEliminar.style.borderRadius = "5px";
+      btnEliminar.style.marginTop = "5px";
+      btnEliminar.style.marginLeft = "10px";
 
       // 🔥 Ahora sí elimina también en la BD
       btnEliminar.addEventListener("click", async () => {

@@ -73,5 +73,6 @@
   .tabla thead th,
   .tabla tbody td {
     padding: 8px 10px; /* menos espacio en celdas */
+    gap: 6px;
   }
 }

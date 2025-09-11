@@ -119,6 +119,8 @@ export async function crearTablaUsuarios() {
       if (u.estado.toLowerCase() === "activo") {
         btnEstado.textContent = "🚫 Inactivar";
         btnEstado.classList.add("inactivar");
+        btnEstado.style.backgroundColor = "#F5F5DC";
+        // btnEstado.style.color = "white";
         btnEstado.addEventListener("click", async () => {
           if (usuarioLogueado && usuarioLogueado.idUsuario === u.idUsuario) {
             Swal.fire("No permitido", "No puedes inactivar tu propia cuenta", "warning");
@@ -141,6 +143,8 @@ export async function crearTablaUsuarios() {
       } else {
         btnEstado.textContent = "✅ Reactivar";
         btnEstado.classList.add("reactivar");
+        btnEstado.style.backgroundColor = "#F5F5DC";
+        // btnEstado.style.color = "white";
         btnEstado.addEventListener("click", async () => {
           const confirm = await Swal.fire({
             title: "Reactivar usuario?",
@@ -374,10 +378,13 @@ export async function crearTablaProductos() {
 
       // Acciones
       const tdAcc = document.createElement("td");
+      const contenedorBtns = document.createElement("div");
+      contenedorBtns.classList.add("acciones__botones");
+      
       const btnTalla = document.createElement("button");
       btnTalla.textContent = "➕ Añadir talla";
       btnTalla.classList.add("btn-talla");
-      
+      btnTalla.style.backgroundColor = "#F5F5DC";
       
       btnTalla.addEventListener("click", () => {
         localStorage.setItem("productoTalla", JSON.stringify(prod));
@@ -387,13 +394,18 @@ export async function crearTablaProductos() {
       const btnStock = document.createElement("button");
       btnStock.textContent = "➕ Añadir stock";
       btnStock.classList.add("btn-stock");
+      btnStock.style.backgroundColor = "#F5F5DC";
       btnStock.addEventListener("click", () => {
         localStorage.setItem("productoStock", JSON.stringify(prod));
         window.location.hash = "#productos/agregarStock";
       });
 
-      tdAcc.appendChild(btnTalla);
-      tdAcc.appendChild(btnStock);
+      
+// 👉 agregar los botones al contenedor
+      contenedorBtns.appendChild(btnTalla);
+      contenedorBtns.appendChild(btnStock);
+      
+      tdAcc.appendChild(contenedorBtns);
 
       [tdId, tdNombre, tdDescripcion, tdPrecio, tdEmpresa, tdImg, tdTallas, tdStock, tdEstado, tdAcc].forEach(td => tr.appendChild(td));
       tbody.appendChild(tr);
